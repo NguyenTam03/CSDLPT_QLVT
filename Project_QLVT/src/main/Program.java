@@ -18,14 +18,14 @@ public class Program {
 	public static String connstr;
 
 	public static ResultSet myReader;
-	public static String servername = "TAM";
+	public static String servername = "ADMIN-PC";
 	public static String username = "";
 	public static String mlogin = "";
 	public static String password = "";
 
 	public static String database = "QLVT_DATHANG";
 	public static String remotelogin = "htkn";
-	public static String remotepassword = "0312";
+	public static String remotepassword = "123456";
 
 	public static String mloginDN = "";
 	public static String passwordDN = "";
@@ -104,7 +104,6 @@ public class Program {
     }
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {

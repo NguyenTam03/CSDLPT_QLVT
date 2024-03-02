@@ -1,13 +1,12 @@
 package controller;
 
-import java.awt.event.ActionEvent;
-
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import main.Program;
 import views.LoginForm;
+import views.frmMain;
 
 public class LoginController {
 	private LoginForm loginForm;
@@ -51,7 +50,8 @@ public class LoginController {
             	Program.mHoten = Program.myReader.getString(2);
             	Program.mGroup = Program.myReader.getString(3);
             	
-            	loginForm.getLblInfoNV().setText("MANV: " + Program.username + " HOTEN: " + Program.mHoten + " GROUP: " + Program.mGroup);
+            	loginForm.dispose();
+            	new frmMain().setVisible(true);
             }
             catch(Exception e1) {
     			e1.printStackTrace();

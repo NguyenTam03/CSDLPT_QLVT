@@ -29,7 +29,6 @@ public class LoginForm extends JFrame {
 	private JComboBox<String> cbChiNhanh;
 	private JButton btnLogin;
 	private JButton btnExit;
-	private JLabel lblInfoNV;
 	
 	
 	public JTextField getTfUsername() {
@@ -82,21 +81,9 @@ public class LoginForm extends JFrame {
 	}
 
 
-	public JLabel getLblInfoNV() {
-		return lblInfoNV;
-	}
-
-
-	public void setLblInfoNV(JLabel lblInfoNV) {
-		this.lblInfoNV = lblInfoNV;
-	}
-
-
-	/**
-	 * Create the frame.
-	 */
 	public LoginForm() {
 		setTitle("Login");
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 473, 337);
 		contentPane = new JPanel();
@@ -164,11 +151,6 @@ public class LoginForm extends JFrame {
 		btnExit.setBackground(new Color(255, 0, 0));
 		btnExit.setBounds(283, 228, 89, 34);
 		contentPane.add(btnExit);
-		
-		lblInfoNV = new JLabel("MANV: HOTEN: GROUP:");
-		lblInfoNV.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		lblInfoNV.setBounds(10, 285, 362, 14);
-		contentPane.add(lblInfoNV);
 		
 		LoginController ac = new LoginController(this);
 		ac.initController();
