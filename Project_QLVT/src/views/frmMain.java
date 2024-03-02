@@ -1,4 +1,4 @@
-package Test;
+package views;
 
 import java.awt.EventQueue;
 
