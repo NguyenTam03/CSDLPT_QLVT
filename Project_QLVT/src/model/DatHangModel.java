@@ -3,40 +3,59 @@ package model;
 import java.sql.Date;
 
 public class DatHangModel {
-	private String MasoDDH;
-	private Date NGAY;
-	private String NhaCC;
-	private Integer MANV;
-	private String MAKHO;
-	public String getMasoDDH() {
-		return MasoDDH;
+	private String maSoDDH;
+	private Date ngay;
+	private String nhaCC;
+	private Integer manv;
+	private String makho;
+	
+	public DatHangModel(String maSoDDH, Date ngay, String nhaCC, Integer manv, String makho) {
+		super();
+		this.maSoDDH = maSoDDH;
+		this.ngay = ngay;
+		this.nhaCC = nhaCC;
+		this.manv = manv;
+		this.makho = makho;
 	}
-	public void setMasoDDH(String masoDDH) {
-		MasoDDH = masoDDH;
+
+	public String getMaSoDDH() {
+		return maSoDDH;
 	}
-	public Date getNGAY() {
-		return NGAY;
+
+	public void setMaSoDDH(String maSoDDH) {
+		this.maSoDDH = maSoDDH;
 	}
-	public void setNGAY(Date nGAY) {
-		NGAY = nGAY;
+
+	public Date getNgay() {
+		return ngay;
 	}
+
+	public void setNgay(Date ngay) {
+		this.ngay = ngay;
+	}
+
 	public String getNhaCC() {
-		return NhaCC;
+		return nhaCC;
 	}
+
 	public void setNhaCC(String nhaCC) {
-		NhaCC = nhaCC;
+		this.nhaCC = nhaCC;
 	}
-	public Integer getMANV() {
-		return MANV;
+
+	public Integer getManv() {
+		return manv;
 	}
-	public void setMANV(Integer mANV) {
-		MANV = mANV;
+
+	public void setManv(Integer manv) {
+		this.manv = manv;
 	}
-	public String getMAKHO() {
-		return MAKHO;
+
+	public String getMakho() {
+		return makho;
 	}
-	public void setMAKHO(String mAKHO) {
-		MAKHO = mAKHO;
+
+	public void setMakho(String makho) {
+		this.makho = makho;
 	}
 	
 	

@@ -1,19 +1,20 @@
 package model;
 
 public class CTPNModel extends CTAbstractModel {
-	private String MAPN;
+	private String mapn;
 
-	public CTPNModel(String MAVT, Integer SOLUONG, Double DONGIA, String mAPN) {
-		super(MAVT, SOLUONG, DONGIA);
-		MAPN = mAPN;
+	public CTPNModel(String mavt, Integer soLuong, Double donGia, String mapn) {
+		super(mavt, soLuong, donGia);
+		this.mapn = mapn;
 	}
 
-	public String getMAPN() {
-		return MAPN;
+	public String getMapn() {
+		return mapn;
 	}
 
-	public void setMAPN(String mAPN) {
-		MAPN = mAPN;
+	public void setMapn(String mapn) {
+		this.mapn = mapn;
 	}
+
 	
 }

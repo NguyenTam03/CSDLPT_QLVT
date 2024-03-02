@@ -1,35 +1,40 @@
 package model;
 
 public class KhoModel {
-	private String MAKHO;
-	private String TENKHO;
-	private String DIACHI;
-	private String MACN;
-	
-	
-	public String getMAKHO() {
-		return MAKHO;
+	private String maKho;
+	private String tenKho;
+	private String diaChi;
+	private String macn;
+	public KhoModel(String maKho, String tenKho, String diaChi, String macn) {
+		super();
+		this.maKho = maKho;
+		this.tenKho = tenKho;
+		this.diaChi = diaChi;
+		this.macn = macn;
 	}
-	public void setMAKHO(String mAKHO) {
-		MAKHO = mAKHO;
+	public String getMaKho() {
+		return maKho;
 	}
-	public String getTENKHO() {
-		return TENKHO;
+	public void setMaKho(String maKho) {
+		this.maKho = maKho;
 	}
-	public void setTENKHO(String tENKHO) {
-		TENKHO = tENKHO;
+	public String getTenKho() {
+		return tenKho;
 	}
-	public String getDIACHI() {
-		return DIACHI;
+	public void setTenKho(String tenKho) {
+		this.tenKho = tenKho;
 	}
-	public void setDIACHI(String dIACHI) {
-		DIACHI = dIACHI;
+	public String getDiaChi() {
+		return diaChi;
 	}
-	public String getMACN() {
-		return MACN;
+	public void setDiaChi(String diaChi) {
+		this.diaChi = diaChi;
 	}
-	public void setMACN(String mACN) {
-		MACN = mACN;
+	public String getMacn() {
+		return macn;
+	}
+	public void setMacn(String macn) {
+		this.macn = macn;
 	}
 	
 	

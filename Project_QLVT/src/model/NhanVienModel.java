@@ -3,68 +3,81 @@ package model;
 import java.sql.Date;
 
 public class NhanVienModel {
-	private Integer MANV;
-	private String HO;
-	private String TEN;
-	private String SOCMND;
-	private String DIACHI;
-	private Date NGAYSINH;
-	private Double LUONG;
-	private String MACN;
-	private Boolean TrangThaiXoa;
-	public Integer getMANV() {
-		return MANV;
+	private Integer manv;
+	private String ho;
+	private String ten;
+	private String soCMND;
+	private String diaChi;
+	private Date ngaySinh;
+	private Double luong;
+	private String macn;
+	private Boolean trangThaiXoa;
+	public NhanVienModel(Integer manv, String ho, String ten, String soCMND, String diaChi, Date ngaySinh, Double luong,
+			String macn, Boolean trangThaiXoa) {
+		super();
+		this.manv = manv;
+		this.ho = ho;
+		this.ten = ten;
+		this.soCMND = soCMND;
+		this.diaChi = diaChi;
+		this.ngaySinh = ngaySinh;
+		this.luong = luong;
+		this.macn = macn;
+		this.trangThaiXoa = trangThaiXoa;
 	}
-	public void setMANV(Integer mANV) {
-		MANV = mANV;
+	public Integer getManv() {
+		return manv;
 	}
-	public String getHO() {
-		return HO;
+	public void setManv(Integer manv) {
+		this.manv = manv;
 	}
-	public void setHO(String hO) {
-		HO = hO;
+	public String getHo() {
+		return ho;
 	}
-	public String getTEN() {
-		return TEN;
+	public void setHo(String ho) {
+		this.ho = ho;
 	}
-	public void setTEN(String tEN) {
-		TEN = tEN;
+	public String getTen() {
+		return ten;
 	}
-	public String getSOCMND() {
-		return SOCMND;
+	public void setTen(String ten) {
+		this.ten = ten;
 	}
-	public void setSOCMND(String sOCMND) {
-		SOCMND = sOCMND;
+	public String getSoCMND() {
+		return soCMND;
 	}
-	public String getDIACHI() {
-		return DIACHI;
+	public void setSoCMND(String soCMND) {
+		this.soCMND = soCMND;
 	}
-	public void setDIACHI(String dIACHI) {
-		DIACHI = dIACHI;
+	public String getDiaChi() {
+		return diaChi;
 	}
-	public Date getNGAYSINH() {
-		return NGAYSINH;
+	public void setDiaChi(String diaChi) {
+		this.diaChi = diaChi;
 	}
-	public void setNGAYSINH(Date nGAYSINH) {
-		NGAYSINH = nGAYSINH;
+	public Date getNgaySinh() {
+		return ngaySinh;
 	}
-	public Double getLUONG() {
-		return LUONG;
+	public void setNgaySinh(Date ngaySinh) {
+		this.ngaySinh = ngaySinh;
 	}
-	public void setLUONG(Double lUONG) {
-		LUONG = lUONG;
+	public Double getLuong() {
+		return luong;
 	}
-	public String getMACN() {
-		return MACN;
+	public void setLuong(Double luong) {
+		this.luong = luong;
 	}
-	public void setMACN(String mACN) {
-		MACN = mACN;
+	public String getMacn() {
+		return macn;
+	}
+	public void setMacn(String macn) {
+		this.macn = macn;
 	}
 	public Boolean getTrangThaiXoa() {
-		return TrangThaiXoa;
+		return trangThaiXoa;
 	}
 	public void setTrangThaiXoa(Boolean trangThaiXoa) {
-		TrangThaiXoa = trangThaiXoa;
+		this.trangThaiXoa = trangThaiXoa;
 	}
 	
 	

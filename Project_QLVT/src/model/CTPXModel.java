@@ -1,20 +1,22 @@
 package model;
 
 public class CTPXModel extends CTAbstractModel {
-	private String MAPX;
+	private String mapx;
 
-	public CTPXModel(String MAVT, Integer SOLUONG, Double DONGIA, String mAPX) {
-		super(MAVT, SOLUONG, DONGIA);
-		MAPX = mAPX;
+	public CTPXModel(String mavt, Integer soLuong, Double donGia, String mapx) {
+		super(mavt, soLuong, donGia);
+		this.mapx = mapx;
 	}
 
-	public String getMAPX() {
-		return MAPX;
+	public String getMapx() {
+		return mapx;
 	}
 
-	public void setMAPX(String mAPX) {
-		MAPX = mAPX;
+	public void setMapx(String mapx) {
+		this.mapx = mapx;
 	}
+
+	
 	
 	
 }

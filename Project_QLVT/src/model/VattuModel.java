@@ -1,33 +1,49 @@
 package model;
 
 public class VattuModel {
-	private String MAVT;
-	private String TENVT;
-	private String DVT;
-	private String SOLUONGTON;
-	public String getMAVT() {
-		return MAVT;
+	private String mavt;
+	private String tenVT;
+	private String dvt;
+	private String soLuongTon;
+	
+	public VattuModel(String mavt, String tenVT, String dvt, String soLuongTon) {
+		super();
+		this.mavt = mavt;
+		this.tenVT = tenVT;
+		this.dvt = dvt;
+		this.soLuongTon = soLuongTon;
 	}
-	public void setMAVT(String mAVT) {
-		MAVT = mAVT;
+
+	public String getMavt() {
+		return mavt;
 	}
-	public String getTENVT() {
-		return TENVT;
+
+	public void setMavt(String mavt) {
+		this.mavt = mavt;
 	}
-	public void setTENVT(String tENVT) {
-		TENVT = tENVT;
+
+	public String getTenVT() {
+		return tenVT;
 	}
-	public String getDVT() {
-		return DVT;
+
+	public void setTenVT(String tenVT) {
+		this.tenVT = tenVT;
 	}
-	public void setDVT(String dVT) {
-		DVT = dVT;
+
+	public String getDvt() {
+		return dvt;
 	}
-	public String getSOLUONGTON() {
-		return SOLUONGTON;
+
+	public void setDvt(String dvt) {
+		this.dvt = dvt;
 	}
-	public void setSOLUONGTON(String sOLUONGTON) {
-		SOLUONGTON = sOLUONGTON;
+
+	public String getSoLuongTon() {
+		return soLuongTon;
+	}
+
+	public void setSoLuongTon(String soLuongTon) {
+		this.soLuongTon = soLuongTon;
 	}
 	
 	

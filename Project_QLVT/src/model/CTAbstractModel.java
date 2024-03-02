@@ -1,34 +1,41 @@
 package model;
 
 public class CTAbstractModel {
-	private String MAVT;
-	private Integer SOLUONG;
-	private Double DONGIA;
+	private String mavt;
+	private Integer soLuong;
+	private Double donGia;
 	
-	public CTAbstractModel(String MAVT, Integer SOLUONG, Double DONGIA) {
-		this.MAVT = MAVT;
-		this.SOLUONG = SOLUONG;
-		this.DONGIA = DONGIA;
+	public CTAbstractModel(String mavt, Integer soLuong, Double donGia) {
+		
+		this.mavt = mavt;
+		this.soLuong = soLuong;
+		this.donGia = donGia;
+	}
+
+	public String getMavt() {
+		return mavt;
+	}
+
+	public void setMavt(String mavt) {
+		this.mavt = mavt;
+	}
+
+	public Integer getSoLuong() {
+		return soLuong;
+	}
+
+	public void setSoLuong(Integer soLuong) {
+		this.soLuong = soLuong;
+	}
+
+	public Double getDonGia() {
+		return donGia;
+	}
+
+	public void setDonGia(Double donGia) {
+		this.donGia = donGia;
 	}
 	
-	public String getMAVT() {
-		return MAVT;
-	}
-	public void setMAVT(String mAVT) {
-		MAVT = mAVT;
-	}
-	public Integer getSOLUONG() {
-		return SOLUONG;
-	}
-	public void setSOLUONG(Integer sOLUONG) {
-		SOLUONG = sOLUONG;
-	}
-	public Double getDONGIA() {
-		return DONGIA;
-	}
-	public void setDONGIA(Double dONGIA) {
-		DONGIA = dONGIA;
-	}
-	
+
 	
 }

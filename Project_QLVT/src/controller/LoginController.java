@@ -6,7 +6,7 @@ import javax.swing.JTextField;
 
 import main.Program;
 import views.LoginForm;
-import views.frmMain;
+import views.FrameMain;
 
 public class LoginController {
 	private LoginForm loginForm;
@@ -51,7 +51,7 @@ public class LoginController {
             	Program.mGroup = Program.myReader.getString(3);
             	
             	loginForm.dispose();
-            	new frmMain().setVisible(true);
+            	new FrameMain().setVisible(true);
             }
             catch(Exception e1) {
     			e1.printStackTrace();

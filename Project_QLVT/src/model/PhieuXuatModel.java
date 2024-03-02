@@ -3,40 +3,48 @@ package model;
 import java.sql.Date;
 
 public class PhieuXuatModel {
-	private String MAPX;
-	private Date NGAY;
-	private String HOTENKH;
-	private Integer MANV;
-	private String MAKHO;
-	public String getMAPX() {
-		return MAPX;
+	private String mapx;
+	private Date ngay;
+	private String hoTenKH;
+	private Integer manv;
+	private String maKho;
+	public PhieuXuatModel(String mapx, Date ngay, String hoTenKH, Integer manv, String maKho) {
+		super();
+		this.mapx = mapx;
+		this.ngay = ngay;
+		this.hoTenKH = hoTenKH;
+		this.manv = manv;
+		this.maKho = maKho;
 	}
-	public void setMAPX(String mAPX) {
-		MAPX = mAPX;
+	public String getMapx() {
+		return mapx;
 	}
-	public Date getNGAY() {
-		return NGAY;
+	public void setMapx(String mapx) {
+		this.mapx = mapx;
 	}
-	public void setNGAY(Date nGAY) {
-		NGAY = nGAY;
+	public Date getNgay() {
+		return ngay;
 	}
-	public String getHOTENKH() {
-		return HOTENKH;
+	public void setNgay(Date ngay) {
+		this.ngay = ngay;
 	}
-	public void setHOTENKH(String hOTENKH) {
-		HOTENKH = hOTENKH;
+	public String getHoTenKH() {
+		return hoTenKH;
 	}
-	public Integer getMANV() {
-		return MANV;
+	public void setHoTenKH(String hoTenKH) {
+		this.hoTenKH = hoTenKH;
 	}
-	public void setMANV(Integer mANV) {
-		MANV = mANV;
+	public Integer getManv() {
+		return manv;
 	}
-	public String getMAKHO() {
-		return MAKHO;
+	public void setManv(Integer manv) {
+		this.manv = manv;
 	}
-	public void setMAKHO(String mAKHO) {
-		MAKHO = mAKHO;
+	public String getMaKho() {
+		return maKho;
+	}
+	public void setMaKho(String maKho) {
+		this.maKho = maKho;
 	}
 	
 	

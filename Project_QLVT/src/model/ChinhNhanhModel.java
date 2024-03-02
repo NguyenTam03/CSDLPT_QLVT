@@ -1,34 +1,43 @@
 package model;
 
 public class ChinhNhanhModel {
-	private String MACN;
-	private String ChinhNhanh;
-	private String DIACHI;
-	private String SoDT;
-	public String getMACN() {
-		return MACN;
+	private String macn;
+	private String chiNhanh;
+	private String diaChi;
+	private String soDT;
+	
+	public ChinhNhanhModel(String macn, String chiNhanh, String diaChi, String soDT) {
+		this.macn = macn;
+		this.chiNhanh = chiNhanh;
+		this.diaChi = diaChi;
+		this.soDT = soDT;
 	}
-	public void setMACN(String mACN) {
-		MACN = mACN;
+	public String getMacn() {
+		return macn;
 	}
-	public String getChinhNhanh() {
-		return ChinhNhanh;
+	public void setMacn(String macn) {
+		this.macn = macn;
 	}
-	public void setChinhNhanh(String chinhNhanh) {
-		ChinhNhanh = chinhNhanh;
+	public String getChiNhanh() {
+		return chiNhanh;
 	}
-	public String getDIACHI() {
-		return DIACHI;
+	public void setChiNhanh(String chiNhanh) {
+		this.chiNhanh = chiNhanh;
 	}
-	public void setDIACHI(String dIACHI) {
-		DIACHI = dIACHI;
+	public String getDiaChi() {
+		return diaChi;
+	}
+	public void setDiaChi(String diaChi) {
+		this.diaChi = diaChi;
 	}
 	public String getSoDT() {
-		return SoDT;
+		return soDT;
 	}
 	public void setSoDT(String soDT) {
-		SoDT = soDT;
+		this.soDT = soDT;
 	}
+	
+	
 	
 	
 }
