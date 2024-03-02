@@ -17,7 +17,6 @@ import java.awt.Color;
 import javax.swing.SwingConstants;
 import java.awt.SystemColor;
 import java.awt.Font;
-// NguyenTam
 public class LoginForm extends JFrame {
 
 	/**
