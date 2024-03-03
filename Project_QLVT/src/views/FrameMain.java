@@ -211,14 +211,14 @@ public class FrameMain extends JFrame {
 					.addGap(52)
 					.addComponent(panelExit, GroupLayout.PREFERRED_SIZE, 63, GroupLayout.PREFERRED_SIZE)
 					.addGap(53)
-					.addComponent(panelAddLogin, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE)
-					.addGap(782))
+					.addComponent(panelAddLogin, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
+					.addGap(767))
 		);
 		gl_frmHeThong.setVerticalGroup(
 			gl_frmHeThong.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_frmHeThong.createSequentialGroup()
 					.addGroup(gl_frmHeThong.createParallelGroup(Alignment.TRAILING)
-						.addComponent(panelAddLogin, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(panelAddLogin, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
 						.addGroup(Alignment.LEADING, gl_frmHeThong.createParallelGroup(Alignment.TRAILING, false)
 							.addComponent(panelExit, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 							.addComponent(panelLogout, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)))

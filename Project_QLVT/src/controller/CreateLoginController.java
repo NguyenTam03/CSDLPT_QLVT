@@ -44,7 +44,7 @@ public class CreateLoginController {
 			String sql = "EXEC dbo.sp_TaoLogin '" + loginName + "', '" + password + "', '" + username + "', '" + group + "'";
 			System.out.println(sql);
 			Program.myReader = Program.ExecSqlDataReader(sql);
-			JOptionPane.showMessageDialog(null, "Thông báo", "Tạo thành công!", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Tạo thành công.", "Success", JOptionPane.INFORMATION_MESSAGE);
 			exitForm();
 		}
 	}
