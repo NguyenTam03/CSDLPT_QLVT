@@ -38,6 +38,7 @@ public class CreateLoginForm extends JFrame {
 	 */
 	public CreateLoginForm() {
 		setTitle("Tạo tài khoản");
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 382);
 		contentPane = new JPanel();
