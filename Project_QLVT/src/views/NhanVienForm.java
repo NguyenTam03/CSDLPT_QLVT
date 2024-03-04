@@ -30,7 +30,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
 
-public class VatTuForm extends JPanel {
+public class NhanVienForm extends JPanel {
 	private JTable table;
 	private JTextField textFieldMaVT;
 	private JTextField textField;
@@ -40,7 +40,7 @@ public class VatTuForm extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public VatTuForm() {
+	public NhanVienForm() {
 		setLayout(new BorderLayout(0, 0));
 
 		JPanel panel = new JPanel();
