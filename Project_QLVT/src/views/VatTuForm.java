@@ -33,8 +33,8 @@ import java.awt.event.ActionEvent;
 public class VatTuForm extends JPanel {
 	private JTable table;
 	private JTextField textFieldMaVT;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField textFieldTenVT;
+	private JTextField textFieldDonVi;
 	private JTextField textFieldTim;
 
 	/**
@@ -63,8 +63,8 @@ public class VatTuForm extends JPanel {
 							.addComponent(lblChiNhanh, GroupLayout.PREFERRED_SIZE, 99, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 336, GroupLayout.PREFERRED_SIZE))
-						.addComponent(panel_4, GroupLayout.DEFAULT_SIZE, 991, Short.MAX_VALUE))
-					.addContainerGap())
+						.addComponent(panel_4, GroupLayout.PREFERRED_SIZE, 687, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(211, Short.MAX_VALUE))
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.TRAILING)
@@ -159,14 +159,14 @@ public class VatTuForm extends JPanel {
 		JLabel lblTenVT = new JLabel("Tên Vật Tư");
 		lblTenVT.setFont(new Font("Tahoma", Font.PLAIN, 14));
 
-		textField = new JTextField();
-		textField.setColumns(10);
+		textFieldTenVT = new JTextField();
+		textFieldTenVT.setColumns(10);
 
 		JLabel lblDonVi = new JLabel("Đơn Vị Tính");
 		lblDonVi.setFont(new Font("Tahoma", Font.PLAIN, 14));
 
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
+		textFieldDonVi = new JTextField();
+		textFieldDonVi.setColumns(10);
 
 		JLabel lblSoLuong = new JLabel("Số Lượng Tồn");
 		lblSoLuong.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -184,11 +184,11 @@ public class VatTuForm extends JPanel {
 					.addGap(37)
 					.addComponent(lblTenVT, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(textField, GroupLayout.PREFERRED_SIZE, 144, GroupLayout.PREFERRED_SIZE)
+					.addComponent(textFieldTenVT, GroupLayout.PREFERRED_SIZE, 144, GroupLayout.PREFERRED_SIZE)
 					.addGap(43)
 					.addComponent(lblDonVi, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addComponent(textFieldDonVi, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addGap(31)
 					.addComponent(lblSoLuong, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
@@ -203,9 +203,9 @@ public class VatTuForm extends JPanel {
 						.addComponent(lblMVtT, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
 						.addComponent(textFieldMaVT, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblTenVT, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
-						.addComponent(textField, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+						.addComponent(textFieldTenVT, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblDonVi, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
-						.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+						.addComponent(textFieldDonVi, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblSoLuong, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
 						.addComponent(spinner, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap(120, Short.MAX_VALUE))
