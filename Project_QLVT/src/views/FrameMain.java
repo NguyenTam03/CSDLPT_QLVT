@@ -32,19 +32,9 @@ public class FrameMain extends JFrame {
 	private JPanel panelVatTu;
 	private JPanel panelKhoHang;
 	private JPanel panelLapPhieu;
-	
-	public JPanel getPanelLogout() {
-		return panelLogout;
-	}
-	
-	public JPanel getPanelExit() {
-		return panelExit;
-	}
-
-	public JPanel getPanelAddLogin() {
-		return panelAddLogin;
-	}
-
+	private JPanel panel_2;
+	private JTabbedPane tabbedPane_1;
+	private JPanel panel_1, panel_3, panel_4, panel_5;
 
 	public FrameMain() {
 		setTitle("Quản Lý Vật Tư");
@@ -55,217 +45,245 @@ public class FrameMain extends JFrame {
 
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
-		
+
 		JPanel panel = new JPanel();
 		panel.setBorder(new EmptyBorder(4, 4, 3, 4));
 		contentPane.add(panel, BorderLayout.NORTH);
-		
+
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		
+
 //		-------- Nhap xuat--------
 		frmNhapXuat = new JPanel();
 		frmNhapXuat.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		tabbedPane.addTab("Nhập Xuất", null, frmNhapXuat, null);
-		
-		
+
 		panelNhanVien = new JPanel();
 		panelNhanVien.setLayout(new BorderLayout(0, 0));
-		
+
 		JLabel lblNV = new JLabel("Nhân Viên");
 		lblNV.setHorizontalAlignment(SwingConstants.CENTER);
 		panelNhanVien.add(lblNV, BorderLayout.SOUTH);
-		
+
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/staff.png")));
 		panelNhanVien.add(lblNewLabel, BorderLayout.CENTER);
-		
+
 		panelVatTu = new JPanel();
 		panelVatTu.setLayout(new BorderLayout(0, 0));
-		
+
 		JLabel lblVT = new JLabel("Vật Tư");
 		lblVT.setHorizontalAlignment(SwingConstants.CENTER);
 		panelVatTu.add(lblVT, BorderLayout.SOUTH);
-		
+
 		JLabel lblNewLabel_2 = new JLabel("");
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_2.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/material.png")));
 		panelVatTu.add(lblNewLabel_2);
-		
+
 		panelKhoHang = new JPanel();
 		panelKhoHang.setLayout(new BorderLayout(0, 0));
-		
+
 		JLabel lblKH = new JLabel("Kho Hàng");
 		lblKH.setHorizontalAlignment(SwingConstants.CENTER);
 		panelKhoHang.add(lblKH, BorderLayout.SOUTH);
-		
+
 		JLabel lblNewLabel_3 = new JLabel("");
 		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_3.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/warehouse.png")));
 		panelKhoHang.add(lblNewLabel_3);
-		
+
 		panelLapPhieu = new JPanel();
 		panelLapPhieu.setLayout(new BorderLayout(0, 0));
-		
+
 		JLabel lblNewLabel_1_3 = new JLabel("Lập Phiếu");
 		lblNewLabel_1_3.setHorizontalAlignment(SwingConstants.CENTER);
 		panelLapPhieu.add(lblNewLabel_1_3, BorderLayout.SOUTH);
-		
+
 		JLabel lblNewLabel_4 = new JLabel("");
 		lblNewLabel_4.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_4.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/report.png")));
 		panelLapPhieu.add(lblNewLabel_4);
-		
+
 		JLabel lblNewLabel_5 = new JLabel("Quản Lý Nhập Xuất");
 		lblNewLabel_5.setHorizontalAlignment(SwingConstants.CENTER);
 		GroupLayout gl_frmNhapXuat = new GroupLayout(frmNhapXuat);
-		gl_frmNhapXuat.setHorizontalGroup(
-			gl_frmNhapXuat.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_frmNhapXuat.createSequentialGroup()
-					.addGroup(gl_frmNhapXuat.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_frmNhapXuat.createSequentialGroup()
-							.addGap(38)
-							.addComponent(panelNhanVien, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
-							.addGap(43)
-							.addComponent(panelVatTu, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
-							.addGap(43)
-							.addComponent(panelKhoHang, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE)
-							.addGap(42)
-							.addComponent(panelLapPhieu, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_frmNhapXuat.createSequentialGroup()
-							.addGap(131)
-							.addComponent(lblNewLabel_5, GroupLayout.PREFERRED_SIZE, 233, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(685, Short.MAX_VALUE))
-		);
-		gl_frmNhapXuat.setVerticalGroup(
-			gl_frmNhapXuat.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_frmNhapXuat.createSequentialGroup()
-					.addGroup(gl_frmNhapXuat.createParallelGroup(Alignment.LEADING)
+		gl_frmNhapXuat.setHorizontalGroup(gl_frmNhapXuat.createParallelGroup(Alignment.LEADING).addGroup(gl_frmNhapXuat
+				.createSequentialGroup()
+				.addGroup(gl_frmNhapXuat.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_frmNhapXuat.createSequentialGroup().addGap(38)
+								.addComponent(panelNhanVien, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
+								.addGap(43)
+								.addComponent(panelVatTu, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
+								.addGap(43)
+								.addComponent(panelKhoHang, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE)
+								.addGap(42).addComponent(panelLapPhieu, GroupLayout.PREFERRED_SIZE, 65,
+										GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_frmNhapXuat.createSequentialGroup().addGap(131).addComponent(lblNewLabel_5,
+								GroupLayout.PREFERRED_SIZE, 233, GroupLayout.PREFERRED_SIZE)))
+				.addContainerGap(685, Short.MAX_VALUE)));
+		gl_frmNhapXuat.setVerticalGroup(gl_frmNhapXuat.createParallelGroup(Alignment.LEADING).addGroup(gl_frmNhapXuat
+				.createSequentialGroup()
+				.addGroup(gl_frmNhapXuat.createParallelGroup(Alignment.LEADING)
 						.addComponent(panelKhoHang, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addComponent(panelVatTu, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addGroup(gl_frmNhapXuat.createParallelGroup(Alignment.TRAILING, false)
-							.addComponent(panelLapPhieu, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(panelNhanVien, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)))
-					.addPreferredGap(ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
-					.addComponent(lblNewLabel_5))
-		);
+								.addComponent(panelLapPhieu, Alignment.LEADING, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(panelNhanVien, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 69,
+										GroupLayout.PREFERRED_SIZE)))
+				.addPreferredGap(ComponentPlacement.RELATED, 9, Short.MAX_VALUE).addComponent(lblNewLabel_5)));
 		frmNhapXuat.setLayout(gl_frmNhapXuat);
-		
+
 //		--------Bao Cao--------
 		JPanel frmBaoCao = new JPanel();
 		tabbedPane.addTab("Báo Cáo", null, frmBaoCao, null);
 		frmBaoCao.setLayout(null);
-		
+
 //		-------- He Thong--------
 		JPanel frmHeThong = new JPanel();
 		tabbedPane.addTab("Hệ Thống", null, frmHeThong, null);
-		
+
 		panelLogout = new JPanel();
 		panelLogout.setLayout(new BorderLayout(0, 0));
-		
+
 		JLabel lblLogout = new JLabel("Đăng Xuất");
 		lblLogout.setHorizontalAlignment(SwingConstants.CENTER);
 		panelLogout.add(lblLogout, BorderLayout.SOUTH);
-		
+
 		JLabel lblIconLogout = new JLabel("");
 		lblIconLogout.setHorizontalAlignment(SwingConstants.CENTER);
 		lblIconLogout.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/log-out.png")));
 		panelLogout.add(lblIconLogout);
-		
+
 		panelExit = new JPanel();
 		panelExit.setLayout(new BorderLayout(0, 0));
-		
+
 		JLabel lblExit = new JLabel("Thoát");
 		lblExit.setHorizontalAlignment(SwingConstants.CENTER);
 		panelExit.add(lblExit, BorderLayout.SOUTH);
-		
+
 		JLabel lblIconExit = new JLabel("");
 		lblIconExit.setHorizontalAlignment(SwingConstants.CENTER);
 		lblIconExit.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/exit.png")));
 		panelExit.add(lblIconExit);
-		
+
 		panelAddLogin = new JPanel();
-		
+
 		if (Program.mGroup.equals("USER")) {
-			panelAddLogin.setBackground(Color.GRAY);
+			panelAddLogin.setBackground(new Color(1f, 1f, 1f, .5f));
 		}
 		panel.setLayout(new BorderLayout(0, 0));
 		panelAddLogin.setLayout(new BorderLayout(0, 0));
-		
+
 		JLabel lblAddLogin = new JLabel("Tạo tài khoản");
 		lblAddLogin.setHorizontalAlignment(SwingConstants.CENTER);
 		panelAddLogin.add(lblAddLogin, BorderLayout.SOUTH);
-		
+
 		JLabel lblIconAdd = new JLabel("");
 		lblIconAdd.setBackground(Color.WHITE);
 		lblIconAdd.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/plus.png")));
 		lblIconAdd.setHorizontalAlignment(SwingConstants.CENTER);
 		panelAddLogin.add(lblIconAdd);
 		GroupLayout gl_frmHeThong = new GroupLayout(frmHeThong);
-		gl_frmHeThong.setHorizontalGroup(
-			gl_frmHeThong.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_frmHeThong.createSequentialGroup()
-					.addGap(36)
-					.addComponent(panelLogout, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
-					.addGap(52)
-					.addComponent(panelExit, GroupLayout.PREFERRED_SIZE, 63, GroupLayout.PREFERRED_SIZE)
-					.addGap(53)
-					.addComponent(panelAddLogin, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
-					.addGap(767))
-		);
-		gl_frmHeThong.setVerticalGroup(
-			gl_frmHeThong.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_frmHeThong.createSequentialGroup()
-					.addGroup(gl_frmHeThong.createParallelGroup(Alignment.TRAILING)
+		gl_frmHeThong.setHorizontalGroup(gl_frmHeThong.createParallelGroup(Alignment.LEADING).addGroup(gl_frmHeThong
+				.createSequentialGroup().addGap(36)
+				.addComponent(panelLogout, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE).addGap(52)
+				.addComponent(panelExit, GroupLayout.PREFERRED_SIZE, 63, GroupLayout.PREFERRED_SIZE).addGap(53)
+				.addComponent(panelAddLogin, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE).addGap(767)));
+		gl_frmHeThong.setVerticalGroup(gl_frmHeThong.createParallelGroup(Alignment.LEADING).addGroup(gl_frmHeThong
+				.createSequentialGroup()
+				.addGroup(gl_frmHeThong.createParallelGroup(Alignment.TRAILING)
 						.addComponent(panelAddLogin, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
 						.addGroup(Alignment.LEADING, gl_frmHeThong.createParallelGroup(Alignment.TRAILING, false)
-							.addComponent(panelExit, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(panelLogout, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)))
-					.addContainerGap(30, Short.MAX_VALUE))
-		);
+								.addComponent(panelExit, Alignment.LEADING, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(panelLogout, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 62,
+										Short.MAX_VALUE)))
+				.addContainerGap(30, Short.MAX_VALUE)));
 		frmHeThong.setLayout(gl_frmHeThong);
 		panel.add(tabbedPane);
-		
-		
-		JPanel panel_2 = new JPanel();
+
+		panel_2 = new JPanel();
 		contentPane.add(panel_2, BorderLayout.CENTER);
 		panel_2.setLayout(new BorderLayout(0, 0));
-		
-		JTabbedPane tabbedPane_1 = new JTabbedPane(JTabbedPane.TOP);
+
+		tabbedPane_1 = new JTabbedPane(JTabbedPane.TOP);
 		panel_2.add(tabbedPane_1, BorderLayout.CENTER);
-		
-		JPanel panel_1 = new JPanel();
+
+		panel_1 = new JPanel();
 		panel_1.setLayout(new BorderLayout(0, 0));
 		panel_1.add(new VatTuForm(), BorderLayout.CENTER);
-		tabbedPane_1.addTab("Tab 1", null, panel_1, "Tab 1 Description");
-		
-		JPanel panel_3 = new JPanel();
-		tabbedPane_1.addTab("New tab", null, panel_3, null);
-		
-		JPanel panel_4 = new JPanel();
-		tabbedPane_1.addTab("New tab", null, panel_4, null);
-		
-		JPanel panel_7 = new JPanel();
-		tabbedPane_1.addTab("New tab", null, panel_7, null);
-		
-		JPanel panel_5 = new JPanel();
-		tabbedPane_1.addTab("New tab", null, panel_5, null);
-		
-		JPanel panel_6 = new JPanel();
-		tabbedPane_1.addTab("New tab", null, panel_6, null);
-		
+
+		panel_3 = new JPanel();
+
+		panel_4 = new JPanel();
+
+		panel_5 = new JPanel();
+
 		lblInfoNV = new JLabel(
-				"MANV: " + Program.username + 
-				" HOTEN: " + Program.mHoten + 
-				" VAI TRO:" + Program.mGroup);
+				"MANV: " + Program.username + " HOTEN: " + Program.mHoten + " VAI TRO:" + Program.mGroup);
 		lblInfoNV.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblInfoNV.setBackground(Color.WHITE);
 		contentPane.add(lblInfoNV, BorderLayout.SOUTH);
-		
+
 		setLocationRelativeTo(null);
-		
+
 		NavController ac = new NavController(this);
 		ac.initController();
 	}
+
+	public JPanel getPanelLogout() {
+		return panelLogout;
+	}
+
+	public JPanel getPanelExit() {
+		return panelExit;
+	}
+
+	public JPanel getPanelAddLogin() {
+		return panelAddLogin;
+	}
+
+	public JPanel getPanelNhanVien() {
+		return panelNhanVien;
+	}
+
+	public JPanel getPanelVatTu() {
+		return panelVatTu;
+	}
+
+	public JPanel getPanelKhoHang() {
+		return panelKhoHang;
+	}
+
+	public JPanel getPanelLapPhieu() {
+		return panelLapPhieu;
+	}
+
+	public JPanel getPanel_2() {
+		return panel_2;
+	}
+
+	public JTabbedPane getTabbedPane_1() {
+		return tabbedPane_1;
+	}
+
+	public JPanel getPanel_1() {
+		return panel_1;
+	}
+
+	public JPanel getPanel_3() {
+		return panel_3;
+	}
+
+	public JPanel getPanel_4() {
+		return panel_4;
+	}
+
+	public JPanel getPanel_5() {
+		return panel_5;
+	}
+
 }
