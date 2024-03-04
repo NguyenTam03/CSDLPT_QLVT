@@ -230,7 +230,30 @@ public class FrameMain extends JFrame {
 		
 		JPanel panel_2 = new JPanel();
 		contentPane.add(panel_2, BorderLayout.CENTER);
-		panel_2.setLayout(null);
+		panel_2.setLayout(new BorderLayout(0, 0));
+		
+		JTabbedPane tabbedPane_1 = new JTabbedPane(JTabbedPane.TOP);
+		panel_2.add(tabbedPane_1, BorderLayout.CENTER);
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setLayout(new BorderLayout(0, 0));
+		panel_1.add(new VatTuForm(), BorderLayout.CENTER);
+		tabbedPane_1.addTab("Tab 1", null, panel_1, "Tab 1 Description");
+		
+		JPanel panel_3 = new JPanel();
+		tabbedPane_1.addTab("New tab", null, panel_3, null);
+		
+		JPanel panel_4 = new JPanel();
+		tabbedPane_1.addTab("New tab", null, panel_4, null);
+		
+		JPanel panel_7 = new JPanel();
+		tabbedPane_1.addTab("New tab", null, panel_7, null);
+		
+		JPanel panel_5 = new JPanel();
+		tabbedPane_1.addTab("New tab", null, panel_5, null);
+		
+		JPanel panel_6 = new JPanel();
+		tabbedPane_1.addTab("New tab", null, panel_6, null);
 		
 		lblInfoNV = new JLabel(
 				"MANV: " + Program.username + 
