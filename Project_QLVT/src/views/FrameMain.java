@@ -44,6 +44,26 @@ public class FrameMain extends JFrame {
 	public JPanel getPanelAddLogin() {
 		return panelAddLogin;
 	}
+	
+
+	public JPanel getPanelNhanVien() {
+		return panelNhanVien;
+	}
+
+
+	public JPanel getPanelVatTu() {
+		return panelVatTu;
+	}
+
+
+	public JPanel getPanelKhoHang() {
+		return panelKhoHang;
+	}
+
+
+	public JPanel getPanelLapPhieu() {
+		return panelLapPhieu;
+	}
 
 
 	public FrameMain() {
@@ -188,7 +208,7 @@ public class FrameMain extends JFrame {
 		panelAddLogin = new JPanel();
 		
 		if (Program.mGroup.equals("USER")) {
-			panelAddLogin.setBackground(Color.GRAY);
+			panelAddLogin.setBackground(new Color(1f, 1f, 1f, .5f));
 		}
 		panel.setLayout(new BorderLayout(0, 0));
 		panelAddLogin.setLayout(new BorderLayout(0, 0));
