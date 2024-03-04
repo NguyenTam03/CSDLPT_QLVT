@@ -13,6 +13,8 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+
 import java.awt.Color;
 import java.awt.BorderLayout;
 import javax.swing.GroupLayout;
@@ -49,7 +51,8 @@ public class FrameMain extends JFrame {
 		JPanel panel = new JPanel();
 		panel.setBorder(new EmptyBorder(4, 4, 3, 4));
 		contentPane.add(panel, BorderLayout.NORTH);
-
+		
+		UIManager.put("TabbedPane.selected", Color.WHITE);
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 20));
 
@@ -217,9 +220,11 @@ public class FrameMain extends JFrame {
 		panel_1.add(new VatTuForm(), BorderLayout.CENTER);
 
 		panel_3 = new JPanel();
-
+		
 		panel_4 = new JPanel();
-
+		panel_4.setLayout(new BorderLayout(0, 0));
+		panel_4.add(new KhoForm(), BorderLayout.CENTER);
+		
 		panel_5 = new JPanel();
 
 		lblInfoNV = new JLabel(
