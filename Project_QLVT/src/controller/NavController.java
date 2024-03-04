@@ -1,5 +1,6 @@
 package controller;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
@@ -95,22 +96,33 @@ public class NavController {
 
 		frmMain.getPanelNhanVien().addMouseListener(new MouseAdapter() {
 			@Override
+			public void mouseClicked(MouseEvent e) {
+				frmMain.getPanel_2().add(frmMain.getTabbedPane_1(), BorderLayout.CENTER);
+				frmMain.getTabbedPane_1().addTab("Nhân viên", null, frmMain.getPanel_3(), "Tab nhân viên");
+				frmMain.getTabbedPane_1().setSelectedComponent(frmMain.getPanel_3());
+			}
+			
+			
+			@Override
 			public void mouseEntered(MouseEvent e) {
-
 				frmMain.getPanelNhanVien().setCursor(new Cursor(Cursor.HAND_CURSOR));
 				frmMain.getPanelNhanVien().setBackground(Color.WHITE);
-
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
-
 				frmMain.getPanelNhanVien().setBackground(new Color(240, 240, 240));
-
 			}
 		});
 
 		frmMain.getPanelVatTu().addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				frmMain.getPanel_2().add(frmMain.getTabbedPane_1(), BorderLayout.CENTER);
+				frmMain.getTabbedPane_1().addTab("Vật tư", null, frmMain.getPanel_1(), "Tab vật tư");
+				frmMain.getTabbedPane_1().setSelectedComponent(frmMain.getPanel_1());
+			}
+			
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				frmMain.getPanelVatTu().setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -124,6 +136,13 @@ public class NavController {
 		});
 
 		frmMain.getPanelKhoHang().addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				frmMain.getPanel_2().add(frmMain.getTabbedPane_1(), BorderLayout.CENTER);
+				frmMain.getTabbedPane_1().addTab("Kho hàng", null, frmMain.getPanel_4(), "Tab kho hàng");
+				frmMain.getTabbedPane_1().setSelectedComponent(frmMain.getPanel_4());
+			}
+			
 			@Override
 			public void mouseEntered(MouseEvent e) {
 
@@ -140,6 +159,13 @@ public class NavController {
 		});
 
 		frmMain.getPanelLapPhieu().addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				frmMain.getPanel_2().add(frmMain.getTabbedPane_1(), BorderLayout.CENTER);
+				frmMain.getTabbedPane_1().addTab("Lập phiếu", null, frmMain.getPanel_5(), "Tab lap phieu");
+				frmMain.getTabbedPane_1().setSelectedComponent(frmMain.getPanel_5());
+			}
+			
 			@Override
 			public void mouseEntered(MouseEvent e) {
 

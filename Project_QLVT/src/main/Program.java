@@ -82,6 +82,22 @@ public class Program {
 		}
 	}
 	
+	public static void ExecSql(String sql) {
+		try {
+			PreparedStatement p = Program.conn.prepareStatement(sql);
+			p.execute();
+			return;
+
+		} catch (SQLException ex) {
+			try {
+				Program.conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			JOptionPane.showMessageDialog(null, ex.getMessage());
+		}
+	}
+	
 	public static HashMap<String, String> getServer() {
     	Program.mlogin = Program.remotelogin;
     	Program.password = Program.remotepassword; 
