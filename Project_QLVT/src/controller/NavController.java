@@ -11,7 +11,7 @@ import views.CreateLoginForm;
 import views.FrameMain;
 import views.LoginForm;
 
-public class NavController {
+public class NavController extends MouseController {
 	private FrameMain frmMain;
 
 	public NavController(FrameMain frmMain) {
@@ -19,6 +19,7 @@ public class NavController {
 	}
 
 	public void initController() {
+		// mouse listener logout
 		frmMain.getPanelLogout().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -30,20 +31,10 @@ public class NavController {
 				}
 				new LoginForm().setVisible(true);
 			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				frmMain.getPanelLogout().setCursor(new Cursor(Cursor.HAND_CURSOR));
-				frmMain.getPanelLogout().setBackground(Color.WHITE);
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				frmMain.getPanelLogout().setBackground(new Color(240, 240, 240));
-				;
-			}
 		});
-
+		hoverComponent(frmMain.getPanelLogout());
+		// ------
+		// mouse listener exit
 		frmMain.getPanelExit().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -54,20 +45,10 @@ public class NavController {
 				}
 				System.exit(0);
 			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				frmMain.getPanelExit().setCursor(new Cursor(Cursor.HAND_CURSOR));
-				frmMain.getPanelExit().setBackground(Color.WHITE);
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				frmMain.getPanelExit().setBackground(new Color(240, 240, 240));
-				;
-			}
 		});
-
+		hoverComponent(frmMain.getPanelExit());
+		// -------
+		// mouse listener add login
 		frmMain.getPanelAddLogin().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -92,90 +73,22 @@ public class NavController {
 
 			}
 		});
-
-		frmMain.getPanelNhanVien().addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				frmMain.getTabbedPane_Main().addTab("Nhân viên", null, frmMain.getPanel_NV(), "Tab nhân viên");
-				frmMain.getTabbedPane_Main().setSelectedComponent(frmMain.getPanel_NV());
-			}
-			
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				frmMain.getPanelNhanVien().setCursor(new Cursor(Cursor.HAND_CURSOR));
-				frmMain.getPanelNhanVien().setBackground(Color.WHITE);
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				frmMain.getPanelNhanVien().setBackground(new Color(240, 240, 240));
-			}
-		});
-
-		frmMain.getPanelVatTu().addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				frmMain.getTabbedPane_Main().addTab("Vật tư", null, frmMain.getPanel_VT(), "Tab vật tư");
-				frmMain.getTabbedPane_Main().setSelectedComponent(frmMain.getPanel_VT());
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				frmMain.getPanelVatTu().setCursor(new Cursor(Cursor.HAND_CURSOR));
-				frmMain.getPanelVatTu().setBackground(Color.WHITE);
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				frmMain.getPanelVatTu().setBackground(new Color(240, 240, 240));
-			}
-		});
-
-		frmMain.getPanelKhoHang().addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				frmMain.getTabbedPane_Main().addTab("Kho hàng", null, frmMain.getPanel_Kho(), "Tab kho hàng");
-				frmMain.getTabbedPane_Main().setSelectedComponent(frmMain.getPanel_Kho());
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-
-				frmMain.getPanelKhoHang().setCursor(new Cursor(Cursor.HAND_CURSOR));
-				frmMain.getPanelKhoHang().setBackground(Color.WHITE);
-
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				frmMain.getPanelKhoHang().setBackground(new Color(240, 240, 240));
-
-			}
-		});
-
-		frmMain.getPanelLapPhieu().addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-//				frmMain.getTabbedPane_Main().addTab("Lập phiếu", null, frmMain.getPanel_5(), "Tab lap phieu");
-//				frmMain.getTabbedPane_Main().setSelectedComponent(frmMain.getPanel_5());
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-
-				frmMain.getPanelLapPhieu().setCursor(new Cursor(Cursor.HAND_CURSOR));
-				frmMain.getPanelLapPhieu().setBackground(Color.WHITE);
-
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-
-				frmMain.getPanelLapPhieu().setBackground(new Color(240, 240, 240));
-
-			}
-		});
+		// --------------
+		// mouse listener nhanvien
+		clickedComponentShowTab(frmMain.getTabbedPane_Main(), "Nhân viên", "Tab nhân viên", frmMain.getPanelNhanVien(), frmMain.getPanel_NV());
+		hoverComponent(frmMain.getPanelNhanVien());
+		// --------
+		// mouse listener vat tu
+		clickedComponentShowTab(frmMain.getTabbedPane_Main(), "Vật tư", "Tab vật tư", frmMain.getPanelVatTu(), frmMain.getPanel_VT());
+		hoverComponent(frmMain.getPanelVatTu());
+		// ---------------
+		// mouse listener kho hang
+		clickedComponentShowTab(frmMain.getTabbedPane_Main(), "Kho", "Tab kho", frmMain.getPanelKhoHang(), frmMain.getPanel_Kho());
+		hoverComponent(frmMain.getPanelKhoHang());
+		// ---------------------
+		// mouse listener lap phieu
+		clickedComponentShowTab(frmMain.getTabbedPane_Main(), "Lập phiếu", "Tab lập phiếu", frmMain.getPanelLapPhieu(), frmMain.getPanel_LapPhieu());
+		hoverComponent(frmMain.getPanelLapPhieu());
 	}
 
 }
