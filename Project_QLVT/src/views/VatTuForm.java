@@ -63,8 +63,8 @@ public class VatTuForm extends JPanel {
 							.addComponent(lblChiNhanh, GroupLayout.PREFERRED_SIZE, 99, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 336, GroupLayout.PREFERRED_SIZE))
-						.addComponent(panel_4, GroupLayout.PREFERRED_SIZE, 687, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(211, Short.MAX_VALUE))
+						.addComponent(panel_4, GroupLayout.PREFERRED_SIZE, 877, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(45, Short.MAX_VALUE))
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.TRAILING)

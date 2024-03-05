@@ -36,18 +36,8 @@ public class LoginForm extends JFrame {
 	}
 
 
-	public void setTfUsername(JTextField tfUsername) {
-		this.tfUsername = tfUsername;
-	}
-
-
 	public JPasswordField getTfPassword() {
 		return tfPassword;
-	}
-
-
-	public void setTfPassword(JPasswordField tfPassword) {
-		this.tfPassword = tfPassword;
 	}
 
 
@@ -56,28 +46,12 @@ public class LoginForm extends JFrame {
 	}
 
 
-	public void setCbChiNhanh(JComboBox<String> cbChiNhanh) {
-		this.cbChiNhanh = cbChiNhanh;
-	}
-
-
 	public JButton getBtnLogin() {
 		return btnLogin;
 	}
 
-
-	public void setBtnLogin(JButton btnLogin) {
-		this.btnLogin = btnLogin;
-	}
-
-
 	public JButton getBtnExit() {
 		return btnExit;
-	}
-
-
-	public void setBtnExit(JButton btnExit) {
-		this.btnExit = btnExit;
 	}
 
 

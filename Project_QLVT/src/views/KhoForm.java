@@ -9,9 +9,12 @@ import javax.swing.JComboBox;
 import java.awt.FlowLayout;
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
+import dao.KhoDao;
 import main.Program;
+import model.KhoModel;
 
 import javax.swing.ImageIcon;
 import java.awt.BorderLayout;
@@ -21,6 +24,9 @@ import javax.swing.JTextField;
 import javax.swing.JSeparator;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.JTable;
 
@@ -34,6 +40,11 @@ public class KhoForm extends JPanel {
 	private JTextField textFieldDiaChi;
 	private JTextField textFieldTim;
 	private JTextField textFieldMaCN;
+	private KhoDao khoModel;
+	private ArrayList<KhoModel> dsKho;
+	private DefaultTableModel model;
+	private ListSelectionListener selectionListener;
+	private JButton btnThem, btnXoa, btnGhi, btnHoanTac, btnLamMoi, btnThoat;
 
 	/**
 	 * Create the panel.
@@ -57,6 +68,7 @@ public class KhoForm extends JPanel {
 		
 		if (Program.mGroup.equals("CONGTY")) {
 			comboBox.setEnabled(true);
+			comboBox.addItemListener(l -> loadDataOtherServer(l, comboBox));
 		}
 		
 		JPanel panel_4 = new JPanel();
@@ -86,35 +98,28 @@ public class KhoForm extends JPanel {
 		);
 		panel_4.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		
-		JButton btnThem = new JButton("Thêm");
+		btnThem = new JButton("Thêm");
 		btnThem.setIcon(new ImageIcon(VatTuForm.class.getResource("/imgs/add.png")));
-		btnThem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		
 		panel_4.add(btnThem);
 		
-		JButton btnXoa = new JButton("Xóa");
+		btnXoa = new JButton("Xóa");
 		btnXoa.setIcon(new ImageIcon(VatTuForm.class.getResource("/imgs/delete.png")));
 		panel_4.add(btnXoa);
 		
-		JButton btnGhi = new JButton("Ghi");
+		btnGhi = new JButton("Ghi");
 		btnGhi.setIcon(new ImageIcon(VatTuForm.class.getResource("/imgs/write.png")));
-		btnGhi.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		panel_4.add(btnGhi);
 		
-		JButton btnHoanTac = new JButton("Hoàn Tác");
+		btnHoanTac = new JButton("Hoàn Tác");
 		btnHoanTac.setIcon(new ImageIcon(VatTuForm.class.getResource("/imgs/undo.png")));
 		panel_4.add(btnHoanTac);
 		
-		JButton btnLamMoi = new JButton("Làm Mới");
+		btnLamMoi = new JButton("Làm Mới");
 		btnLamMoi.setIcon(new ImageIcon(VatTuForm.class.getResource("/imgs/refresh.png")));
 		panel_4.add(btnLamMoi);
 		
-		JButton btnThoat = new JButton("Thoát");
+		btnThoat = new JButton("Thoát");
 		btnThoat.setIcon(new ImageIcon(VatTuForm.class.getResource("/imgs/log-out_12572185.png")));
 		panel_4.add(btnThoat);
 		panel.setLayout(gl_panel);
@@ -126,17 +131,25 @@ public class KhoForm extends JPanel {
 
 		JScrollPane scrollPane = new JScrollPane();
 		panel_1.add(scrollPane, BorderLayout.CENTER);
-
+		
+//		Fill data into table
+		khoModel = KhoDao.getInstance();
 		tableKho = new JTable();
-		tableKho.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null, null},
-				{null, null, null, null},
-			},
-			new String[] {
-				"M\u00E3 Kho", "T\u00EAn Kho", "\u0110\u1ECBa Ch\u1EC9", "M\u00E3 CN"
-			}
-		));
+		model = (DefaultTableModel)tableKho.getModel();
+		model.setColumnIdentifiers(khoModel.getColumsName());
+		loadDataTable();
+		
+		selectionListener = e -> {
+		    textFieldMaKho.setText(tableKho.getValueAt(tableKho.getSelectedRow(), 0).toString());
+		    textFieldTenKho.setText(tableKho.getValueAt(tableKho.getSelectedRow(), 1).toString());
+		    textFieldDiaChi.setText(tableKho.getValueAt(tableKho.getSelectedRow(), 2).toString());
+		    textFieldMaCN.setText(tableKho.getValueAt(tableKho.getSelectedRow(), 3).toString());
+		};
+
+		// Thêm sự kiện chọn
+		tableKho.getSelectionModel().addListSelectionListener(selectionListener);
+		
+//		-----------------
 		tableKho.getColumnModel().getColumn(1).setPreferredWidth(137);
 		tableKho.getColumnModel().getColumn(2).setPreferredWidth(131);
 		tableKho.getColumnModel().getColumn(3).setPreferredWidth(76);
@@ -237,6 +250,45 @@ public class KhoForm extends JPanel {
 					.addGap(52))
 		);
 		panel_2.setLayout(gl_panel_2);
-
+		disableButtonWithCongty();
 	}
+	
+	private void loadDataTable() {
+		dsKho = khoModel.selectAll();
+		for (KhoModel kho : dsKho) {
+			Object[] rowData = {kho.getMaKho(), kho.getTenKho(), kho.getDiaChi(), kho.getMacn()};
+			model.addRow(rowData);
+		}
+	}
+	
+	private void disableButtonWithCongty() {
+		if (Program.mGroup.equals("CONGTY")) {
+			btnThem.setEnabled(false);
+			btnXoa.setEnabled(false);
+			btnGhi.setEnabled(false);
+		}
+	}
+	
+	private void loadDataOtherServer(ItemEvent l, JComboBox<String> comboBox) {
+		if (l.getStateChange() == ItemEvent.SELECTED) {
+			if (Program.conn != null) {
+				try {
+					Program.conn.close();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+			}
+			Program.servername = Program.servers.get(comboBox.getSelectedItem());
+			Program.mChinhanh = comboBox.getSelectedIndex();
+			Program.mlogin = Program.remotelogin;
+			Program.password = Program.remotepassword;
+			if (Program.Connect() == 0) return;
+			tableKho.getSelectionModel().removeListSelectionListener(selectionListener);
+			model.setRowCount(0);
+			loadDataTable();
+			tableKho.getSelectionModel().addListSelectionListener(selectionListener);
+		}
+	}
+	
+	
 }
