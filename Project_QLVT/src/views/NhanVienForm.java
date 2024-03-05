@@ -29,13 +29,19 @@ import javax.swing.JSeparator;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.JCheckBox;
 
 public class NhanVienForm extends JPanel {
 	private JTable table;
-	private JTextField textFieldMaVT;
-	private JTextField textField;
-	private JTextField textField_1;
 	private JTextField textFieldTim;
+	private JTextField TFDiaChi;
+	private JTextField TFMaNV;
+	private JTextField TFHo;
+	private JTextField TFTen;
+	private JTextField TFCMND;
+	private JTextField TFNgaySinh;
+	private JTextField TFMaCN;
 
 	/**
 	 * Create the panel.
@@ -124,9 +130,13 @@ public class NhanVienForm extends JPanel {
 		panel_1.add(scrollPane, BorderLayout.CENTER);
 
 		table = new JTable();
-		table.setModel(new DefaultTableModel(new Object[][] { { null, null, null, null }, { null, null, null, null }, },
-				new String[] { "M\u00E3 V\u1EADt T\u01B0", "T\u00EAn V\u1EADt T\u01B0",
-						"\u0110\u01A1n V\u1ECB T\u00EDnh", "S\u1ED1 L\u01B0\u1EE3ng T\u1ED3n" }));
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Mã nhân viên", "Họ", "Tên", "CMND", "Địa chỉ", "Ngày sinh", "Lương", "Mã chi nhánh", "Trạng thái xóa"
+			}
+		));
 		scrollPane.setViewportView(table);
 		
 		JPanel panel_3 = new JPanel();
@@ -150,65 +160,183 @@ public class NhanVienForm extends JPanel {
 		panel_2.setForeground(new Color(207, 207, 207));
 		add(panel_2, BorderLayout.SOUTH);
 
-		JLabel lblMVtT = new JLabel("Mã Vật Tư");
-		lblMVtT.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		JLabel lbMaNV = new JLabel("Mã nhân viên");
+		lbMaNV.setFont(new Font("Tahoma", Font.PLAIN, 14));
 
-		textFieldMaVT = new JTextField();
-		textFieldMaVT.setColumns(10);
+		JLabel lbHo = new JLabel("Họ");
+		lbHo.setFont(new Font("Tahoma", Font.PLAIN, 14));
 
-		JLabel lblTenVT = new JLabel("Tên Vật Tư");
-		lblTenVT.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		JLabel lbTen = new JLabel("Tên");
+		lbTen.setFont(new Font("Tahoma", Font.PLAIN, 14));
 
-		textField = new JTextField();
-		textField.setColumns(10);
+		JLabel lbLuong = new JLabel("Lương");
+		lbLuong.setFont(new Font("Tahoma", Font.PLAIN, 14));
 
-		JLabel lblDonVi = new JLabel("Đơn Vị Tính");
-		lblDonVi.setFont(new Font("Tahoma", Font.PLAIN, 14));
-
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-
-		JLabel lblSoLuong = new JLabel("Số Lượng Tồn");
-		lblSoLuong.setFont(new Font("Tahoma", Font.PLAIN, 14));
-
-		JSpinner spinner = new JSpinner();
+		JSpinner Luong = new JSpinner();
+		Luong.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		Luong.setModel(new SpinnerNumberModel(Integer.valueOf(4000000), Integer.valueOf(4000000), null, Integer.valueOf(100000)));
+		
+		JLabel lbDiaChi = new JLabel("Địa chỉ");
+		lbDiaChi.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		TFDiaChi = new JTextField();
+		TFDiaChi.setColumns(10);
+		
+		TFMaNV = new JTextField();
+		TFMaNV.setColumns(10);
+		
+		TFHo = new JTextField();
+		TFHo.setColumns(10);
+		
+		TFTen = new JTextField();
+		TFTen.setColumns(10);
+		
+		JLabel lbCMND = new JLabel("CMND");
+		lbCMND.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		TFCMND = new JTextField();
+		TFCMND.setColumns(10);
+		
+		JLabel lbNgaySinh = new JLabel("Ngày sinh");
+		lbNgaySinh.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		TFNgaySinh = new JTextField();
+		TFNgaySinh.setColumns(10);
+		
+		JLabel lbTrangThaiXoa = new JLabel("Trạng thái xóa");
+		lbTrangThaiXoa.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JCheckBox CheckBoxTrangThaiXoa = new JCheckBox("");
+		CheckBoxTrangThaiXoa.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		JLabel lbMaCN = new JLabel("Mã chi nhánh");
+		lbMaCN.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		TFMaCN = new JTextField();
+		TFMaCN.setColumns(10);
 
 		GroupLayout gl_panel_2 = new GroupLayout(panel_2);
 		gl_panel_2.setHorizontalGroup(
-			gl_panel_2.createParallelGroup(Alignment.LEADING)
+			gl_panel_2.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_panel_2.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(lblMVtT, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)
+					.addGroup(gl_panel_2.createParallelGroup(Alignment.TRAILING)
+						.addComponent(lbDiaChi, GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
+						.addComponent(lbMaNV, GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
+						.addComponent(TFMaNV, GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
+						.addGroup(gl_panel_2.createSequentialGroup()
+							.addComponent(TFDiaChi, GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
+							.addGap(2)))
+					.addGap(18)
+					.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel_2.createSequentialGroup()
+							.addComponent(lbHo, GroupLayout.DEFAULT_SIZE, 58, Short.MAX_VALUE)
+							.addGap(24))
+						.addComponent(lbNgaySinh, GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(textFieldMaVT, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(37)
-					.addComponent(lblTenVT, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)
+					.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
+						.addComponent(TFHo, GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
+						.addComponent(TFNgaySinh, GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE))
+					.addGap(20)
+					.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel_2.createSequentialGroup()
+							.addComponent(lbTen, GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(TFTen, GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
+							.addGap(18)
+							.addComponent(lbCMND, GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(TFCMND, GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE))
+						.addGroup(gl_panel_2.createSequentialGroup()
+							.addComponent(lbLuong, GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE)
+							.addGap(4)
+							.addComponent(Luong, GroupLayout.PREFERRED_SIZE, 105, Short.MAX_VALUE)
+							.addGap(18)
+							.addComponent(lbMaCN, GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(TFMaCN, GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
+							.addGap(1)))
+					.addGap(49))
+				.addGroup(Alignment.LEADING, gl_panel_2.createSequentialGroup()
+					.addGap(382)
+					.addComponent(lbTrangThaiXoa, GroupLayout.PREFERRED_SIZE, 102, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(textField, GroupLayout.PREFERRED_SIZE, 144, GroupLayout.PREFERRED_SIZE)
-					.addGap(43)
-					.addComponent(lblDonVi, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(31)
-					.addComponent(lblSoLuong, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(spinner, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
-					.addGap(19))
+					.addComponent(CheckBoxTrangThaiXoa, GroupLayout.PREFERRED_SIZE, 134, GroupLayout.PREFERRED_SIZE)
+					.addGap(358))
 		);
 		gl_panel_2.setVerticalGroup(
 			gl_panel_2.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_2.createSequentialGroup()
-					.addGap(26)
-					.addGroup(gl_panel_2.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblMVtT, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
-						.addComponent(textFieldMaVT, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblTenVT, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
-						.addComponent(textField, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblDonVi, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
-						.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblSoLuong, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
-						.addComponent(spinner, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(120, Short.MAX_VALUE))
+					.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel_2.createSequentialGroup()
+							.addGap(27)
+							.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
+								.addComponent(lbCMND, GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+								.addGroup(gl_panel_2.createParallelGroup(Alignment.BASELINE)
+									.addGroup(gl_panel_2.createSequentialGroup()
+										.addGap(7)
+										.addComponent(TFMaNV, GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE))
+									.addComponent(lbHo, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+									.addGroup(gl_panel_2.createSequentialGroup()
+										.addGap(7)
+										.addComponent(TFHo, GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)))
+								.addGroup(gl_panel_2.createSequentialGroup()
+									.addComponent(TFCMND, GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+									.addGap(7))))
+						.addGroup(gl_panel_2.createSequentialGroup()
+							.addGap(26)
+							.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_panel_2.createSequentialGroup()
+									.addComponent(lbMaNV, GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+									.addGap(1))
+								.addGroup(gl_panel_2.createSequentialGroup()
+									.addGap(1)
+									.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
+										.addGroup(gl_panel_2.createSequentialGroup()
+											.addGap(1)
+											.addComponent(TFTen, GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+											.addGap(6))
+										.addComponent(lbTen, GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE))))))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel_2.createSequentialGroup()
+							.addGap(34)
+							.addGroup(gl_panel_2.createParallelGroup(Alignment.BASELINE)
+								.addComponent(TFDiaChi, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lbDiaChi, GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+								.addGroup(gl_panel_2.createSequentialGroup()
+									.addGap(2)
+									.addComponent(lbNgaySinh, GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE))))
+						.addGroup(gl_panel_2.createSequentialGroup()
+							.addGap(31)
+							.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_panel_2.createSequentialGroup()
+									.addGroup(gl_panel_2.createParallelGroup(Alignment.BASELINE)
+										.addGroup(gl_panel_2.createSequentialGroup()
+											.addGap(2)
+											.addComponent(lbMaCN, GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE))
+										.addGroup(gl_panel_2.createSequentialGroup()
+											.addGap(4)
+											.addComponent(TFMaCN, GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)))
+									.addGap(3))
+								.addGroup(gl_panel_2.createParallelGroup(Alignment.BASELINE)
+									.addComponent(lbLuong, GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+									.addGroup(gl_panel_2.createSequentialGroup()
+										.addGap(11)
+										.addComponent(Luong, GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE))
+									.addGroup(gl_panel_2.createSequentialGroup()
+										.addGap(7)
+										.addComponent(TFNgaySinh, GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE))))))
+					.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel_2.createSequentialGroup()
+							.addGap(18)
+							.addComponent(CheckBoxTrangThaiXoa))
+						.addGroup(gl_panel_2.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(lbTrangThaiXoa, GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)))
+					.addContainerGap())
 		);
 		panel_2.setLayout(gl_panel_2);
 
