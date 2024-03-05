@@ -1,6 +1,5 @@
 package controller;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
@@ -136,8 +135,8 @@ public class NavController {
 		frmMain.getPanelKhoHang().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-//				frmMain.getTabbedPane_Main().addTab("Kho hàng", null, frmMain.getPanel_4(), "Tab kho hàng");
-//				frmMain.getTabbedPane_Main().setSelectedComponent(frmMain.getPanel_4());
+				frmMain.getTabbedPane_Main().addTab("Kho hàng", null, frmMain.getPanel_Kho(), "Tab kho hàng");
+				frmMain.getTabbedPane_Main().setSelectedComponent(frmMain.getPanel_Kho());
 			}
 			
 			@Override

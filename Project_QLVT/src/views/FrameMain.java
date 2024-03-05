@@ -13,6 +13,8 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+
 import java.awt.Color;
 import java.awt.BorderLayout;
 import javax.swing.GroupLayout;
@@ -34,7 +36,7 @@ public class FrameMain extends JFrame {
 	private JPanel panelLapPhieu;
 	private JPanel panel_Main;
 	private JTabbedPane tabbedPane_Main;
-	private JPanel panel_VT, panel_NV;
+	private JPanel panel_VT, panel_NV, panel_Kho;
 
 	public FrameMain() {
 		setTitle("Quản Lý Vật Tư");
@@ -49,7 +51,8 @@ public class FrameMain extends JFrame {
 		JPanel panel = new JPanel();
 		panel.setBorder(new EmptyBorder(4, 4, 3, 4));
 		contentPane.add(panel, BorderLayout.NORTH);
-
+		
+		UIManager.put("TabbedPane.selected", Color.WHITE);
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 20));
 
@@ -212,13 +215,19 @@ public class FrameMain extends JFrame {
 		tabbedPane_Main = new JTabbedPane(JTabbedPane.TOP);
 		panel_Main.add(tabbedPane_Main, BorderLayout.CENTER);
 
+
 		panel_VT = new JPanel();
 		panel_VT.setLayout(new BorderLayout(0, 0));
 		panel_VT.add(new VatTuForm(), BorderLayout.CENTER);
 
+
 		panel_NV = new JPanel();
 		panel_NV.setLayout(new BorderLayout(0,0));
 		panel_NV.add(new NhanVienForm(), BorderLayout.CENTER);
+		
+		panel_Kho = new JPanel();
+		panel_Kho.setLayout(new BorderLayout(0,0));
+		panel_Kho.add(new KhoForm(), BorderLayout.CENTER);
 		
 		lblInfoNV = new JLabel(
 				"MANV: " + Program.username + " HOTEN: " + Program.mHoten + " VAI TRO:" + Program.mGroup);
@@ -270,6 +279,10 @@ public class FrameMain extends JFrame {
 
 	public JPanel getPanel_NV() {
 		return panel_NV;
+	}
+	
+	public JPanel getPanel_Kho() {
+		return panel_Kho;
 	}
 
 }

@@ -21,6 +21,9 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import main.Program;
+
 import java.awt.Color;
 import javax.swing.JTextField;
 import javax.swing.JSpinner;
@@ -56,6 +59,11 @@ public class NhanVienForm extends JPanel {
 		lblChiNhanh.setFont(new Font("Tahoma", Font.BOLD, 16));
 
 		JComboBox comboBox = new JComboBox();
+		for (String key : Program.servers.keySet()) {
+			comboBox.addItem(key);
+		}
+		comboBox.setSelectedIndex(Program.mChinhanh);
+		comboBox.setEnabled(false);
 		
 		JPanel panel_4 = new JPanel();
 		//lblSearch.setIcon(new ImageIcon(VatTuForm.class.getResource("/imgs/search.png")));
