@@ -207,7 +207,8 @@ public class FrameMain extends JFrame {
 				.addContainerGap(30, Short.MAX_VALUE)));
 		frmHeThong.setLayout(gl_frmHeThong);
 		panel.add(tabbedPane);
-
+		
+		
 		panel_2 = new JPanel();
 		contentPane.add(panel_2, BorderLayout.CENTER);
 		panel_2.setLayout(new BorderLayout(0, 0));
@@ -223,7 +224,7 @@ public class FrameMain extends JFrame {
 		
 		panel_4 = new JPanel();
 		panel_4.setLayout(new BorderLayout(0, 0));
-		
+		panel_4.add(new KhoForm(), BorderLayout.CENTER);
 		
 		panel_5 = new JPanel();
 

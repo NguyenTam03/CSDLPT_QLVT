@@ -1,6 +1,5 @@
 package controller;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
@@ -97,7 +96,6 @@ public class NavController {
 		frmMain.getPanelNhanVien().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				frmMain.getPanel_2().add(frmMain.getTabbedPane_1(), BorderLayout.CENTER);
 				frmMain.getTabbedPane_1().addTab("Nhân viên", null, frmMain.getPanel_3(), "Tab nhân viên");
 				frmMain.getTabbedPane_1().setSelectedComponent(frmMain.getPanel_3());
 			}
@@ -118,7 +116,6 @@ public class NavController {
 		frmMain.getPanelVatTu().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				frmMain.getPanel_2().add(frmMain.getTabbedPane_1(), BorderLayout.CENTER);
 				frmMain.getTabbedPane_1().addTab("Vật tư", null, frmMain.getPanel_1(), "Tab vật tư");
 				frmMain.getTabbedPane_1().setSelectedComponent(frmMain.getPanel_1());
 			}
@@ -138,7 +135,6 @@ public class NavController {
 		frmMain.getPanelKhoHang().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				frmMain.getPanel_2().add(frmMain.getTabbedPane_1(), BorderLayout.CENTER);
 				frmMain.getTabbedPane_1().addTab("Kho hàng", null, frmMain.getPanel_4(), "Tab kho hàng");
 				frmMain.getTabbedPane_1().setSelectedComponent(frmMain.getPanel_4());
 			}
@@ -161,7 +157,6 @@ public class NavController {
 		frmMain.getPanelLapPhieu().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				frmMain.getPanel_2().add(frmMain.getTabbedPane_1(), BorderLayout.CENTER);
 				frmMain.getTabbedPane_1().addTab("Lập phiếu", null, frmMain.getPanel_5(), "Tab lap phieu");
 				frmMain.getTabbedPane_1().setSelectedComponent(frmMain.getPanel_5());
 			}
