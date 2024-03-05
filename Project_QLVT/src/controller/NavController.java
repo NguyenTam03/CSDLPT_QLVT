@@ -96,8 +96,8 @@ public class NavController {
 		frmMain.getPanelNhanVien().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				frmMain.getTabbedPane_1().addTab("Nhân viên", null, frmMain.getPanel_3(), "Tab nhân viên");
-				frmMain.getTabbedPane_1().setSelectedComponent(frmMain.getPanel_3());
+				frmMain.getTabbedPane_Main().addTab("Nhân viên", null, frmMain.getPanel_NV(), "Tab nhân viên");
+				frmMain.getTabbedPane_Main().setSelectedComponent(frmMain.getPanel_NV());
 			}
 			
 			
@@ -116,8 +116,8 @@ public class NavController {
 		frmMain.getPanelVatTu().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				frmMain.getTabbedPane_1().addTab("Vật tư", null, frmMain.getPanel_1(), "Tab vật tư");
-				frmMain.getTabbedPane_1().setSelectedComponent(frmMain.getPanel_1());
+				frmMain.getTabbedPane_Main().addTab("Vật tư", null, frmMain.getPanel_VT(), "Tab vật tư");
+				frmMain.getTabbedPane_Main().setSelectedComponent(frmMain.getPanel_VT());
 			}
 			
 			@Override
@@ -135,8 +135,8 @@ public class NavController {
 		frmMain.getPanelKhoHang().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				frmMain.getTabbedPane_1().addTab("Kho hàng", null, frmMain.getPanel_4(), "Tab kho hàng");
-				frmMain.getTabbedPane_1().setSelectedComponent(frmMain.getPanel_4());
+				frmMain.getTabbedPane_Main().addTab("Kho hàng", null, frmMain.getPanel_Kho(), "Tab kho hàng");
+				frmMain.getTabbedPane_Main().setSelectedComponent(frmMain.getPanel_Kho());
 			}
 			
 			@Override
@@ -157,8 +157,8 @@ public class NavController {
 		frmMain.getPanelLapPhieu().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				frmMain.getTabbedPane_1().addTab("Lập phiếu", null, frmMain.getPanel_5(), "Tab lap phieu");
-				frmMain.getTabbedPane_1().setSelectedComponent(frmMain.getPanel_5());
+//				frmMain.getTabbedPane_Main().addTab("Lập phiếu", null, frmMain.getPanel_5(), "Tab lap phieu");
+//				frmMain.getTabbedPane_Main().setSelectedComponent(frmMain.getPanel_5());
 			}
 			
 			@Override

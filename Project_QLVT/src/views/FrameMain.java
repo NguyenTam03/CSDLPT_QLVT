@@ -34,9 +34,9 @@ public class FrameMain extends JFrame {
 	private JPanel panelVatTu;
 	private JPanel panelKhoHang;
 	private JPanel panelLapPhieu;
-	private JPanel panel_2;
-	private JTabbedPane tabbedPane_1;
-	private JPanel panel_1, panel_3, panel_4, panel_5;
+	private JPanel panel_Main;
+	private JTabbedPane tabbedPane_Main;
+	private JPanel panel_VT, panel_NV, panel_Kho;
 
 	public FrameMain() {
 		setTitle("Quản Lý Vật Tư");
@@ -207,27 +207,28 @@ public class FrameMain extends JFrame {
 				.addContainerGap(30, Short.MAX_VALUE)));
 		frmHeThong.setLayout(gl_frmHeThong);
 		panel.add(tabbedPane);
-		
-		
-		panel_2 = new JPanel();
-		contentPane.add(panel_2, BorderLayout.CENTER);
-		panel_2.setLayout(new BorderLayout(0, 0));
 
-		tabbedPane_1 = new JTabbedPane(JTabbedPane.TOP);
-		panel_2.add(tabbedPane_1, BorderLayout.CENTER);
+		panel_Main = new JPanel();
+		contentPane.add(panel_Main, BorderLayout.CENTER);
+		panel_Main.setLayout(new BorderLayout(0, 0));
 
-		panel_1 = new JPanel();
-		panel_1.setLayout(new BorderLayout(0, 0));
-		panel_1.add(new VatTuForm(), BorderLayout.CENTER);
+		tabbedPane_Main = new JTabbedPane(JTabbedPane.TOP);
+		panel_Main.add(tabbedPane_Main, BorderLayout.CENTER);
 
-		panel_3 = new JPanel();
+
+		panel_VT = new JPanel();
+		panel_VT.setLayout(new BorderLayout(0, 0));
+		panel_VT.add(new VatTuForm(), BorderLayout.CENTER);
+
+
+		panel_NV = new JPanel();
+		panel_NV.setLayout(new BorderLayout(0,0));
+		panel_NV.add(new NhanVienForm(), BorderLayout.CENTER);
 		
-		panel_4 = new JPanel();
-		panel_4.setLayout(new BorderLayout(0, 0));
-		panel_4.add(new KhoForm(), BorderLayout.CENTER);
+		panel_Kho = new JPanel();
+		panel_Kho.setLayout(new BorderLayout(0,0));
+		panel_Kho.add(new KhoForm(), BorderLayout.CENTER);
 		
-		panel_5 = new JPanel();
-
 		lblInfoNV = new JLabel(
 				"MANV: " + Program.username + " HOTEN: " + Program.mHoten + " VAI TRO:" + Program.mGroup);
 		lblInfoNV.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -268,28 +269,20 @@ public class FrameMain extends JFrame {
 		return panelLapPhieu;
 	}
 
-	public JPanel getPanel_2() {
-		return panel_2;
+	public JTabbedPane getTabbedPane_Main() {
+		return tabbedPane_Main;
 	}
 
-	public JTabbedPane getTabbedPane_1() {
-		return tabbedPane_1;
+	public JPanel getPanel_VT() {
+		return panel_VT;
 	}
 
-	public JPanel getPanel_1() {
-		return panel_1;
+	public JPanel getPanel_NV() {
+		return panel_NV;
 	}
-
-	public JPanel getPanel_3() {
-		return panel_3;
-	}
-
-	public JPanel getPanel_4() {
-		return panel_4;
-	}
-
-	public JPanel getPanel_5() {
-		return panel_5;
+	
+	public JPanel getPanel_Kho() {
+		return panel_Kho;
 	}
 
 }
