@@ -66,7 +66,6 @@ public class NhanVienForm extends JPanel {
 		comboBox.setEnabled(false);
 		
 		JPanel panel_4 = new JPanel();
-		//lblSearch.setIcon(new ImageIcon(VatTuForm.class.getResource("/imgs/search.png")));
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
