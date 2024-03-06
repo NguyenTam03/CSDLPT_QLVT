@@ -2,16 +2,47 @@ package dao;
 
 import java.util.ArrayList;
 
-public interface IAbstractDao<T> {
-	public int insert(T t);
+public abstract class IAbstractDao<T> {
+	private int colCount;
+	private String[] colName;
 	
-	public int update(T t);
+	public void setColCount(int colCount) {
+		this.colCount = colCount;
+	}
 	
-	public int delete(T t);
+	public int getColCount() {
+		return colCount;
+	}
 	
-	public ArrayList<T> selectAll();
+	public String[] getColName() {
+		return colName;
+	}
+
+	public void setColName(String[] colName) {
+		this.colName = colName;
+	}
+
+	public int insert(T t) {
+		return 0;
+	}
 	
-	public T selectById(T t);
+	public int update(T t) {
+		return 0;
+	}
 	
-	public ArrayList<T> selectByCondition(String condition);
+	public int delete(T t) {
+		return 0;
+	}
+	
+	public ArrayList<T> selectAll() {
+		return null;
+	}
+	
+	public T selectById(T t) {
+		return null;
+	}
+	
+	public ArrayList<T> selectByCondition(String condition) {
+		return null;
+	}
 }
