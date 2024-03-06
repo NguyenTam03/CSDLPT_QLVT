@@ -5,6 +5,10 @@ public class KhoModel {
 	private String tenKho;
 	private String diaChi;
 	private String macn;
+	
+	public KhoModel() {
+		super();
+	}
 	public KhoModel(String maKho, String tenKho, String diaChi, String macn) {
 		super();
 		this.maKho = maKho;

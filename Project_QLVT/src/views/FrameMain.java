@@ -41,7 +41,7 @@ public class FrameMain extends JFrame {
 	private JPanel panelLapPhieu;
 	private JPanel panel_Main;
 	private JTabbedPane tabbedPane_Main;
-	private JPanel panel_VT, panel_NV, panel_Kho;
+	private JPanel panel_VT, panel_NV, panel_Kho, panel_LapPhieu;
 
 	public FrameMain() {
 		setTitle("Quản Lý Vật Tư");
@@ -290,21 +290,23 @@ public class FrameMain extends JFrame {
 		return panel_Kho;
 	}
 
-	private static void addPopup(Component component, final JPopupMenu popup) {
-		component.addMouseListener(new MouseAdapter() {
-			public void mousePressed(MouseEvent e) {
-				if (e.isPopupTrigger()) {
-					showMenu(e);
-				}
-			}
-			public void mouseReleased(MouseEvent e) {
-				if (e.isPopupTrigger()) {
-					showMenu(e);
-				}
-			}
-			private void showMenu(MouseEvent e) {
-				popup.show(e.getComponent(), e.getX(), e.getY());
-			}
-		});
+//	private static void addPopup(Component component, final JPopupMenu popup) {
+//		component.addMouseListener(new MouseAdapter() {
+//			public void mousePressed(MouseEvent e) {
+//				if (e.isPopupTrigger()) {
+//					showMenu(e);
+//				}
+//			}
+//			public void mouseReleased(MouseEvent e) {
+//				if (e.isPopupTrigger()) {
+//					showMenu(e);
+//				}
+//			}
+//			private void showMenu(MouseEvent e) {
+//				popup.show(e.getComponent(), e.getX(), e.getY());
+//			}
+//		});
+	public JPanel getPanel_LapPhieu() {
+		return panel_LapPhieu;
 	}
 }
