@@ -6,10 +6,7 @@ import java.util.ArrayList;
 import main.Program;
 import model.KhoModel;
 
-public class KhoDao implements IAbstractDao<KhoModel> {
-	
-	private int columCount;
-	private String[] columsName;
+public class KhoDao extends IAbstractDao<KhoModel> {
 	
 	public KhoDao() {
 		init();
@@ -19,31 +16,17 @@ public class KhoDao implements IAbstractDao<KhoModel> {
 	private void init() {
 		String sql = "SELECT * FROM Kho";
 		Program.myReader = Program.ExecSqlDataReader(sql);
+		
 		try {
-			columCount = Program.myReader.getMetaData().getColumnCount() - 1;
-			columsName = new String[columCount];
-			for (int i = 0; i < columCount; i++) {
-				columsName[i] = Program.myReader.getMetaData().getColumnName(i + 1);
+			 setColCount(Program.myReader.getMetaData().getColumnCount() - 1);;
+			 String[] colName = new String[getColCount()];
+			for (int i = 0; i < getColCount(); i++) {
+				colName[i] = Program.myReader.getMetaData().getColumnName(i + 1);
 			}
+			setColName(colName);
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-	}
-	
-	public int getColumCount() {
-		return columCount;
-	}
-
-	public String[] getColumsName() {
-		return columsName;
-	}
-
-	public void setColumCount(int columCount) {
-		this.columCount = columCount;
-	}
-
-	public void setColumsName(String[] columsName) {
-		this.columsName = columsName;
 	}
 
 	public static KhoDao getInstance() {
@@ -90,17 +73,16 @@ public class KhoDao implements IAbstractDao<KhoModel> {
 		}
 		return null;
 	}
-
+	
 	@Override
 	public KhoModel selectById(KhoModel t) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public ArrayList<KhoModel> selectByCondition(String condition) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }

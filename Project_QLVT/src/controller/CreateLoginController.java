@@ -1,5 +1,7 @@
 package controller;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Enumeration;
 
 import javax.swing.AbstractButton;
@@ -18,6 +20,12 @@ public class CreateLoginController {
 	public void initController() {
 		form.getBtnExitForm().addActionListener(l -> exitForm());
 		form.getBtnCreateLogin().addActionListener(l -> createLogin());
+		form.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				e.getWindow().dispose();
+			}
+		});
 	}
 	
 	private void exitForm() {
