@@ -18,14 +18,14 @@ public class Program {
 	public static String connstr;
 
 	public static ResultSet myReader;
-	public static String servername = "ADMIN-PC";
+	public static String servername = "TAM";
 	public static String username = "";
 	public static String mlogin = "";
 	public static String password = "";
 
 	public static String database = "QLVT_DATHANG";
 	public static String remotelogin = "htkn";
-	public static String remotepassword = "123456";
+	public static String remotepassword = "0312";
 
 	public static String mloginDN = "";
 	public static String passwordDN = "";
@@ -101,7 +101,7 @@ public class Program {
 	public static HashMap<String, String> getServer() {
     	Program.mlogin = Program.remotelogin;
     	Program.password = Program.remotepassword; 
-    	Program.servername = "ADMIN-PC";
+    	Program.servername = "TAM";
     	Program.Connect();
         HashMap<String, String> server = new LinkedHashMap<String, String>();
         try {
