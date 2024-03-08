@@ -41,14 +41,20 @@ public class LoginController {
 			if (Program.Connect() == 0) return;
 			Program.mloginDN = Program.mlogin;
 			Program.passwordDN = Program.password;
-		    String strLenh = "EXEC SP_LayThongTinNhanVien '" + Program.mlogin + "'";
-            Program.myReader = Program.ExecSqlDataReader(strLenh);
-            if( Program.myReader == null) return;
+		    String strLenh = "EXEC SP_LayThongTinNhanVien ?";
+            Program.myReader = Program.ExecSqlDataReader(strLenh, Program.mlogin);
+            if(Program.myReader == null) return;
             try {
             	Program.myReader.next();
             	Program.username =  Program.myReader.getString(1);	
             	Program.mHoten = Program.myReader.getString(2);
             	Program.mGroup = Program.myReader.getString(3);
+            	// Lấy mã chi nhánh khi đăng nhập vào server chi nhánh đó
+            	strLenh = "SELECT * FROM ChiNhanh";
+            	Program.myReader = Program.ExecSqlDataReader(strLenh);
+            	if (Program.myReader == null) return;
+            	Program.myReader.next();
+            	Program.maCN = Program.myReader.getString(1);
             	
             	loginForm.dispose();
             	new FrameMain().setVisible(true);
