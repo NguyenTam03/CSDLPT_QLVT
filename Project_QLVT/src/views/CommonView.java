@@ -200,4 +200,26 @@ public class CommonView<E, T> extends JPanel {
 	public JButton getBtnTim() {
 		return btnTim;
 	}
+
+
+	public DefaultTableModel getModel() {
+		return model;
+	}
+
+
+	public JTable getTable() {
+		return table;
+	}
+
+
+	public ArrayList<E> getList() {
+		return list;
+	}
+
+
+	public ListSelectionListener getSelectionListener() {
+		return selectionListener;
+	}
+	
+	
 }

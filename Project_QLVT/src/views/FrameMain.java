@@ -38,7 +38,7 @@ public class FrameMain extends JFrame {
 	private JTabbedPane tabbedPane_Main;
 	private JPanel panel_VT, panel_NV, panel_Kho, panel_LapPhieu;
 
-	public FrameMain() {
+	public <E, T> FrameMain() {
 		setTitle("Quản Lý Vật Tư");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1169, 690);
@@ -215,19 +215,23 @@ public class FrameMain extends JFrame {
 		tabbedPane_Main = new JTabbedPane(JTabbedPane.TOP);
 		panel_Main.add(tabbedPane_Main, BorderLayout.CENTER);
 
-
+		VatTuForm vatTuView = new VatTuForm();
 		panel_VT = new JPanel();
 		panel_VT.setLayout(new BorderLayout(0, 0));
-		panel_VT.add(new VatTuForm(), BorderLayout.CENTER);
+		panel_VT.add(vatTuView, BorderLayout.CENTER);
 
-
+		NhanVienForm nhanVienView = new NhanVienForm();
 		panel_NV = new JPanel();
 		panel_NV.setLayout(new BorderLayout(0,0));
-		panel_NV.add(new NhanVienForm(), BorderLayout.CENTER);
+		panel_NV.add(nhanVienView, BorderLayout.CENTER);
 		
+		KhoForm khoView = new KhoForm();
 		panel_Kho = new JPanel();
 		panel_Kho.setLayout(new BorderLayout(0,0));
-		panel_Kho.add(new KhoForm(), BorderLayout.CENTER);
+		panel_Kho.add(khoView, BorderLayout.CENTER);
+		khoView.getBtnThoat().addActionListener(l -> {
+			tabbedPane_Main.removeTabAt(tabbedPane_Main.getSelectedIndex());
+		});
 		
 		lblInfoNV = new JLabel(
 				"MANV: " + Program.username + " HOTEN: " + Program.mHoten + " VAI TRO:" + Program.mGroup);

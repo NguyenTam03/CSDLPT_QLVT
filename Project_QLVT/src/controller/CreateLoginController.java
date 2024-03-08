@@ -49,9 +49,8 @@ public class CreateLoginController {
 		if (loginName.equals("") || password.equals("") || username.equals("") || group == null) {
 			JOptionPane.showMessageDialog(null, "Bạn phải điền đầy đủ thông tin.", "", JOptionPane.WARNING_MESSAGE);
 		}else {
-			String sql = "EXEC dbo.sp_TaoLogin '" + loginName + "', '" + password + "', '" + username + "', '" + group + "'";
-			System.out.println(sql);
-			Program.ExecSql(sql);
+			String sql = "{cal dbo.sp_TaoLogin(?, ?, ?, ?)}";
+			Program.ExecSqlDML(sql, loginName, password, username, group);
 			JOptionPane.showMessageDialog(null, "Tạo thành công.", "Success", JOptionPane.INFORMATION_MESSAGE);
 			exitForm();
 		}

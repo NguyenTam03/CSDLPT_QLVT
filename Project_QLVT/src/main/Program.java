@@ -1,6 +1,7 @@
 package main;
 
 import java.awt.EventQueue;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -33,6 +34,7 @@ public class Program {
 	public static String mHoten = "";
 
 	public static int mChinhanh = 0;
+	public static String maCN = "";
 	public static HashMap<String, String> servers;
 	public static LoginForm frmChinh;
 
@@ -55,6 +57,7 @@ public class Program {
 				JOptionPane.showMessageDialog(null,
 						"Lỗi kết nối cơ sở dữ liệu.\nBạn xem lại user name và password.\n " + e.getMessage(), "",
 						JOptionPane.WARNING_MESSAGE);
+				return 0;
 			}
 			
 			System.out.println(Program.connstr);
@@ -65,10 +68,13 @@ public class Program {
 		}
 	}
 
-	public static ResultSet ExecSqlDataReader(String strLenh) {
+	public static ResultSet ExecSqlDataReader(String strLenh, Object... objects) {
 		ResultSet myReader = null;
 		try {
 			PreparedStatement p = Program.conn.prepareStatement(strLenh);
+			for (int i = 1; i <= objects.length; i++) {
+				p.setObject(i, objects[i - 1]);
+			}
 			myReader = p.executeQuery();
 			return myReader;
 		} catch (SQLException ex) {
@@ -82,11 +88,13 @@ public class Program {
 		}
 	}
 	
-	public static void ExecSql(String sql) {
+	public static int ExecSqlDML(String sql, Object... objects) {
 		try {
 			PreparedStatement p = Program.conn.prepareStatement(sql);
-			p.execute();
-			return;
+			for (int i = 1; i <= objects.length; i++) {
+				p.setObject(i, objects[i - 1]);
+			}
+			return p.executeUpdate();
 
 		} catch (SQLException ex) {
 			try {
@@ -96,6 +104,31 @@ public class Program {
 			}
 			JOptionPane.showMessageDialog(null, ex.getMessage());
 		}
+		return -1;
+	}
+	
+	public static int ExecSqlNoQuery(String sql, Object... objects) {
+		try(CallableStatement c = Program.conn.prepareCall(sql)) {
+			
+			c.registerOutParameter(1, java.sql.Types.INTEGER);
+			for (int i = 2; i <= objects.length + 1; i++) {
+				c.setObject(i, objects[i - 2]);
+			}
+			
+			c.execute();
+			int res = c.getInt(1);
+			c.close();
+			return res;
+		} catch (SQLException ex) {
+			try {
+				Program.conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			JOptionPane.showMessageDialog(null, ex.getMessage());
+		
+		}
+		return -1;
 	}
 	
 	public static HashMap<String, String> getServer() {
