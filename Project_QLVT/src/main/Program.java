@@ -105,7 +105,7 @@ public class Program {
     	Program.Connect();
         HashMap<String, String> server = new LinkedHashMap<String, String>();
         try {
-            String sql = "SELECT * FROM [dbo].[V_DS_PHANMANH]";
+            String sql = "SELECT * FROM [dbo].[V_DS_PHANMANH] ";
             PreparedStatement statement = Program.conn.prepareStatement(sql);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
