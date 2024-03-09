@@ -4,9 +4,9 @@ public class VattuModel {
 	private String mavt;
 	private String tenVT;
 	private String dvt;
-	private String soLuongTon;
+	private Integer soLuongTon;
 	
-	public VattuModel(String mavt, String tenVT, String dvt, String soLuongTon) {
+	public VattuModel(String mavt, String tenVT, String dvt, Integer soLuongTon) {
 		super();
 		this.mavt = mavt;
 		this.tenVT = tenVT;
@@ -38,11 +38,11 @@ public class VattuModel {
 		this.dvt = dvt;
 	}
 
-	public String getSoLuongTon() {
+	public Integer getSoLuongTon() {
 		return soLuongTon;
 	}
 
-	public void setSoLuongTon(String soLuongTon) {
+	public void setSoLuongTon(Integer soLuongTon) {
 		this.soLuongTon = soLuongTon;
 	}
 	
