@@ -18,6 +18,9 @@ import model.VattuModel;
 import java.awt.Color;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
+
+import controller.VatTuController;
+
 import javax.swing.JSpinner;
 
 
@@ -109,6 +112,10 @@ public class VatTuForm extends CommonView<VattuModel, VatTuDao> {
 		
 //		thêm sự kiện chọn
 		table.getSelectionModel().addListSelectionListener(selectionListener);
+		
+//		Listener event
+		VatTuController ac = new VatTuController(this);
+		ac.initController();
 	}
 
 	public JTextField getTextFieldMaVT() {
@@ -129,7 +136,7 @@ public class VatTuForm extends CommonView<VattuModel, VatTuDao> {
 		return spinner;
 	}
 
-	private void loadDataIntoTable() {
+	public void loadDataIntoTable() {
 		loadData();
 		for (VattuModel vattuModel : list) {
 			Object[] rowData = {vattuModel.getMavt(), vattuModel.getTenVT(), vattuModel.getDvt(), vattuModel.getSoLuongTon()};
