@@ -107,7 +107,7 @@ public class VatTuForm extends CommonView<VattuModel, VatTuDao> {
 			textFieldMaVT.setText(table.getValueAt(table.getSelectedRow(), 0).toString());
 			textFieldTenVT.setText(table.getValueAt(table.getSelectedRow(), 1).toString());
 			textFieldDonVi.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
-			spinner.setValue(table.getValueAt(table.getSelectedRow(), 3).toString());
+			spinner.setValue(table.getValueAt(table.getSelectedRow(), 3));
 		};
 		
 //		thêm sự kiện chọn

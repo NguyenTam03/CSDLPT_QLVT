@@ -62,9 +62,10 @@ public class VatTuDao extends IAbstractDao<VattuModel>{
 						Program.myReader.getString(1),
 						Program.myReader.getString(2), 
 						Program.myReader.getString(3), 
-						Program.myReader.getString(4));
+						Program.myReader.getInt(4));
 				dsVatTu.add(vattu);
 			}
+			return dsVatTu;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

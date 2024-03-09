@@ -42,6 +42,7 @@ public class CommonView<E, T> extends JPanel {
 	/**
 	 * Create the panel.
 	 */
+
 	public CommonView() {
 		setLayout(new BorderLayout(0, 0));
 		JPanel panel = new JPanel();
@@ -121,20 +122,20 @@ public class CommonView<E, T> extends JPanel {
 			btnGhi.setEnabled(false);
 		}
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(new Color(148, 148, 148));
-		add(panel_1, BorderLayout.CENTER);
-		panel_1.setLayout(new BorderLayout(0, 0));
+		JPanel panelLookforTable = new JPanel();
+		panelLookforTable.setBackground(new Color(148, 148, 148));
+		add(panelLookforTable, BorderLayout.CENTER);
+		panelLookforTable.setLayout(new BorderLayout(0, 0));
 
 		scrollPane = new JScrollPane();
-		panel_1.add(scrollPane, BorderLayout.CENTER);
+		panelLookforTable.add(scrollPane, BorderLayout.CENTER);
 
 		table = new JTable();
 		
 		scrollPane.setViewportView(table);
 		
 		JPanel panel_3 = new JPanel();
-		panel_1.add(panel_3, BorderLayout.NORTH);
+		panelLookforTable.add(panel_3, BorderLayout.NORTH);
 		
 		textFieldTim = new JTextField();
 		textFieldTim.setColumns(15);
@@ -148,6 +149,15 @@ public class CommonView<E, T> extends JPanel {
 		panel_3.add(textFieldTim);
 		panel_3.add(btnTim);
 		panel_3.add(separator);
+		// Không cho phép chỉnh sửa dữ liệu trực tiếp ở bảng
+        DefaultTableModel model = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+            	// luôn luôn return về flase bất kì ở ô nào
+                return false;
+            }
+        };
+        table.setModel(model);
 	}
 	
 	
@@ -210,7 +220,6 @@ public class CommonView<E, T> extends JPanel {
 	public JTable getTable() {
 		return table;
 	}
-
 
 	public ArrayList<E> getList() {
 		return list;
