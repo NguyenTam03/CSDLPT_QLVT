@@ -19,14 +19,14 @@ public class Program {
 	public static String connstr;
 
 	public static ResultSet myReader;
-	public static String servername = "ADMIN-PC";
+	public static String servername = "XUAN_NAM";
 	public static String username = "";
 	public static String mlogin = "";
 	public static String password = "";
 
 	public static String database = "QLVT_DATHANG";
-	public static String remotelogin = "htkn";
-	public static String remotepassword = "123456";
+	public static String remotelogin = "HTKN";
+	public static String remotepassword = "12";
 
 	public static String mloginDN = "";
 	public static String passwordDN = "";
@@ -134,11 +134,11 @@ public class Program {
 	public static HashMap<String, String> getServer() {
     	Program.mlogin = Program.remotelogin;
     	Program.password = Program.remotepassword; 
-    	Program.servername = "ADMIN-PC";
+    	Program.servername = "XUAN_NAM";
     	Program.Connect();
         HashMap<String, String> server = new LinkedHashMap<String, String>();
         try {
-            String sql = "SELECT * FROM [dbo].[V_DS_PHANMANH]";
+            String sql = "SELECT * FROM [dbo].[V_DS_PHANMANH] ";
             PreparedStatement statement = Program.conn.prepareStatement(sql);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
