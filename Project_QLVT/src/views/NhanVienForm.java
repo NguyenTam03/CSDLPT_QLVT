@@ -1,43 +1,36 @@
 package views;
 
 import javax.swing.JPanel;
-import java.awt.BorderLayout;
+import javax.swing.JSpinner;
+import javax.swing.GroupLayout;
+import javax.swing.JCheckBox;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
 import java.awt.Font;
-import java.awt.Image;
 
-import javax.swing.JComboBox;
-import java.awt.FlowLayout;
-
-import javax.imageio.ImageIO;
-import javax.swing.BoxLayout;
-import java.awt.CardLayout;
-import javax.swing.SpringLayout;
-import javax.swing.SwingConstants;
-import javax.swing.GroupLayout;
-import javax.swing.ImageIcon;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 
+import controller.KhoController;
+import controller.NhanVienController;
+import dao.NhanVienDao;
 import main.Program;
+import model.NhanVienModel;
 
+
+import java.awt.BorderLayout;
 import java.awt.Color;
-import javax.swing.JTextField;
-import javax.swing.JSpinner;
-import javax.swing.JButton;
-import javax.swing.JSeparator;
-import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.awt.event.ActionEvent;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.JCheckBox;
 
-public class NhanVienForm extends JPanel {
-	private JTable table;
-	private JTextField textFieldTim;
+import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
+
+import java.awt.event.ItemEvent;
+import java.sql.SQLException;
+
+
+
+public class NhanVienForm extends CommonView<NhanVienModel, NhanVienDao> {
+
+	private static final long serialVersionUID = 1L;
 	private JTextField TFDiaChi;
 	private JTextField TFMaNV;
 	private JTextField TFHo;
@@ -45,124 +38,14 @@ public class NhanVienForm extends JPanel {
 	private JTextField TFCMND;
 	private JTextField TFNgaySinh;
 	private JTextField TFMaCN;
-
+	private JSpinner Luong;
+	private JCheckBox CheckBoxTrangThaiXoa;
 	/**
 	 * Create the panel.
 	 */
 	public NhanVienForm() {
-		setLayout(new BorderLayout(0, 0));
-
-		JPanel panel = new JPanel();
-		add(panel, BorderLayout.NORTH);
-
-		JLabel lblChiNhanh = new JLabel("Chi Nhánh");
-		lblChiNhanh.setFont(new Font("Tahoma", Font.BOLD, 16));
-
-		JComboBox comboBox = new JComboBox();
-		for (String key : Program.servers.keySet()) {
-			comboBox.addItem(key);
-		}
-		comboBox.setSelectedIndex(Program.mChinhanh);
-		comboBox.setEnabled(false);
+		super();
 		
-		JPanel panel_4 = new JPanel();
-		GroupLayout gl_panel = new GroupLayout(panel);
-		gl_panel.setHorizontalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel.createSequentialGroup()
-							.addGap(201)
-							.addComponent(lblChiNhanh, GroupLayout.PREFERRED_SIZE, 99, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 336, GroupLayout.PREFERRED_SIZE))
-						.addComponent(panel_4, GroupLayout.DEFAULT_SIZE, 991, Short.MAX_VALUE))
-					.addContainerGap())
-		);
-		gl_panel.setVerticalGroup(
-			gl_panel.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addComponent(panel_4, GroupLayout.PREFERRED_SIZE, 47, Short.MAX_VALUE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
-						.addComponent(lblChiNhanh)
-						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap())
-		);
-		panel_4.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
-		
-		JButton btnThem = new JButton("Thêm");
-		btnThem.setIcon(new ImageIcon(VatTuForm.class.getResource("/imgs/add.png")));
-		btnThem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		panel_4.add(btnThem);
-		
-		JButton btnXoa = new JButton("Xóa");
-		btnXoa.setIcon(new ImageIcon(VatTuForm.class.getResource("/imgs/delete.png")));
-		panel_4.add(btnXoa);
-		
-		JButton btnGhi = new JButton("Ghi");
-		btnGhi.setIcon(new ImageIcon(VatTuForm.class.getResource("/imgs/write.png")));
-		btnGhi.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		panel_4.add(btnGhi);
-		
-		JButton btnHoanTac = new JButton("Hoàn Tác");
-		btnHoanTac.setIcon(new ImageIcon(VatTuForm.class.getResource("/imgs/undo.png")));
-		panel_4.add(btnHoanTac);
-		
-		JButton btnLamMoi = new JButton("Làm Mới");
-		btnLamMoi.setIcon(new ImageIcon(VatTuForm.class.getResource("/imgs/refresh.png")));
-		panel_4.add(btnLamMoi);
-		
-		JButton btnChuyenChiNhanh = new JButton("Chuyển Chi Nhánh");
-		btnChuyenChiNhanh.setIcon(new ImageIcon(VatTuForm.class.getResource("/imgs/building.png")));
-		panel_4.add(btnChuyenChiNhanh);
-		
-		JButton btnThoat = new JButton("Thoát");
-		btnThoat.setIcon(new ImageIcon(VatTuForm.class.getResource("/imgs/log-out_12572185.png")));
-		panel_4.add(btnThoat);
-		panel.setLayout(gl_panel);
-
-		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(new Color(148, 148, 148));
-		add(panel_1, BorderLayout.CENTER);
-		panel_1.setLayout(new BorderLayout(0, 0));
-
-		JScrollPane scrollPane = new JScrollPane();
-		panel_1.add(scrollPane, BorderLayout.CENTER);
-
-		table = new JTable();
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"Mã nhân viên", "Họ", "Tên", "CMND", "Địa chỉ", "Ngày sinh", "Lương", "Mã chi nhánh", "Trạng thái xóa"
-			}
-		));
-		scrollPane.setViewportView(table);
-		
-		JPanel panel_3 = new JPanel();
-		panel_1.add(panel_3, BorderLayout.NORTH);
-		
-		textFieldTim = new JTextField();
-
-		textFieldTim.setColumns(15);
-		
-		JButton btnTim = new JButton("Tìm");
-		btnTim.setIcon(new ImageIcon(VatTuForm.class.getResource("/imgs/find.png")));
-		
-		JSeparator separator = new JSeparator();
-		separator.setForeground(new Color(240, 240, 240));
-		panel_3.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
-		panel_3.add(textFieldTim);
-		panel_3.add(btnTim);
-		panel_3.add(separator);
-
 		JPanel panel_2 = new JPanel();
 		panel_2.setForeground(new Color(207, 207, 207));
 		add(panel_2, BorderLayout.SOUTH);
@@ -179,7 +62,7 @@ public class NhanVienForm extends JPanel {
 		JLabel lbLuong = new JLabel("Lương");
 		lbLuong.setFont(new Font("Tahoma", Font.PLAIN, 14));
 
-		JSpinner Luong = new JSpinner();
+		Luong = new JSpinner();
 		Luong.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		Luong.setModel(new SpinnerNumberModel(Integer.valueOf(4000000), Integer.valueOf(4000000), null, Integer.valueOf(100000)));
 		
@@ -213,15 +96,17 @@ public class NhanVienForm extends JPanel {
 		JLabel lbTrangThaiXoa = new JLabel("Trạng thái xóa");
 		lbTrangThaiXoa.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
-		JCheckBox CheckBoxTrangThaiXoa = new JCheckBox("");
+		CheckBoxTrangThaiXoa = new JCheckBox("");
+		CheckBoxTrangThaiXoa.setEnabled(false);
 		CheckBoxTrangThaiXoa.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
 		JLabel lbMaCN = new JLabel("Mã chi nhánh");
 		lbMaCN.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
 		TFMaCN = new JTextField();
+		TFMaCN.setEditable(false);
 		TFMaCN.setColumns(10);
-
+		
 		GroupLayout gl_panel_2 = new GroupLayout(panel_2);
 		gl_panel_2.setHorizontalGroup(
 			gl_panel_2.createParallelGroup(Alignment.TRAILING)
@@ -346,6 +231,95 @@ public class NhanVienForm extends JPanel {
 					.addContainerGap())
 		);
 		panel_2.setLayout(gl_panel_2);
+//		load chi nhánh lên combobox
+		loadChiNhanh();
+//		load dữ liệu từ chi nhánh lên table
+		dao = NhanVienDao.getInstance();
+		loadDataIntoTable();
+//		CONGTY có thể chọn chi nhánh để xem dữ liệu
+		comboBox.addItemListener(l -> loadDataOtherServer(l));
+		
+//		lắng nghe sự kiện chọn row đồng thời in dữ liệu ra textfield
+		selectionListener = e -> {
+			TFMaNV.setText(table.getValueAt(table.getSelectedRow(), 0).toString());
+			TFHo.setText(table.getValueAt(table.getSelectedRow(), 1).toString());
+			TFTen.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
+			TFCMND.setText(table.getValueAt(table.getSelectedRow(), 3).toString());
+			TFDiaChi.setText(table.getValueAt(table.getSelectedRow(), 4).toString());
+			TFNgaySinh.setText(table.getValueAt(table.getSelectedRow(), 5).toString());
+			Luong.setValue(table.getValueAt(table.getSelectedRow(), 6));
+			TFMaCN.setText(table.getValueAt(table.getSelectedRow(), 7).toString());
+			CheckBoxTrangThaiXoa.setSelected((boolean)table.getValueAt(table.getSelectedRow(), 8));
+		};
 
+		// Thêm sự kiện chọn
+		table.getSelectionModel().addListSelectionListener(selectionListener);
+		
+//		Listener event
+		NhanVienController ac = new NhanVienController(this);
+		ac.initController();
 	}
+	
+
+	public JTextField getTFDiaChi() {
+		return TFDiaChi;
+	}
+
+	public JTextField getTFMaNV() {
+		return TFMaNV;
+	}
+
+	public JTextField getTFHo() {
+		return TFHo;
+	}
+
+	public JTextField getTFTen() {
+		return TFTen;
+	}
+
+	public JTextField getTFCMND() {
+		return TFCMND;
+	}
+
+	public JTextField getTFNgaySinh() {
+		return TFNgaySinh;
+	}
+
+	public JTextField getTFMaCN() {
+		return TFMaCN;
+	}
+
+	public void loadDataIntoTable() {
+		loadData();
+		for (NhanVienModel NhanVien : list) {
+			Object[] rowData = { NhanVien.getManv(), NhanVien.getHo(),NhanVien.getTen(),NhanVien.getSoCMND(),
+					NhanVien.getDiaChi(),NhanVien.getNgaySinh(), NhanVien.getLuong(), NhanVien.getMacn(),
+					NhanVien.getTrangThaiXoa()};
+			model.addRow(rowData);
+		}
+	}
+
+	
+	private void loadDataOtherServer(ItemEvent l) {
+		if (l.getStateChange() == ItemEvent.SELECTED) {
+			if (Program.conn != null) {
+				try {
+					Program.conn.close();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+			}
+			Program.servername = Program.servers.get(comboBox.getSelectedItem());
+			Program.mlogin = Program.remotelogin;
+			Program.password = Program.remotepassword;
+			if (Program.Connect() == 0)
+				return;
+			TFMaCN.setText(Program.maCN);
+			table.getSelectionModel().removeListSelectionListener(selectionListener);
+			model.setRowCount(0);
+			loadDataIntoTable();
+			table.getSelectionModel().addListSelectionListener(selectionListener);
+		}
+	}
+
 }

@@ -2,6 +2,7 @@ package dao;
 
 import java.util.ArrayList;
 
+
 public abstract class IAbstractDao<T> {
 	private int colCount;
 	private String[] colName;
@@ -45,4 +46,6 @@ public abstract class IAbstractDao<T> {
 	public ArrayList<T> selectByCondition(String condition) {
 		return null;
 	}
+
+
 }
