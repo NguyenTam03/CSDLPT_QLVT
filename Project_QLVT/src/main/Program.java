@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 import views.LoginForm;
 
@@ -123,6 +124,7 @@ public class Program {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+//					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 					frmChinh = new LoginForm();
 					frmChinh.setVisible(true);
 				} catch (Exception e) {
