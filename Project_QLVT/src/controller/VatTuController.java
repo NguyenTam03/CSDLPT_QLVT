@@ -34,7 +34,7 @@ public class VatTuController {
 
 		vatTuForm.getTextFieldDonVi().setText("");
 
-		vatTuForm.getSpinner().setValue("0");
+		vatTuForm.getSpinner().setValue(0);
 
 		vatTuForm.getTable().setEnabled(false);
 	}
