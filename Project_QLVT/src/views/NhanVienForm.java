@@ -64,7 +64,7 @@ public class NhanVienForm extends CommonView<NhanVienModel, NhanVienDao> {
 
 		Luong = new JSpinner();
 		Luong.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		Luong.setModel(new SpinnerNumberModel(Integer.valueOf(4000000), Integer.valueOf(4000000), null, Integer.valueOf(100000)));
+		Luong.setModel(new SpinnerNumberModel(Integer.valueOf(0), null, null, Integer.valueOf(100000)));
 		
 		JLabel lbDiaChi = new JLabel("Địa chỉ");
 		lbDiaChi.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -73,6 +73,7 @@ public class NhanVienForm extends CommonView<NhanVienModel, NhanVienDao> {
 		TFDiaChi.setColumns(10);
 		
 		TFMaNV = new JTextField();
+		TFMaNV.setEditable(false);
 		TFMaNV.setColumns(10);
 		
 		TFHo = new JTextField();
@@ -241,12 +242,24 @@ public class NhanVienForm extends CommonView<NhanVienModel, NhanVienDao> {
 		
 //		lắng nghe sự kiện chọn row đồng thời in dữ liệu ra textfield
 		selectionListener = e -> {
+			String tempCMND = "";
+			String tempDiaChi = "";
+			String tempNgaySinh = "";
+			if(table.getValueAt(table.getSelectedRow(), 3)!=null) {
+				tempCMND = table.getValueAt(table.getSelectedRow(), 3).toString();
+			}
+			if(table.getValueAt(table.getSelectedRow(), 4)!=null) {
+				tempDiaChi = table.getValueAt(table.getSelectedRow(), 4).toString();
+			}
+			if(table.getValueAt(table.getSelectedRow(), 5)!=null) {
+				tempNgaySinh = table.getValueAt(table.getSelectedRow(), 5).toString();
+			}
 			TFMaNV.setText(table.getValueAt(table.getSelectedRow(), 0).toString());
 			TFHo.setText(table.getValueAt(table.getSelectedRow(), 1).toString());
 			TFTen.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
-			TFCMND.setText(table.getValueAt(table.getSelectedRow(), 3).toString());
-			TFDiaChi.setText(table.getValueAt(table.getSelectedRow(), 4).toString());
-			TFNgaySinh.setText(table.getValueAt(table.getSelectedRow(), 5).toString());
+			TFCMND.setText(tempCMND);
+			TFDiaChi.setText(tempDiaChi);
+			TFNgaySinh.setText(tempNgaySinh);
 			Luong.setValue(table.getValueAt(table.getSelectedRow(), 6));
 			TFMaCN.setText(table.getValueAt(table.getSelectedRow(), 7).toString());
 			CheckBoxTrangThaiXoa.setSelected((boolean)table.getValueAt(table.getSelectedRow(), 8));
@@ -287,6 +300,10 @@ public class NhanVienForm extends CommonView<NhanVienModel, NhanVienDao> {
 
 	public JTextField getTFMaCN() {
 		return TFMaCN;
+	}
+
+	public JSpinner getLuong() {
+		return Luong;
 	}
 
 	public void loadDataIntoTable() {
