@@ -12,7 +12,6 @@ public class KhoDao extends IAbstractDao<KhoModel> {
 		init();
 	}
 	
-	
 	private void init() {
 		String sql = "SELECT * FROM Kho";
 		Program.myReader = Program.ExecSqlDataReader(sql);
@@ -35,20 +34,20 @@ public class KhoDao extends IAbstractDao<KhoModel> {
 
 	@Override
 	public int insert(KhoModel t) {
-		// TODO Auto-generated method stub
-		return 0;
+		String sql = "INSERT INTO Kho (MAKHO, TENKHO, DIACHI, MACN) VALUES (?, ?, ?, ?)";
+		return Program.ExecSqlDML(sql, t.getMaKho(), t.getTenKho(), t.getDiaChi(), t.getMacn());
 	}
 
 	@Override
 	public int update(KhoModel t) {
-		// TODO Auto-generated method stub
-		return 0;
+		String sql = "UPDATE Kho SET TENKHO = ?, DIACHI = ? WHERE MAKHO = ?";
+		return Program.ExecSqlDML(sql, t.getTenKho(), t.getDiaChi(), t.getMaKho());
 	}
 
 	@Override
 	public int delete(KhoModel t) {
-		// TODO Auto-generated method stub
-		return 0;
+		String sql = "DELETE FROM Kho WHERE MAKHO = ?";
+		return Program.ExecSqlDML(sql, t.getMaKho());
 	}
 
 	@Override

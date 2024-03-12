@@ -1,17 +1,18 @@
 package controller;
 
-import java.awt.Color;
-import java.awt.Cursor;
+
+import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
+import javax.swing.JMenuItem;
 
 import main.Program;
 import views.CreateLoginForm;
 import views.FrameMain;
 import views.LoginForm;
 
-public class NavController extends MouseController {
+public class NavController {
 	private FrameMain frmMain;
 
 	public NavController(FrameMain frmMain) {
@@ -19,76 +20,80 @@ public class NavController extends MouseController {
 	}
 
 	public void initController() {
-		// mouse listener logout
-		frmMain.getPanelLogout().addMouseListener(new MouseAdapter() {
+		frmMain.getMnLogout().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				frmMain.dispose();
-				try {
-					Program.conn.close();
-				} catch (SQLException e1) {
-					e1.printStackTrace();
-				}
-				new LoginForm().setVisible(true);
+				logout();
 			}
 		});
-		hoverComponent(frmMain.getPanelLogout());
-		// ------
-		// mouse listener exit
-		frmMain.getPanelExit().addMouseListener(new MouseAdapter() {
+			
+			
+		frmMain.getMnExit().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				try {
-					Program.conn.close();
-				} catch (SQLException e1) {
-					e1.printStackTrace();
-				}
-				System.exit(0);
+				exitFrameMain();
 			}
 		});
-		hoverComponent(frmMain.getPanelExit());
-		// -------
-		// mouse listener add login
-		frmMain.getPanelAddLogin().addMouseListener(new MouseAdapter() {
+		
+		frmMain.getMnCreateTK().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (Program.mGroup.equals("CONGTY") || Program.mGroup.equals("CHINHANH")) {
-					new CreateLoginForm().setVisible(true);
-				}
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				if (Program.mGroup.equals("CONGTY") || Program.mGroup.equals("CHINHANH")) {
-					frmMain.getPanelAddLogin().setCursor(new Cursor(Cursor.HAND_CURSOR));
-					frmMain.getPanelAddLogin().setBackground(Color.WHITE);
-				}
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				if (Program.mGroup.equals("CONGTY") || Program.mGroup.equals("CHINHANH")) {
-					frmMain.getPanelAddLogin().setBackground(new Color(240, 240, 240));
-				}
-
+				createLogin();
 			}
 		});
-		// --------------
-		// mouse listener nhanvien
-		clickedComponentShowTab(frmMain.getTabbedPane_Main(), "Nhân viên", "Tab nhân viên", frmMain.getPanelNhanVien(), frmMain.getPanel_NV());
-		hoverComponent(frmMain.getPanelNhanVien());
+		
+		clickedComponentShowTab("Nhân viên", "Tab nhân viên", frmMain.getMnNhanVien(), frmMain.getPanel_NV());
 		// --------
 		// mouse listener vat tu
-		clickedComponentShowTab(frmMain.getTabbedPane_Main(), "Vật tư", "Tab vật tư", frmMain.getPanelVatTu(), frmMain.getPanel_VT());
-		hoverComponent(frmMain.getPanelVatTu());
+		clickedComponentShowTab("Vật tư", "Tab vật tư", frmMain.getMnVatTu(), frmMain.getPanel_VT());
+		
 		// ---------------
 		// mouse listener kho hang
-		clickedComponentShowTab(frmMain.getTabbedPane_Main(), "Kho", "Tab kho", frmMain.getPanelKhoHang(), frmMain.getPanel_Kho());
-		hoverComponent(frmMain.getPanelKhoHang());
+		clickedComponentShowTab("Kho", "Tab kho", frmMain.getMnKho(), frmMain.getPanel_Kho());
+		
 		// ---------------------
-		// mouse listener lap phieu
-		clickedComponentShowTab(frmMain.getTabbedPane_Main(), "Lập phiếu", "Tab lập phiếu", frmMain.getPanelLapPhieu(), frmMain.getPanel_LapPhieu());
-		hoverComponent(frmMain.getPanelLapPhieu());
+		clickedMenuItem("Đặt hàng", frmMain.getMntmDatHang(), frmMain.getPanel_dathang());
+	}
+	
+	private void logout() {
+		System.out.println(1);
+		frmMain.dispose();
+		try {
+			Program.conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		new LoginForm().setVisible(true);
 	}
 
+	private void exitFrameMain() {
+		try {
+			Program.conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.exit(0);
+	}
+	
+	private void createLogin() {
+		new CreateLoginForm().setVisible(true);
+	}
+	
+	private void clickedComponentShowTab(String label, String tip, Component t, Component t1) {
+		t.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				frmMain.getTabbedPane_Main().addTab(label, null, t1, tip);
+				frmMain.getTabbedPane_Main().setSelectedComponent(t1);
+			}
+		});
+	}
+	
+	private void clickedMenuItem(String label, JMenuItem item, Component t1) {
+		item.addActionListener(l -> {
+			frmMain.getTabbedPane_Main().addTab(label, t1);
+			frmMain.getTabbedPane_Main().setSelectedComponent(t1);
+		});
+	}
 }

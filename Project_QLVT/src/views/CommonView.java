@@ -229,6 +229,9 @@ public class CommonView<E, T> extends JPanel {
 	public ListSelectionListener getSelectionListener() {
 		return selectionListener;
 	}
-	
-	
+
+
+	public T getDao() {
+		return dao;
+	}
 }

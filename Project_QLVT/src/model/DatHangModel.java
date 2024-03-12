@@ -9,6 +9,10 @@ public class DatHangModel {
 	private Integer manv;
 	private String makho;
 	
+	public DatHangModel() {
+		
+	}
+	
 	public DatHangModel(String maSoDDH, Date ngay, String nhaCC, Integer manv, String makho) {
 		super();
 		this.maSoDDH = maSoDDH;
