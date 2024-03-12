@@ -1,5 +1,7 @@
 package views;
 
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.GroupLayout;
@@ -25,6 +27,8 @@ import javax.swing.SpinnerNumberModel;
 
 import java.awt.event.ItemEvent;
 import java.sql.SQLException;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 
 
@@ -78,21 +82,54 @@ public class NhanVienForm extends CommonView<NhanVienModel, NhanVienDao> {
 		
 		TFHo = new JTextField();
 		TFHo.setColumns(10);
+		TFHo.addKeyListener(new KeyAdapter() {
+	            @Override
+	            public void keyTyped(KeyEvent e) {
+	                if (Character.isDigit(e.getKeyChar())) {
+	                    e.consume();
+	                }
+	            }
+	        });
 		
 		TFTen = new JTextField();
 		TFTen.setColumns(10);
+		TFTen.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if (Character.isDigit(e.getKeyChar())) {
+                    e.consume();
+                }
+            }
+        });
 		
 		JLabel lbCMND = new JLabel("CMND");
 		lbCMND.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		
+
 		TFCMND = new JTextField();
 		TFCMND.setColumns(10);
+		TFCMND.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if (!Character.isDigit(e.getKeyChar())) {
+                	e.consume();
+                }
+            }
+        });
 		
 		JLabel lbNgaySinh = new JLabel("Ngày sinh");
 		lbNgaySinh.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
 		TFNgaySinh = new JTextField();
 		TFNgaySinh.setColumns(10);
+		
+		TFNgaySinh.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if ( !Character.isDigit(e.getKeyChar()) && e.getKeyChar()!='/' && e.getKeyChar()!='-' ) {
+                	e.consume();
+                }
+            }
+        });
 		
 		JLabel lbTrangThaiXoa = new JLabel("Trạng thái xóa");
 		lbTrangThaiXoa.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -260,7 +297,8 @@ public class NhanVienForm extends CommonView<NhanVienModel, NhanVienDao> {
 			TFCMND.setText(tempCMND);
 			TFDiaChi.setText(tempDiaChi);
 			TFNgaySinh.setText(tempNgaySinh);
-			Luong.setValue(table.getValueAt(table.getSelectedRow(), 6));
+			// format money => integer
+			Luong.setValue(NhanVienController.formatMoneyToInteger(table.getValueAt(table.getSelectedRow(), 6)));
 			TFMaCN.setText(table.getValueAt(table.getSelectedRow(), 7).toString());
 			CheckBoxTrangThaiXoa.setSelected((boolean)table.getValueAt(table.getSelectedRow(), 8));
 		};
@@ -310,7 +348,7 @@ public class NhanVienForm extends CommonView<NhanVienModel, NhanVienDao> {
 		loadData();
 		for (NhanVienModel NhanVien : list) {
 			Object[] rowData = { NhanVien.getManv(), NhanVien.getHo(),NhanVien.getTen(),NhanVien.getSoCMND(),
-					NhanVien.getDiaChi(),NhanVien.getNgaySinh(), NhanVien.getLuong(), NhanVien.getMacn(),
+					NhanVien.getDiaChi(),NhanVien.getNgaySinh(), NhanVienController.formatObjecttoMoney(NhanVien.getLuong()), NhanVien.getMacn(),
 					NhanVien.getTrangThaiXoa()};
 			model.addRow(rowData);
 		}

@@ -50,7 +50,6 @@ public class KhoController {
 				upDateDataToDB(sql, maKho, tenKho, diaChi);
 			}
 		}
-		
 		khoView.getTable().setEnabled(true);
 		khoView.getBtnThem().setEnabled(true);
 		khoView.getBtnXoa().setEnabled(true);
