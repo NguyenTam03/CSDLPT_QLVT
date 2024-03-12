@@ -3,42 +3,35 @@ package views;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import controller.NavController;
 import main.Program;
-
 import javax.swing.JTabbedPane;
-
 import javax.swing.JLabel;
 import java.awt.Font;
-import javax.swing.ImageIcon;
-import javax.swing.SwingConstants;
-import javax.swing.UIManager;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
+import javax.swing.ImageIcon;
+import javax.swing.UIManager;
 import java.awt.Color;
 import java.awt.BorderLayout;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.SwingConstants;
 
 public class FrameMain extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JLabel lblInfoNV;
-	private JPanel panelLogout;
-	private JPanel panelExit;
-	private JPanel panelAddLogin;
-	private JPanel frmNhapXuat;
-	private JPanel panelNhanVien;
-	private JPanel panelVatTu;
-	private JPanel panelKhoHang;
-	private JPanel panelLapPhieu;
 	private JPanel panel_Main;
 	private JTabbedPane tabbedPane_Main;
-	private JPanel panel_VT, panel_NV, panel_Kho, panel_LapPhieu;
+	private JPanel panel_VT, panel_NV, panel_Kho, panel_dathang, panel_phieulap, panel_phieudat;
+	private JMenu mnNhanVien, mnVatTu, mnKho, mnLapPhieu, mnLogout, mnExit, mnCreateTK;
+	private JMenuItem mntmDatHang, mntmPhieuLap, mntmPhieuXuat;
 
-	public <E, T> FrameMain() {
+	public FrameMain() {
 		setTitle("Quản Lý Vật Tư");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1169, 690);
@@ -51,162 +44,82 @@ public class FrameMain extends JFrame {
 		JPanel panel = new JPanel();
 		panel.setBorder(new EmptyBorder(4, 4, 3, 4));
 		contentPane.add(panel, BorderLayout.NORTH);
-		
+
 		UIManager.put("TabbedPane.selected", Color.WHITE);
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 20));
 
-//		-------- Nhap xuat--------
-		frmNhapXuat = new JPanel();
-		frmNhapXuat.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		tabbedPane.addTab("Nhập Xuất", null, frmNhapXuat, null);
+//		------------Nhap Xuat---------------
+		JMenuBar menuBarNhapXuat = new JMenuBar();
+		tabbedPane.addTab("Nhập Xuất", null, menuBarNhapXuat, null);
 
-		panelNhanVien = new JPanel();
-		panelNhanVien.setLayout(new BorderLayout(0, 0));
+		mnNhanVien = new JMenu("Nhân viên");
+		mnNhanVien.setHorizontalAlignment(SwingConstants.CENTER);
+		mnNhanVien.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+		mnNhanVien.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/staff.png")));
+		menuBarNhapXuat.add(mnNhanVien);
+		
+		mnVatTu = new JMenu("Vật tư");
+		mnVatTu.setHorizontalAlignment(SwingConstants.CENTER);
+		mnVatTu.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+		mnVatTu.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/material.png")));
+		menuBarNhapXuat.add(mnVatTu);
+		
+		mnKho = new JMenu("Kho");
+		mnKho.setHorizontalAlignment(SwingConstants.CENTER);
+		mnKho.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+		mnKho.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/warehouse.png")));
+		menuBarNhapXuat.add(mnKho);
+	
+		mnLapPhieu = new JMenu("Lập phiếu");
+		mnLapPhieu.setHorizontalAlignment(SwingConstants.CENTER);
+		mnLapPhieu.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+		mnLapPhieu.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/report.png")));
+		menuBarNhapXuat.add(mnLapPhieu);
 
-		JLabel lblNV = new JLabel("Nhân Viên");
-		lblNV.setHorizontalAlignment(SwingConstants.CENTER);
-		panelNhanVien.add(lblNV, BorderLayout.SOUTH);
+		mntmDatHang = new JMenuItem("Đặt hàng");
+		mntmDatHang.setInheritsPopupMenu(true);
+		mntmDatHang.setIgnoreRepaint(true);
+		mntmDatHang.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/shopping-cart.png")));
+		mnLapPhieu.add(mntmDatHang);
 
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/staff.png")));
-		panelNhanVien.add(lblNewLabel, BorderLayout.CENTER);
+		mntmPhieuLap = new JMenuItem("Phiếu lập");
+		mntmPhieuLap.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/invoice.png")));
+		mnLapPhieu.add(mntmPhieuLap);
 
-		panelVatTu = new JPanel();
-		panelVatTu.setLayout(new BorderLayout(0, 0));
+		mntmPhieuXuat = new JMenuItem("Phiếu xuất");
+		mntmPhieuXuat.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/invoice.png")));
+		mnLapPhieu.add(mntmPhieuXuat);
 
-		JLabel lblVT = new JLabel("Vật Tư");
-		lblVT.setHorizontalAlignment(SwingConstants.CENTER);
-		panelVatTu.add(lblVT, BorderLayout.SOUTH);
+		panel.setLayout(new BorderLayout(0, 0));
+		panel.add(tabbedPane);
 
-		JLabel lblNewLabel_2 = new JLabel("");
-		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_2.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/material.png")));
-		panelVatTu.add(lblNewLabel_2);
+//		------------He Thong---------------
+		JMenuBar menuBarHeThong = new JMenuBar();
+		tabbedPane.addTab("Hệ Thống", null, menuBarHeThong, null);
 
-		panelKhoHang = new JPanel();
-		panelKhoHang.setLayout(new BorderLayout(0, 0));
+		mnLogout = new JMenu("Đăng xuất");
+		mnLogout.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+		mnLogout.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/log-out.png")));
+		menuBarHeThong.add(mnLogout);
 
-		JLabel lblKH = new JLabel("Kho Hàng");
-		lblKH.setHorizontalAlignment(SwingConstants.CENTER);
-		panelKhoHang.add(lblKH, BorderLayout.SOUTH);
+		mnExit = new JMenu("Thoát");
+		mnExit.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+		mnExit.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/exit.png")));
+		menuBarHeThong.add(mnExit);
 
-		JLabel lblNewLabel_3 = new JLabel("");
-		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_3.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/warehouse.png")));
-		panelKhoHang.add(lblNewLabel_3);
-
-		panelLapPhieu = new JPanel();
-		panelLapPhieu.setLayout(new BorderLayout(0, 0));
-
-		JLabel lblNewLabel_1_3 = new JLabel("Lập Phiếu");
-		lblNewLabel_1_3.setHorizontalAlignment(SwingConstants.CENTER);
-		panelLapPhieu.add(lblNewLabel_1_3, BorderLayout.SOUTH);
-
-		JLabel lblNewLabel_4 = new JLabel("");
-		lblNewLabel_4.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_4.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/report.png")));
-		panelLapPhieu.add(lblNewLabel_4);
-
-		JLabel lblNewLabel_5 = new JLabel("Quản Lý Nhập Xuất");
-		lblNewLabel_5.setHorizontalAlignment(SwingConstants.CENTER);
-		GroupLayout gl_frmNhapXuat = new GroupLayout(frmNhapXuat);
-		gl_frmNhapXuat.setHorizontalGroup(gl_frmNhapXuat.createParallelGroup(Alignment.LEADING).addGroup(gl_frmNhapXuat
-				.createSequentialGroup()
-				.addGroup(gl_frmNhapXuat.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_frmNhapXuat.createSequentialGroup().addGap(38)
-								.addComponent(panelNhanVien, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
-								.addGap(43)
-								.addComponent(panelVatTu, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
-								.addGap(43)
-								.addComponent(panelKhoHang, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE)
-								.addGap(42).addComponent(panelLapPhieu, GroupLayout.PREFERRED_SIZE, 65,
-										GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_frmNhapXuat.createSequentialGroup().addGap(131).addComponent(lblNewLabel_5,
-								GroupLayout.PREFERRED_SIZE, 233, GroupLayout.PREFERRED_SIZE)))
-				.addContainerGap(685, Short.MAX_VALUE)));
-		gl_frmNhapXuat.setVerticalGroup(gl_frmNhapXuat.createParallelGroup(Alignment.LEADING).addGroup(gl_frmNhapXuat
-				.createSequentialGroup()
-				.addGroup(gl_frmNhapXuat.createParallelGroup(Alignment.LEADING)
-						.addComponent(panelKhoHang, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(panelVatTu, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addGroup(gl_frmNhapXuat.createParallelGroup(Alignment.TRAILING, false)
-								.addComponent(panelLapPhieu, Alignment.LEADING, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(panelNhanVien, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 69,
-										GroupLayout.PREFERRED_SIZE)))
-				.addPreferredGap(ComponentPlacement.RELATED, 9, Short.MAX_VALUE).addComponent(lblNewLabel_5)));
-		frmNhapXuat.setLayout(gl_frmNhapXuat);
-
-//		--------Bao Cao--------
-		JPanel frmBaoCao = new JPanel();
-		tabbedPane.addTab("Báo Cáo", null, frmBaoCao, null);
-		frmBaoCao.setLayout(null);
-
-//		-------- He Thong--------
-		JPanel frmHeThong = new JPanel();
-		tabbedPane.addTab("Hệ Thống", null, frmHeThong, null);
-
-		panelLogout = new JPanel();
-		panelLogout.setLayout(new BorderLayout(0, 0));
-
-		JLabel lblLogout = new JLabel("Đăng Xuất");
-		lblLogout.setHorizontalAlignment(SwingConstants.CENTER);
-		panelLogout.add(lblLogout, BorderLayout.SOUTH);
-
-		JLabel lblIconLogout = new JLabel("");
-		lblIconLogout.setHorizontalAlignment(SwingConstants.CENTER);
-		lblIconLogout.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/log-out.png")));
-		panelLogout.add(lblIconLogout);
-
-		panelExit = new JPanel();
-		panelExit.setLayout(new BorderLayout(0, 0));
-
-		JLabel lblExit = new JLabel("Thoát");
-		lblExit.setHorizontalAlignment(SwingConstants.CENTER);
-		panelExit.add(lblExit, BorderLayout.SOUTH);
-
-		JLabel lblIconExit = new JLabel("");
-		lblIconExit.setHorizontalAlignment(SwingConstants.CENTER);
-		lblIconExit.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/exit.png")));
-		panelExit.add(lblIconExit);
-
-		panelAddLogin = new JPanel();
+		mnCreateTK = new JMenu("Tạo tài khoản");
+		mnCreateTK.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+		mnCreateTK.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/plus.png")));
+		menuBarHeThong.add(mnCreateTK);
 
 		if (Program.mGroup.equals("USER")) {
-			panelAddLogin.setBackground(new Color(1f, 1f, 1f, .5f));
+			mnCreateTK.setEnabled(false);
 		}
-		panel.setLayout(new BorderLayout(0, 0));
-		panelAddLogin.setLayout(new BorderLayout(0, 0));
 
-		JLabel lblAddLogin = new JLabel("Tạo tài khoản");
-		lblAddLogin.setHorizontalAlignment(SwingConstants.CENTER);
-		panelAddLogin.add(lblAddLogin, BorderLayout.SOUTH);
-
-		JLabel lblIconAdd = new JLabel("");
-		lblIconAdd.setBackground(Color.WHITE);
-		lblIconAdd.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/plus.png")));
-		lblIconAdd.setHorizontalAlignment(SwingConstants.CENTER);
-		panelAddLogin.add(lblIconAdd);
-		GroupLayout gl_frmHeThong = new GroupLayout(frmHeThong);
-		gl_frmHeThong.setHorizontalGroup(gl_frmHeThong.createParallelGroup(Alignment.LEADING).addGroup(gl_frmHeThong
-				.createSequentialGroup().addGap(36)
-				.addComponent(panelLogout, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE).addGap(52)
-				.addComponent(panelExit, GroupLayout.PREFERRED_SIZE, 63, GroupLayout.PREFERRED_SIZE).addGap(53)
-				.addComponent(panelAddLogin, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE).addGap(767)));
-		gl_frmHeThong.setVerticalGroup(gl_frmHeThong.createParallelGroup(Alignment.LEADING).addGroup(gl_frmHeThong
-				.createSequentialGroup()
-				.addGroup(gl_frmHeThong.createParallelGroup(Alignment.TRAILING)
-						.addComponent(panelAddLogin, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
-						.addGroup(Alignment.LEADING, gl_frmHeThong.createParallelGroup(Alignment.TRAILING, false)
-								.addComponent(panelExit, Alignment.LEADING, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(panelLogout, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 62,
-										Short.MAX_VALUE)))
-				.addContainerGap(30, Short.MAX_VALUE)));
-		frmHeThong.setLayout(gl_frmHeThong);
-		panel.add(tabbedPane);
+//		------------Bao Cao---------------
+		JMenuBar menuBarReport = new JMenuBar();
+		tabbedPane.addTab("Báo Cáo", null, menuBarReport, null);
 
 		panel_Main = new JPanel();
 		contentPane.add(panel_Main, BorderLayout.CENTER);
@@ -219,17 +132,31 @@ public class FrameMain extends JFrame {
 		panel_VT = new JPanel();
 		panel_VT.setLayout(new BorderLayout(0, 0));
 		panel_VT.add(vatTuView, BorderLayout.CENTER);
+		vatTuView.getBtnThoat().addActionListener(l -> {
+			tabbedPane_Main.removeTabAt(tabbedPane_Main.getSelectedIndex());
+		});
 
 		NhanVienForm nhanVienView = new NhanVienForm();
 		panel_NV = new JPanel();
-		panel_NV.setLayout(new BorderLayout(0,0));
+		panel_NV.setLayout(new BorderLayout(0, 0));
 		panel_NV.add(nhanVienView, BorderLayout.CENTER);
-		
+		nhanVienView.getBtnThoat().addActionListener(l -> {
+			tabbedPane_Main.removeTabAt(tabbedPane_Main.getSelectedIndex());
+		});
+
 		KhoForm khoView = new KhoForm();
 		panel_Kho = new JPanel();
-		panel_Kho.setLayout(new BorderLayout(0,0));
+		panel_Kho.setLayout(new BorderLayout(0, 0));
 		panel_Kho.add(khoView, BorderLayout.CENTER);
 		khoView.getBtnThoat().addActionListener(l -> {
+			tabbedPane_Main.removeTabAt(tabbedPane_Main.getSelectedIndex());
+		});
+		
+		DatHangForm datHangView = new DatHangForm();
+		panel_dathang = new JPanel();
+		panel_dathang.setLayout(new BorderLayout(0, 0));
+		panel_dathang.add(datHangView, BorderLayout.CENTER);
+		datHangView.getBtnThoat().addActionListener(l -> {
 			tabbedPane_Main.removeTabAt(tabbedPane_Main.getSelectedIndex());
 		});
 		
@@ -245,32 +172,44 @@ public class FrameMain extends JFrame {
 		ac.initController();
 	}
 
-	public JPanel getPanelLogout() {
-		return panelLogout;
+	public JMenu getMnNhanVien() {
+		return mnNhanVien;
 	}
 
-	public JPanel getPanelExit() {
-		return panelExit;
+	public JMenu getMnVatTu() {
+		return mnVatTu;
 	}
 
-	public JPanel getPanelAddLogin() {
-		return panelAddLogin;
+	public JMenu getMnKho() {
+		return mnKho;
 	}
 
-	public JPanel getPanelNhanVien() {
-		return panelNhanVien;
+	public JMenu getMnLapPhieu() {
+		return mnLapPhieu;
 	}
 
-	public JPanel getPanelVatTu() {
-		return panelVatTu;
+	public JMenu getMnLogout() {
+		return mnLogout;
 	}
 
-	public JPanel getPanelKhoHang() {
-		return panelKhoHang;
+	public JMenu getMnExit() {
+		return mnExit;
 	}
 
-	public JPanel getPanelLapPhieu() {
-		return panelLapPhieu;
+	public JMenu getMnCreateTK() {
+		return mnCreateTK;
+	}
+
+	public JMenuItem getMntmDatHang() {
+		return mntmDatHang;
+	}
+
+	public JMenuItem getMntmPhieuLap() {
+		return mntmPhieuLap;
+	}
+
+	public JMenuItem getMntmPhieuXuat() {
+		return mntmPhieuXuat;
 	}
 
 	public JTabbedPane getTabbedPane_Main() {
@@ -284,12 +223,13 @@ public class FrameMain extends JFrame {
 	public JPanel getPanel_NV() {
 		return panel_NV;
 	}
-	
+
 	public JPanel getPanel_Kho() {
 		return panel_Kho;
 	}
 
-	public JPanel getPanel_LapPhieu() {
-		return panel_LapPhieu;
+	public JPanel getPanel_dathang() {
+		return panel_dathang;
 	}
+	
 }

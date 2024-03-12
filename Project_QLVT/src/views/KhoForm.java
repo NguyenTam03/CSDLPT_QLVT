@@ -13,15 +13,12 @@ import dao.KhoDao;
 import main.Program;
 import model.KhoModel;
 
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 
 import javax.swing.JTextField;
 import java.awt.event.ItemEvent;
 import java.sql.SQLException;
-
-
 
 public class KhoForm extends CommonView<KhoModel, KhoDao> {
 
@@ -36,11 +33,11 @@ public class KhoForm extends CommonView<KhoModel, KhoDao> {
 	 */
 	public KhoForm() {
 		super();
-		
+
 		JPanel panel_2 = new JPanel();
 		panel_2.setForeground(new Color(207, 207, 207));
 		add(panel_2, BorderLayout.SOUTH);
-		
+
 		JLabel lblMaKho = new JLabel("Mã Kho");
 		lblMaKho.setFont(new Font("Tahoma", Font.PLAIN, 14));
 
@@ -67,7 +64,7 @@ public class KhoForm extends CommonView<KhoModel, KhoDao> {
 		textFieldMaCN.setEditable(false);
 		textFieldMaCN.setColumns(10);
 		textFieldMaCN.setText(Program.maCN);
-		
+
 		GroupLayout gl_panel_2 = new GroupLayout(panel_2);
 		gl_panel_2.setHorizontalGroup(gl_panel_2.createParallelGroup(Alignment.LEADING).addGroup(gl_panel_2
 				.createSequentialGroup().addGap(85)
@@ -104,9 +101,9 @@ public class KhoForm extends CommonView<KhoModel, KhoDao> {
 								.addComponent(textFieldDiaChi).addComponent(textFieldMaCN))
 						.addGap(52)));
 		panel_2.setLayout(gl_panel_2);
-		
+
 		panel_4.remove(getBtnChuyenChiNhanh());
-		
+
 //		load chi nhánh lên combobox
 		loadChiNhanh();
 //		load dữ liệu từ chi nhánh lên table
@@ -114,23 +111,21 @@ public class KhoForm extends CommonView<KhoModel, KhoDao> {
 		loadDataIntoTable();
 //		CONGTY có thể chọn chi nhánh để xem dữ liệu
 		comboBox.addItemListener(l -> loadDataOtherServer(l));
-		
+
 //		lắng nghe sự kiện chọn row đồng thời in dữ liệu ra textfield
 		selectionListener = e -> {
-		    textFieldMaKho.setText(table.getValueAt(table.getSelectedRow(), 0).toString());
-		    textFieldTenKho.setText(table.getValueAt(table.getSelectedRow(), 1).toString());
-		    textFieldDiaChi.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
+			textFieldMaKho.setText(table.getValueAt(table.getSelectedRow(), 0).toString());
+			textFieldTenKho.setText(table.getValueAt(table.getSelectedRow(), 1).toString());
+			textFieldDiaChi.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
 		};
 
 		// Thêm sự kiện chọn
 		table.getSelectionModel().addListSelectionListener(selectionListener);
-		
+
 //		Listener event
 		KhoController ac = new KhoController(this);
 		ac.initController();
 	}
-	
-	
 
 	public JTextField getTextFieldMaKho() {
 		return textFieldMaKho;
@@ -156,7 +151,6 @@ public class KhoForm extends CommonView<KhoModel, KhoDao> {
 		}
 	}
 
-	
 	private void loadDataOtherServer(ItemEvent l) {
 		if (l.getStateChange() == ItemEvent.SELECTED) {
 			if (Program.conn != null) {

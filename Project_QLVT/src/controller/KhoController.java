@@ -3,13 +3,16 @@ package controller;
 import javax.swing.JOptionPane;
 
 import main.Program;
+import model.KhoModel;
 import views.KhoForm;
 
 public class KhoController {
 	private KhoForm khoView;
-
+	private KhoModel khoModel;
+	
 	public KhoController(KhoForm khoView) {
 		this.khoView = khoView;
+		khoModel = new KhoModel();
 	}
 
 	public void initController() {
@@ -23,7 +26,6 @@ public class KhoController {
 		khoView.getBtnThem().setEnabled(false);
 		khoView.getBtnXoa().setEnabled(false);
 		khoView.getBtnLamMoi().setEnabled(false);
-		khoView.getBtnChuyenChiNhanh().setEnabled(false);
 		khoView.getBtnThoat().setEnabled(false);
 		
 		khoView.getTextFieldMaKho().setEditable(true);
@@ -40,56 +42,60 @@ public class KhoController {
 		int reply = JOptionPane.showConfirmDialog(null, "Bạn có muốn ghi dữ liệu vào bảng không?", "Confirm",
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 		if (reply == JOptionPane.YES_OPTION) {
-			String sql = "";
 			String maKho = khoView.getTextFieldMaKho().getText().trim();
 			String tenKho = khoView.getTextFieldTenKho().getText().trim();
 			String diaChi = khoView.getTextFieldDiaChi().getText().trim();
-			if (khoView.getBtnThem().isSelected()) {
-				addDataToDB(sql, maKho, tenKho, diaChi);
+			String macn = khoView.getTextFieldMaCN().getText();
+			khoModel.setMaKho(maKho);
+			khoModel.setTenKho(tenKho);
+			khoModel.setDiaChi(diaChi);
+			khoModel.setMacn(macn);
+			if (!khoView.getBtnThem().isEnabled()) {
+				addDataToDB(khoModel);
 			}else {
-				upDateDataToDB(sql, maKho, tenKho, diaChi);
+				upDateDataToDB(khoModel);
 			}
 		}
 		khoView.getTable().setEnabled(true);
 		khoView.getBtnThem().setEnabled(true);
 		khoView.getBtnXoa().setEnabled(true);
+		khoView.getBtnLamMoi().setEnabled(true);
+		khoView.getBtnThoat().setEnabled(true);
 	}
 
-	private void addDataToDB(String sql, String maKho, String tenKho, String diaChi) {
-		if (maKho.equals("") || tenKho.equals("")) {
+	private void addDataToDB(KhoModel khoModel) {
+		if (khoModel.getMaKho().equals("") || khoModel.getTenKho().equals("")) {
 			JOptionPane.showMessageDialog(null, "Hãy điền đầy đủ thông tin", "Ghi", JOptionPane.WARNING_MESSAGE);
 			return;
 		}
 //		Execute query
-		sql = "{? = call dbo.sp_TraCuu_MaKho(?)}";
-		int res = Program.ExecSqlNoQuery(sql, maKho);
+		String sql = "{? = call dbo.sp_TraCuu_MaKho(?)}";
+		int res = Program.ExecSqlNoQuery(sql, khoModel.getMaKho());
 //		execute fail
 		if (res == -1)
 			return;
 //		execute return 1, dữ liệu đã tồn tại
 		if (res == 1) {
-			JOptionPane.showMessageDialog(null, "Đã tồn tại mã kho " + maKho + " nay, vui lòng nhập lại", "Warning",
+			JOptionPane.showMessageDialog(null, "Đã tồn tại mã kho " + khoModel.getMaKho() + " nay, vui lòng nhập lại", "Warning",
 					JOptionPane.WARNING_MESSAGE);
 		} else {
-			sql = "INSERT INTO Kho (MAKHO, TENKHO, DIACHI, MACN) VALUES (?, ?, ?, ?)";
-			if (Program.ExecSqlDML(sql, maKho, tenKho, diaChi, khoView.getTextFieldMaCN().getText()) == -1)
-				return;
+			if (khoView.getDao().insert(khoModel) == -1) return;
 
-			Object[] newRow = { maKho, tenKho, diaChi, khoView.getTextFieldMaCN().getText() };
+			Object[] newRow = { khoModel.getMaKho(), khoModel.getTenKho(), khoModel.getDiaChi(), khoModel.getMacn() };
 			khoView.getModel().addRow(newRow);
 			JOptionPane.showMessageDialog(null, "Ghi thành công!");
 		}
 		
 	}
 	
-	private void upDateDataToDB(String sql, String maKho, String tenKho, String diaChi) {
-		if (maKho.equals("") || tenKho.equals("")) {
+	private void upDateDataToDB(KhoModel khoModel) {
+		if (khoModel.getTenKho().equals("")) {
 			JOptionPane.showMessageDialog(null, "Hãy điền đầy đủ thông tin", "Ghi", JOptionPane.WARNING_MESSAGE);
 			return;
 		}
-		sql = "UPDATE Kho SET TENKHO = ?, DIACHI = ? WHERE MAKHO = ?";
-		if (Program.ExecSqlDML(sql, tenKho, diaChi, maKho) == -1)
-			return;
+		if (khoView.getDao().update(khoModel) == -1) return;
+		khoView.getTable().setValueAt(khoModel.getTenKho(), khoView.getTable().getSelectedRow(), 1);
+		khoView.getTable().setValueAt(khoModel.getDiaChi(), khoView.getTable().getSelectedRow(), 2);
 		JOptionPane.showMessageDialog(null, "Ghi thành công!");
 	}
 	
@@ -98,17 +104,18 @@ public class KhoController {
 		khoView.getModel().setRowCount(0);
 		khoView.loadDataIntoTable();
 		khoView.getTable().getSelectionModel().addListSelectionListener(khoView.getSelectionListener());
+		khoView.getTextFieldMaKho().setText("");
+		khoView.getTextFieldTenKho().setText("");
+		khoView.getTextFieldDiaChi().setText("");
 	}
 	
 	private void deleteData() {
 		int reply = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa dữ liệu này không?", "Confirm",
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 		if (reply == JOptionPane.NO_OPTION) return;
-		// Execute sql delete kho table
-		String maKho = khoView.getTextFieldMaKho().getText();
-		String sql = "DELETE FROM Kho WHERE MAKHO = ?";
+		khoModel.setMaKho(khoView.getTextFieldMaKho().getText());
 		// not execute 
-		if (Program.ExecSqlDML(sql, maKho) == -1)
+		if (khoView.getDao().delete(khoModel) == -1)
 			return;
 		// delete selected row in table
 		if (khoView.getTable().getSelectedRow() != -1) {
