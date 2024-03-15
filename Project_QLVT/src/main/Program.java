@@ -9,9 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-
 import javax.swing.JOptionPane;
-import javax.swing.UIManager;
 
 import views.LoginForm;
 
@@ -21,6 +19,7 @@ public class Program {
 
 	public static ResultSet myReader;
 	public static String servername = "XUAN_NAM";
+
 	public static String username = "";
 	public static String mlogin = "";
 	public static String password = "";
@@ -28,6 +27,7 @@ public class Program {
 	public static String database = "QLVT_DATHANG";
 	public static String remotelogin = "htkn";
 	public static String remotepassword = "12";
+
 
 	public static String mloginDN = "";
 	public static String passwordDN = "";
@@ -136,6 +136,7 @@ public class Program {
     	Program.mlogin = Program.remotelogin;
     	Program.password = Program.remotepassword; 
     	Program.servername = "XUAN_NAM";
+
     	Program.Connect();
         HashMap<String, String> server = new LinkedHashMap<String, String>();
         try {

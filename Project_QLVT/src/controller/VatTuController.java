@@ -52,9 +52,10 @@ public class VatTuController {
 			String tenVT = vatTuForm.getTextFieldTenVT().getText().trim();
 			String donVi = vatTuForm.getTextFieldTenVT().getText().trim();
 			String soLuong = vatTuForm.getSpinner().getValue().toString().trim();
-			
+
 			String cauTruyVanHoanTac = "";
 			if (vatTuForm.getBtnThem().isSelected()) {
+
 				addDataToDB(sql, maVT, tenVT, donVi, soLuong);
 				cauTruyVanHoanTac = "DELETE Vattu "
 						+ "WHERE MAVT = " + maVT;
@@ -69,6 +70,9 @@ public class VatTuController {
 		vatTuForm.getTable().setEnabled(true);
 		vatTuForm.getBtnThem().setEnabled(true);
 		vatTuForm.getBtnXoa().setEnabled(true);
+		vatTuForm.getBtnLamMoi().setEnabled(true);
+		vatTuForm.getBtnChuyenChiNhanh().setEnabled(true);
+		vatTuForm.getBtnThoat().setEnabled(true);
 	}
 
 	private void addDataToDB(String sql, String maVT, String tenVT, String donVi, String soLuong) {
