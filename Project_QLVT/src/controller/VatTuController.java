@@ -18,6 +18,12 @@ public class VatTuController {
 		vatTuForm.getBtnGhi().addActionListener(l -> pushDataToDB());
 		vatTuForm.getBtnLamMoi().addActionListener(l -> reFreshData());
 		vatTuForm.getBtnXoa().addActionListener(l -> deleteData());
+		vatTuForm.getBtnThoat().addActionListener(l -> exitVatTu());
+	}
+	
+	private void exitVatTu() {
+		Program.frmMain.getTabbedPane_Main().removeTabAt(Program.frmMain.getTabbedPane_Main().getSelectedIndex());
+		Program.frmMain.getPanel_Kho().remove(vatTuForm);
 	}
 
 	private void addVatTu() {

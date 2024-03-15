@@ -7,10 +7,14 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
+
 import javax.swing.JOptionPane;
 
+import views.FrameMain;
 import views.LoginForm;
 
 public class Program {
@@ -33,10 +37,12 @@ public class Program {
 	public static String mHoten = "";
 
 	public static int mChinhanh = 0;
-	public static String maCN = "";
+	public static List<String> macn;
 	public static HashMap<String, String> servers;
-	public static LoginForm frmChinh;
-
+	public static LoginForm login;
+	
+	public static FrameMain frmMain;
+	
 	public static int Connect() {
 		if (Program.conn != null) {
 			try {
@@ -130,6 +136,22 @@ public class Program {
 		return -1;
 	}
 	
+	private static List<String> getMaCn() {
+		String sql = "SELECT MACN FROM ChiNhanh";
+		List<String> macn = new ArrayList<String>();
+		Program.myReader = Program.ExecSqlDataReader(sql);
+		try {
+			while (Program.myReader.next()) {
+				macn.add(Program.myReader.getString(1).trim());
+			}
+			return macn;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public static HashMap<String, String> getServer() {
     	Program.mlogin = Program.remotelogin;
     	Program.password = Program.remotepassword; 
@@ -146,7 +168,14 @@ public class Program {
        
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }finally {
+        	Program.macn = Program.getMaCn();
+			try {
+				Program.conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
         
         return server;
     }
@@ -156,8 +185,8 @@ public class Program {
 			public void run() {
 				try {
 //					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-					frmChinh = new LoginForm();
-					frmChinh.setVisible(true);
+					login = new LoginForm();
+					login.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
