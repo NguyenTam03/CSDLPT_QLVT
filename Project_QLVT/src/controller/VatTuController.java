@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.Stack;
+
 import javax.swing.JOptionPane;
 
 import main.Program;
@@ -7,6 +9,7 @@ import views.VatTuForm;
 
 public class VatTuController {
 	private VatTuForm vatTuForm;
+	private Stack<String> undoList;
 
 	public VatTuController(VatTuForm vatTuForm) {
 		super();
@@ -49,11 +52,19 @@ public class VatTuController {
 			String tenVT = vatTuForm.getTextFieldTenVT().getText().trim();
 			String donVi = vatTuForm.getTextFieldTenVT().getText().trim();
 			String soLuong = vatTuForm.getSpinner().getValue().toString().trim();
+			
+			String cauTruyVanHoanTac = "";
 			if (vatTuForm.getBtnThem().isSelected()) {
 				addDataToDB(sql, maVT, tenVT, donVi, soLuong);
+				cauTruyVanHoanTac = "DELETE Vattu "
+						+ "WHERE MAVT = " + maVT;
+				
 			} else {
 				upDateDataToDB(sql, maVT, tenVT, donVi, soLuong);
+				cauTruyVanHoanTac = "UPDATE ";
 			}
+			
+			undoList.push(cauTruyVanHoanTac);
 		}
 		vatTuForm.getTable().setEnabled(true);
 		vatTuForm.getBtnThem().setEnabled(true);
@@ -114,6 +125,13 @@ public class VatTuController {
 		// Execute sql delete kho table
 		String maVT = vatTuForm.getTextFieldMaVT().getText();
 		String sql = "DELETE FROM Vattu WHERE MAVT = ?";
+		
+		String cauTruyVanHoanTac = "INSERT INTO Vattu( MAVT,TENVT,DVT,SOLUONGTON) " +
+				" VALUES( '" + vatTuForm.getTextFieldMaVT().getText() + "','" +
+				vatTuForm.getTextFieldTenVT().getText() + "','" +
+				vatTuForm.getTextFieldDonVi().getText() + "', " +
+				vatTuForm.getSpinner().getValue() + " ) ";
+		undoList.push(cauTruyVanHoanTac);
 		// not execute
 		if (Program.ExecSqlDML(sql, maVT) == -1)
 			return;
@@ -130,9 +148,28 @@ public class VatTuController {
 
 			vatTuForm.getTextFieldDonVi().setText("");
 
-			vatTuForm.getSpinner().setValue("0");
+			vatTuForm.getSpinner().setValue(0);
 		}
 
+	}
+	
+	private void undo() {
+		if (vatTuForm.getBtnThem().isSelected()) {
+			vatTuForm.getBtnThem().setEnabled(true);
+			vatTuForm.getBtnXoa().setEnabled(true);
+			vatTuForm.getBtnLamMoi().setEnabled(true);
+			vatTuForm.getBtnHoanTac().setEnabled(false);
+			vatTuForm.getBtnThoat().setEnabled(true);
+
+			vatTuForm.getTextFieldMaVT().setEditable(false);
+		}
+		if (undoList.empty()) {
+			JOptionPane.showMessageDialog(null, "Không còn thao tác nào để khôi phục", "Warning", JOptionPane.INFORMATION_MESSAGE);
+			vatTuForm.getBtnHoanTac().setEnabled(false);
+			return;
+		}
+		String cauTruyVanHoanTac = undoList.pop().toString();
+		Program.ExecSqlNoQuery(cauTruyVanHoanTac);
 	}
 
 }
