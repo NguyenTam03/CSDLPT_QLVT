@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import main.Program;
 import model.DatHangModel;
-import model.KhoModel;
 
 public class DatHangDao extends IAbstractDao<DatHangModel> {
 	public DatHangDao() {
@@ -17,7 +16,7 @@ public class DatHangDao extends IAbstractDao<DatHangModel> {
 		Program.myReader = Program.ExecSqlDataReader(sql);
 		
 		try {
-			 setColCount(Program.myReader.getMetaData().getColumnCount() - 1);;
+			 setColCount(Program.myReader.getMetaData().getColumnCount() - 1);
 			 String[] colName = new String[getColCount()];
 			for (int i = 0; i < getColCount(); i++) {
 				colName[i] = Program.myReader.getMetaData().getColumnName(i + 1);
