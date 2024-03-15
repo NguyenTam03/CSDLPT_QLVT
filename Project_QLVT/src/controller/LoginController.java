@@ -49,15 +49,10 @@ public class LoginController {
             	Program.username =  Program.myReader.getString(1);	
             	Program.mHoten = Program.myReader.getString(2);
             	Program.mGroup = Program.myReader.getString(3);
-            	// Lấy mã chi nhánh khi đăng nhập vào server chi nhánh đó
-            	strLenh = "SELECT * FROM ChiNhanh";
-            	Program.myReader = Program.ExecSqlDataReader(strLenh);
-            	if (Program.myReader == null) return;
-            	Program.myReader.next();
-            	Program.maCN = Program.myReader.getString(1);
             	
             	loginForm.dispose();
-            	new FrameMain().setVisible(true);
+            	Program.frmMain = new FrameMain();
+            	Program.frmMain.setVisible(true);
             }
             catch(Exception e1) {
     			e1.printStackTrace();

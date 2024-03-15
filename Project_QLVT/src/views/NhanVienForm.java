@@ -9,22 +9,15 @@ import javax.swing.JCheckBox;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
 import java.awt.Font;
-
 import javax.swing.LayoutStyle.ComponentPlacement;
-
-import controller.KhoController;
 import controller.NhanVienController;
 import dao.NhanVienDao;
 import main.Program;
 import model.NhanVienModel;
-
-
 import java.awt.BorderLayout;
 import java.awt.Color;
-
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
-
 import java.awt.event.ItemEvent;
 import java.sql.SQLException;
 import java.text.NumberFormat;
@@ -371,9 +364,10 @@ public class NhanVienForm extends CommonView<NhanVienModel, NhanVienDao> {
 			Program.servername = Program.servers.get(comboBox.getSelectedItem());
 			Program.mlogin = Program.remotelogin;
 			Program.password = Program.remotepassword;
+			Program.mChinhanh = comboBox.getSelectedIndex();
 			if (Program.Connect() == 0)
 				return;
-			TFMaCN.setText(Program.maCN);
+			TFMaCN.setText(Program.macn.get(Program.mChinhanh));
 			table.getSelectionModel().removeListSelectionListener(selectionListener);
 			model.setRowCount(0);
 			loadDataIntoTable();

@@ -52,7 +52,7 @@ public class NhanVienController {
 		NhanVienCtrl.getTFCMND().setText("");
 		NhanVienCtrl.getTFDiaChi().setText("");
 		NhanVienCtrl.getNgaySinh().setDate(null);
-		NhanVienCtrl.getTFMaCN().setText(Program.maCN);
+		NhanVienCtrl.getTFMaCN().setText(Program.macn.get(Program.mChinhanh));
 		NhanVienCtrl.getTable().setEnabled(false);
 	}
 
@@ -177,9 +177,9 @@ public class NhanVienController {
 //            Program.ExecSqlDML(queryUndo);
 		}
 		else {
-			if (Program.ExecSqlNonQuery(queryUndo) != 0)
-				JOptionPane.showConfirmDialog(null, "Khôi phục thất bại", "Thông Báo", JOptionPane.CLOSED_OPTION);
-				return;
+//			if (Program.ExecSqlNonQuery(queryUndo) != 0)
+//				JOptionPane.showConfirmDialog(null, "Khôi phục thất bại", "Thông Báo", JOptionPane.CLOSED_OPTION);
+//				return;
 		}
 		refreshData();
 		
