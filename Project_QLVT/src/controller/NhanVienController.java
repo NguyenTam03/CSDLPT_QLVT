@@ -1,6 +1,5 @@
 package controller;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
 import javax.swing.JOptionPane;
@@ -18,6 +17,7 @@ public class NhanVienController {
 		NhanVienCtrl.getBtnThem().addActionListener(e -> addNhanVien());
 		NhanVienCtrl.getBtnGhi().addActionListener(e -> pushDataToDB());
 	}
+	
 	public void addNhanVien() {
 		NhanVienCtrl.getBtnThem().setEnabled(false);
 		NhanVienCtrl.getBtnXoa().setEnabled(false);
@@ -42,7 +42,7 @@ public class NhanVienController {
 		NhanVienCtrl.getTFCMND().setText("");
 		NhanVienCtrl.getTFDiaChi().setText("");
 		NhanVienCtrl.getTFNgaySinh().setText("");
-		NhanVienCtrl.getTFMaCN().setText(Program.maCN);
+		NhanVienCtrl.getTFMaCN().setText(Program.macn.get(Program.mChinhanh));
 		NhanVienCtrl.getTable().setEnabled(false);
 	}
 	// push or update info into Data

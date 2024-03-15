@@ -5,6 +5,10 @@ public class CTAbstractModel {
 	private Integer soLuong;
 	private Double donGia;
 	
+	public CTAbstractModel() {
+		
+	}
+	
 	public CTAbstractModel(String mavt, Integer soLuong, Double donGia) {
 		
 		this.mavt = mavt;

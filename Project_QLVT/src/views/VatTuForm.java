@@ -4,14 +4,12 @@ import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import java.awt.Font;
-
-
+import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
-
-
+import javax.swing.table.DefaultTableModel;
 import dao.VatTuDao;
 import model.VattuModel;
 

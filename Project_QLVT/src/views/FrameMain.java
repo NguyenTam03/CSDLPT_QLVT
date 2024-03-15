@@ -8,9 +8,6 @@ import main.Program;
 import javax.swing.JTabbedPane;
 import javax.swing.JLabel;
 import java.awt.Font;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 import java.awt.Color;
@@ -58,19 +55,19 @@ public class FrameMain extends JFrame {
 		mnNhanVien.setFont(new Font("Segoe UI", Font.PLAIN, 13));
 		mnNhanVien.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/staff.png")));
 		menuBarNhapXuat.add(mnNhanVien);
-		
+
 		mnVatTu = new JMenu("Vật tư");
 		mnVatTu.setHorizontalAlignment(SwingConstants.CENTER);
 		mnVatTu.setFont(new Font("Segoe UI", Font.PLAIN, 13));
 		mnVatTu.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/material.png")));
 		menuBarNhapXuat.add(mnVatTu);
-		
+
 		mnKho = new JMenu("Kho");
 		mnKho.setHorizontalAlignment(SwingConstants.CENTER);
 		mnKho.setFont(new Font("Segoe UI", Font.PLAIN, 13));
 		mnKho.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/warehouse.png")));
 		menuBarNhapXuat.add(mnKho);
-	
+
 		mnLapPhieu = new JMenu("Lập phiếu");
 		mnLapPhieu.setHorizontalAlignment(SwingConstants.CENTER);
 		mnLapPhieu.setFont(new Font("Segoe UI", Font.PLAIN, 13));
@@ -128,38 +125,18 @@ public class FrameMain extends JFrame {
 		tabbedPane_Main = new JTabbedPane(JTabbedPane.TOP);
 		panel_Main.add(tabbedPane_Main, BorderLayout.CENTER);
 
-		VatTuForm vatTuView = new VatTuForm();
 		panel_VT = new JPanel();
 		panel_VT.setLayout(new BorderLayout(0, 0));
-		panel_VT.add(vatTuView, BorderLayout.CENTER);
-		vatTuView.getBtnThoat().addActionListener(l -> {
-			tabbedPane_Main.removeTabAt(tabbedPane_Main.getSelectedIndex());
-		});
 
-		NhanVienForm nhanVienView = new NhanVienForm();
 		panel_NV = new JPanel();
 		panel_NV.setLayout(new BorderLayout(0, 0));
-		panel_NV.add(nhanVienView, BorderLayout.CENTER);
-		nhanVienView.getBtnThoat().addActionListener(l -> {
-			tabbedPane_Main.removeTabAt(tabbedPane_Main.getSelectedIndex());
-		});
 
-		KhoForm khoView = new KhoForm();
 		panel_Kho = new JPanel();
 		panel_Kho.setLayout(new BorderLayout(0, 0));
-		panel_Kho.add(khoView, BorderLayout.CENTER);
-		khoView.getBtnThoat().addActionListener(l -> {
-			tabbedPane_Main.removeTabAt(tabbedPane_Main.getSelectedIndex());
-		});
-		
-		DatHangForm datHangView = new DatHangForm();
+
 		panel_dathang = new JPanel();
 		panel_dathang.setLayout(new BorderLayout(0, 0));
-		panel_dathang.add(datHangView, BorderLayout.CENTER);
-		datHangView.getBtnThoat().addActionListener(l -> {
-			tabbedPane_Main.removeTabAt(tabbedPane_Main.getSelectedIndex());
-		});
-		
+
 		lblInfoNV = new JLabel(
 				"MANV: " + Program.username + " HOTEN: " + Program.mHoten + " VAI TRO:" + Program.mGroup);
 		lblInfoNV.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -182,10 +159,6 @@ public class FrameMain extends JFrame {
 
 	public JMenu getMnKho() {
 		return mnKho;
-	}
-
-	public JMenu getMnLapPhieu() {
-		return mnLapPhieu;
 	}
 
 	public JMenu getMnLogout() {
@@ -231,5 +204,5 @@ public class FrameMain extends JFrame {
 	public JPanel getPanel_dathang() {
 		return panel_dathang;
 	}
-	
+
 }
