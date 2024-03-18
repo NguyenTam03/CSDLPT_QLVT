@@ -1,5 +1,6 @@
 package dao;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -60,9 +61,9 @@ public class NhanVienDao extends IAbstractDao<NhanVienModel> {
 		
 		try {
 			while (Program.myReader.next()) {
-				LocalDate resultDate = null;
+				Date resultDate = null;
 				if(Program.myReader.getDate(6) != null) 
-				    resultDate = Program.myReader.getDate(6).toLocalDate();
+				    resultDate = Program.myReader.getDate(6);
 				Float luong = Program.myReader.getFloat(7);
 				if (luong == null)
 				    luong = (float)0;
