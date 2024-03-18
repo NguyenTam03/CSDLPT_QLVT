@@ -2,6 +2,9 @@ package model;
 
 import java.sql.Date;
 
+import java.time.LocalDate;
+
+
 public class NhanVienModel {
 	private Integer manv;
 	private String ho;
@@ -12,7 +15,12 @@ public class NhanVienModel {
 	private Float luong;
 	private String macn;
 	private Boolean trangThaiXoa;
-	public NhanVienModel(Integer manv, String ho, String ten, String soCMND, String diaChi, Date date, Float luong,
+
+	public NhanVienModel() {
+		super();
+	}
+	public NhanVienModel(Integer manv, String ho, String ten, String soCMND, String diaChi, Date ngaySinh, Float luong,
+
 			String macn, Boolean trangThaiXoa) {
 		super();
 		this.manv = manv;
