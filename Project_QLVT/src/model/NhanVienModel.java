@@ -13,6 +13,10 @@ public class NhanVienModel {
 	private Float luong;
 	private String macn;
 	private Boolean trangThaiXoa;
+
+	public NhanVienModel() {
+		super();
+	}
 	public NhanVienModel(Integer manv, String ho, String ten, String soCMND, String diaChi, Date ngaySinh, Float luong,
 			String macn, Boolean trangThaiXoa) {
 		super();
