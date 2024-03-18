@@ -248,8 +248,16 @@ public class NhanVienController {
 			return;
 		}
 		String queryUndo = undoList.pop().toString();
-		if (queryUndo.contains("sp_ChuyenChiNhanh")) {
-//            Program.ExecSqlDML(queryUndo);
+		if (queryUndo.contains("sp_UndoChuyenChiNhanh")) {
+			if (Program.ExecSqlNonQuery(queryUndo) == -1) {
+				JOptionPane.showConfirmDialog(null, "Khôi phục nhân viên chuyển chi nhánh thất bại!", "Thông Báo", JOptionPane.CLOSED_OPTION);
+				return;
+			}
+			else {
+				refreshData();
+				JOptionPane.showConfirmDialog(null, "Khôi phục nhân viên chuyển chi nhánh thành công", "Thông Báo", JOptionPane.CLOSED_OPTION);
+			}
+			
 		} else {
 			if (Program.ExecSqlDML(queryUndo) == -1) {
 				JOptionPane.showConfirmDialog(null, "Khôi phục thất bại", "Thông Báo", JOptionPane.CLOSED_OPTION);
