@@ -67,7 +67,7 @@ public class Program {
 				return 0;
 			}
 			
-			System.out.println(Program.connstr);
+//			System.out.println(Program.connstr);
 			return 1;
 		} catch (ClassNotFoundException e) {
 			JOptionPane.showMessageDialog(null,"", e.getMessage(), JOptionPane.WARNING_MESSAGE);

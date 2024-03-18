@@ -1,6 +1,8 @@
 package model;
 
-import java.time.LocalDate;
+import java.sql.Date;
+
+
 
 public class NhanVienModel {
 	private Integer manv;
@@ -8,11 +10,16 @@ public class NhanVienModel {
 	private String ten;
 	private String soCMND;
 	private String diaChi;
-	private LocalDate ngaySinh;
+	private Date ngaySinh;
 	private Float luong;
 	private String macn;
 	private Boolean trangThaiXoa;
-	public NhanVienModel(Integer manv, String ho, String ten, String soCMND, String diaChi, LocalDate ngaySinh, Float luong,
+
+	public NhanVienModel() {
+		super();
+	}
+	public NhanVienModel(Integer manv, String ho, String ten, String soCMND, String diaChi, Date ngaySinh, Float luong,
+
 			String macn, Boolean trangThaiXoa) {
 		super();
 		this.manv = manv;
@@ -55,10 +62,10 @@ public class NhanVienModel {
 	public void setDiaChi(String diaChi) {
 		this.diaChi = diaChi;
 	}
-	public LocalDate getNgaySinh() {
+	public Date getNgaySinh() {
 		return ngaySinh;
 	}
-	public void setNgaySinh(LocalDate ngaySinh) {
+	public void setNgaySinh(Date ngaySinh) {
 		this.ngaySinh = ngaySinh;
 	}
 	public Float getLuong() {

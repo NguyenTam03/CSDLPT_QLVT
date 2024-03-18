@@ -31,7 +31,6 @@ public class KhoController {
 		khoView.getBtnXoa().addActionListener(l -> deleteData());
 		khoView.getBtnThoat().addActionListener(l -> exitKho());
 		khoView.getBtnHoanTac().addActionListener(l -> btnHoanTacClicked());
-		khoView.getBtnTim().addActionListener(l -> searchKho());
 		autoSearchKho();
 	}
 	
@@ -79,6 +78,7 @@ public class KhoController {
 		khoView.getTextFieldMaKho().setText("");
 		khoView.getTextFieldTenKho().setText("");
 		khoView.getTextFieldDiaChi().setText("");
+		khoView.getTextFieldTim().setEnabled(false);
 
 		khoView.getTable().getSelectionModel().removeListSelectionListener(khoView.getSelectionListener());
 		khoView.getTable().getSelectionModel().clearSelection();
@@ -97,7 +97,7 @@ public class KhoController {
 			khoView.getTextFieldMaKho().setText("");
 			khoView.getTextFieldTenKho().setText("");
 			khoView.getTextFieldDiaChi().setText("");
-
+			khoView.getTextFieldTim().setEnabled(true);
 			khoView.getTable().setEnabled(true);
 //			trở về dòng được select hiện tại
 			khoView.getTable().getSelectionModel().addListSelectionListener(khoView.getSelectionListener());
@@ -147,7 +147,7 @@ public class KhoController {
 	}
 
 	private boolean regexMatch(String text) {
-		Pattern pattern = Pattern.compile("^[a-zA-Z0-9]+", Pattern.CASE_INSENSITIVE);
+		Pattern pattern = Pattern.compile("^[a-zA-Z0-9\\s]+$", Pattern.CASE_INSENSITIVE);
 		Matcher matcher = pattern.matcher(text);
 		return matcher.find();
 	}
@@ -155,42 +155,49 @@ public class KhoController {
 	private boolean checkInputData(KhoModel khoModel) {
 		if (khoModel.getMaKho().equals("")) {
 			JOptionPane.showMessageDialog(null, "Mã kho không được bỏ trống", "Thông báo", JOptionPane.WARNING_MESSAGE);
-			khoView.getTextFieldMaKho().setFocusable(true);
+			khoView.getTextFieldMaKho().requestFocusInWindow();
 			return false;
 		}
 
 		if (khoModel.getMaKho().length() > 4) {
 			JOptionPane.showMessageDialog(null, "Mã kho không được quá 4 ký tự", "Thông báo",
 					JOptionPane.WARNING_MESSAGE);
-			khoView.getTextFieldMaKho().setFocusable(true);
+			khoView.getTextFieldMaKho().requestFocusInWindow();
 			return false;
 		}
 
 		if (!regexMatch(khoModel.getMaKho())) {
 			JOptionPane.showMessageDialog(null, "Mã kho chỉ được gồm các chữ cái số và khoảng trắng!", "Thông báo",
 					JOptionPane.WARNING_MESSAGE);
-			khoView.getTextFieldMaKho().setFocusable(true);
+			khoView.getTextFieldMaKho().requestFocusInWindow();
 			return false;
 		}
 
 		if (khoModel.getTenKho().equals("")) {
 			JOptionPane.showMessageDialog(null, "Tên kho không được bỏ trống", "Thông báo",
 					JOptionPane.WARNING_MESSAGE);
-			khoView.getTextFieldTenKho().setFocusable(true);
+			khoView.getTextFieldTenKho().requestFocusInWindow();
+			return false;
+		}
+		
+		if (!regexMatch(khoModel.getTenKho())) {
+			JOptionPane.showMessageDialog(null, "Tên kho chỉ được gồm các chữ cái số và khoảng trắng!", "Thông báo",
+					JOptionPane.WARNING_MESSAGE);
+			khoView.getTextFieldMaKho().requestFocusInWindow();
 			return false;
 		}
 
 		if (khoModel.getTenKho().length() > 30) {
 			JOptionPane.showMessageDialog(null, "Tên kho không được quá 30 ký tự", "Thông báo",
 					JOptionPane.WARNING_MESSAGE);
-			khoView.getTextFieldTenKho().setFocusable(true);
+			khoView.getTextFieldTenKho().requestFocusInWindow();
 			return false;
 		}
 
 		if (khoModel.getDiaChi().length() > 100) {
 			JOptionPane.showMessageDialog(null, "Địa chỉ không được quá 100 ký tự", "Thông báo",
 					JOptionPane.WARNING_MESSAGE);
-			khoView.getTextFieldDiaChi().setFocusable(true);
+			khoView.getTextFieldDiaChi().requestFocusInWindow();
 			return false;
 		}
 
@@ -222,6 +229,7 @@ public class KhoController {
 			khoView.getBtnLamMoi().setEnabled(true);
 			khoView.getBtnThoat().setEnabled(true);
 			khoView.getBtnHoanTac().setEnabled(true);
+			khoView.getTextFieldTim().setEnabled(true);
 			khoView.getTable().getSelectionModel().addListSelectionListener(khoView.getSelectionListener());
 			khoView.getTable().getSelectionModel().setSelectionInterval(khoView.getTable().getRowCount() - 1,
 					khoView.getTable().getRowCount() - 1);
