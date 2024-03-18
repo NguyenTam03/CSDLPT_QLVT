@@ -1,7 +1,7 @@
 package dao;
 
+import java.sql.Date;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 import main.Program;
@@ -52,6 +52,7 @@ public class NhanVienDao extends IAbstractDao<NhanVienModel> {
 		return 0;
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public ArrayList<NhanVienModel> selectAll() {
 		ArrayList<NhanVienModel> dsNhanVien = new ArrayList<NhanVienModel>();
@@ -60,9 +61,9 @@ public class NhanVienDao extends IAbstractDao<NhanVienModel> {
 		
 		try {
 			while (Program.myReader.next()) {
-				LocalDate resultDate = null;
+				Date resultDate = null;
 				if(Program.myReader.getDate(6) != null) 
-				    resultDate = Program.myReader.getDate(6).toLocalDate();
+				    resultDate = Program.myReader.getDate(6);
 				Float luong = Program.myReader.getFloat(7);
 				if (luong == null)
 				    luong = (float)0;
