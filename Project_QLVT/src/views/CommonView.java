@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
@@ -13,7 +15,6 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.GroupLayout.Alignment;
@@ -34,7 +35,7 @@ public class CommonView<E, T> extends JPanel {
 	protected JPanel panel_4;
 	private JTextField textFieldTim;
 	protected JComboBox<String> comboBox;
-	private JButton btnThem, btnXoa, btnGhi, btnLamMoi, btnHoanTac, btnChuyenChiNhanh, btnThoat, btnTim;
+	private JButton btnThem, btnXoa, btnGhi, btnLamMoi, btnHoanTac, btnChuyenChiNhanh, btnThoat;
 	protected JScrollPane scrollPane;
 	protected ArrayList<E> list;
 	protected DefaultTableModel model;
@@ -130,16 +131,30 @@ public class CommonView<E, T> extends JPanel {
 
 		textFieldTim = new JTextField();
 		textFieldTim.setColumns(15);
-
-		btnTim = new JButton("Tìm");
-		btnTim.setIcon(new ImageIcon(CommonView.class.getResource("/imgs/find.png")));
-
-		JSeparator separator = new JSeparator();
-		separator.setForeground(new Color(240, 240, 240));
+		textFieldTim.setText("Search");
+		textFieldTim.setForeground(Color.LIGHT_GRAY);
+		textFieldTim.addFocusListener(new FocusListener() {
+			
+			@Override
+			public void focusLost(FocusEvent e) {
+				// TODO Auto-generated method stub
+				if (textFieldTim.getText().isEmpty()) {
+					textFieldTim.setText("Search");
+					textFieldTim.setForeground(Color.LIGHT_GRAY);
+				}
+			}
+			
+			@Override
+			public void focusGained(FocusEvent e) {
+				// TODO Auto-generated method stub
+				if (textFieldTim.getText().equals("Search")) {
+					textFieldTim.setText("");
+					textFieldTim.setForeground(Color.BLACK);
+				}
+			}
+		});
 		panel_3.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
 		panel_3.add(textFieldTim);
-		panel_3.add(btnTim);
-		panel_3.add(separator);
 		// Không cho phép chỉnh sửa dữ liệu trực tiếp ở bảng
 		DefaultTableModel model = new DefaultTableModel() {
 			private static final long serialVersionUID = 1L;
@@ -226,10 +241,6 @@ public class CommonView<E, T> extends JPanel {
 
 	public JButton getBtnThoat() {
 		return btnThoat;
-	}
-
-	public JButton getBtnTim() {
-		return btnTim;
 	}
 
 	public DefaultTableModel getModel() {

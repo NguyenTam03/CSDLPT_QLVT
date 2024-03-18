@@ -1,7 +1,8 @@
 package model;
 
 import java.sql.Date;
-import java.time.LocalDate;
+
+
 
 public class NhanVienModel {
 	private Integer manv;
@@ -18,6 +19,7 @@ public class NhanVienModel {
 		super();
 	}
 	public NhanVienModel(Integer manv, String ho, String ten, String soCMND, String diaChi, Date ngaySinh, Float luong,
+
 			String macn, Boolean trangThaiXoa) {
 		super();
 		this.manv = manv;

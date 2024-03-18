@@ -2,7 +2,6 @@ package dao;
 
 import java.sql.Date;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 import main.Program;
@@ -53,6 +52,7 @@ public class NhanVienDao extends IAbstractDao<NhanVienModel> {
 		return 0;
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public ArrayList<NhanVienModel> selectAll() {
 		ArrayList<NhanVienModel> dsNhanVien = new ArrayList<NhanVienModel>();

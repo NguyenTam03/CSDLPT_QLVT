@@ -19,21 +19,6 @@ public class ChuyenChiNhanhForm extends JFrame {
 	private JButton btnXacNhan;
 	private JButton btnThoat;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ChuyenChiNhanhForm frame = new ChuyenChiNhanhForm();
-					 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
@@ -68,6 +53,8 @@ public class ChuyenChiNhanhForm extends JFrame {
 		btnThoat.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnThoat.setBounds(236, 177, 94, 35);
 		contentPane.add(btnThoat);
+		
+		setLocationRelativeTo(null);
 	}
 
 	public JComboBox getCBBoxChuyenChiNhanh() {

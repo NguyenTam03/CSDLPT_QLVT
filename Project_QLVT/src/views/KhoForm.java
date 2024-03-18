@@ -122,11 +122,7 @@ public class KhoForm extends CommonView<KhoModel, KhoDao> {
 			textFieldTenKho.setText(table.getValueAt(table.getSelectedRow(), 1).toString());
 			textFieldDiaChi.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
 		};
-
-		// Thêm sự kiện chọn
 		table.getSelectionModel().addListSelectionListener(selectionListener);
-		
-		table.getSelectionModel().setSelectionInterval(0, 0);
 //		Listener event
 		KhoController ac = new KhoController(this);
 		ac.initController();
