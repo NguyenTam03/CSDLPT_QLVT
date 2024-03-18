@@ -34,20 +34,20 @@ public class VatTuDao extends IAbstractDao<VattuModel>{
 	
 	@Override
 	public int insert(VattuModel t) {
-		// TODO Auto-generated method stub
-		return super.insert(t);
+		String sql = "INSERT INTO Vattu (MAVT, TENVT, DVT, SOLUONGTON) VALUES (?, ?, ?, ?)";
+		return Program.ExecSqlDML(sql, t.getMavt(), t.getTenVT(), t.getDvt(), t.getSoLuongTon());
 	}
 
 	@Override
 	public int update(VattuModel t) {
-		// TODO Auto-generated method stub
-		return super.update(t);
+		String sql = "UPDATE Vattu SET TENVT = ?, DVT = ?, SOLUONGTON = ? WHERE MAVT = ?";
+		return Program.ExecSqlDML(sql, t.getTenVT(), t.getDvt(), t.getSoLuongTon(), t.getMavt());
 	}
 
 	@Override
 	public int delete(VattuModel t) {
-		// TODO Auto-generated method stub
-		return super.delete(t);
+		String sql = "DELETE FROM Vattu WHERE MAVT = ?";
+		return Program.ExecSqlDML(sql, t.getMavt());
 	}
 
 	@Override
@@ -76,13 +76,13 @@ public class VatTuDao extends IAbstractDao<VattuModel>{
 	@Override
 	public VattuModel selectById(VattuModel t) {
 		// TODO Auto-generated method stub
-		return super.selectById(t);
+		return null;
 	}
 
 	@Override
 	public ArrayList<VattuModel> selectByCondition(String condition) {
 		// TODO Auto-generated method stub
-		return super.selectByCondition(condition);
+		return null;
 	}
 	
 
