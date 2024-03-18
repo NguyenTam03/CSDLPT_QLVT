@@ -2,7 +2,6 @@ package model;
 
 import java.sql.Date;
 
-import java.time.LocalDate;
 
 
 public class NhanVienModel {
@@ -28,7 +27,7 @@ public class NhanVienModel {
 		this.ten = ten;
 		this.soCMND = soCMND;
 		this.diaChi = diaChi;
-		this.ngaySinh = date;
+		this.ngaySinh = ngaySinh;
 		this.luong = luong;
 		this.macn = macn;
 		this.trangThaiXoa = trangThaiXoa;

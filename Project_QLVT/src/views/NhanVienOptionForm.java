@@ -20,8 +20,6 @@ import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -180,12 +178,7 @@ public class NhanVienOptionForm extends JFrame {
 						.addContainerGap()));
 		panelFooter.setLayout(gl_panelFooter);
 		setLocationRelativeTo(null);
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				e.getWindow().dispose();
-			}
-		});
+		
 		loadNhanVien();
 	}
 

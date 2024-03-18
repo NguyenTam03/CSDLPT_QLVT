@@ -5,6 +5,7 @@ import java.awt.event.WindowEvent;
 import java.util.Enumeration;
 
 import javax.swing.AbstractButton;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import main.Program;
@@ -76,6 +77,8 @@ public class CreateLoginController {
 	}
 	
 	private void chooseNhanVien() {
-		new NhanVienOptionForm().setVisible(true);
+		NhanVienOptionForm form = new NhanVienOptionForm();
+		form.setVisible(true);
+		form.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 }
