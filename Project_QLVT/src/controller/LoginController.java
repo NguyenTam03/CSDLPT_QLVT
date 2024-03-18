@@ -2,6 +2,7 @@ package controller;
 
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import main.Program;
@@ -20,10 +21,11 @@ public class LoginController {
 		loginForm.getBtnExit().addActionListener(e -> clickBtnExit());
 	}
 	
+	@SuppressWarnings("deprecation")
 	private void clickBtnLogin() {
 		JComboBox<String> cbChiNhanh = loginForm.getCbChiNhanh();
 		JTextField login = loginForm.getTfUsername();
-		JTextField password = loginForm.getTfPassword();
+		JPasswordField password = loginForm.getTfPassword();
 		login.setText(login.getText().trim());
 		
 		if (login.getText().equals("") || password.getText().equals("")) {

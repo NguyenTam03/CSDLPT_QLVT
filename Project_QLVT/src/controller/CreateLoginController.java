@@ -5,10 +5,12 @@ import java.awt.event.WindowEvent;
 import java.util.Enumeration;
 
 import javax.swing.AbstractButton;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import main.Program;
 import views.CreateLoginForm;
+import views.NhanVienOptionForm;
 
 public class CreateLoginController {
 	private CreateLoginForm form;
@@ -18,8 +20,9 @@ public class CreateLoginController {
 	}
 	
 	public void initController() {
-		form.getBtnExitForm().addActionListener(l -> exitForm());
-		form.getBtnCreateLogin().addActionListener(l -> createLogin());
+		form.getBtnExit().addActionListener(l -> exitForm());
+		form.getBtnAccept().addActionListener(l -> createLogin());
+		form.getBtnNVOption().addActionListener(l -> chooseNhanVien());
 		form.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -32,12 +35,28 @@ public class CreateLoginController {
 		form.dispose();
 	}
 	
+	private boolean validate(String manv, String loginName, String password, String password2, String group) {
+		if (manv.equals("") || loginName.equals("") || password.equals("") || password2.equals("") || group == null) {
+			JOptionPane.showMessageDialog(null, "Hãy điền đầy đủ tất cả thông tin!", "Thông báo", JOptionPane.OK_OPTION);
+			return false;
+		}
+		
+		if (!password.equals(password2)) {
+			JOptionPane.showMessageDialog(null, "Mật khẩu không trùng khớp!", "Thông báo", JOptionPane.OK_OPTION);
+			return false;
+		}
+		
+		return true;
+	}
+	
 	@SuppressWarnings("deprecation")
 	private void createLogin() {
-		String loginName = form.getTfLoginName().getText().trim();
+		String loginName = form.getTextFieldLogin().getText().trim();
 		String password = form.getPasswordField().getText();
-		String username = form.getTfUsername().getText().trim();
+		String passwordConfirm = form.getPasswordFieldAccept().getText();
+		String username = CreateLoginForm.getTextFieldMaNV().getText();
 		String group = null;
+		
 		Enumeration<AbstractButton> rdbtns = form.getBg().getElements();
 		while (rdbtns.hasMoreElements()) {
 			AbstractButton rdb = rdbtns.nextElement();
@@ -46,13 +65,20 @@ public class CreateLoginController {
 				break;
 			}
 		}
-		if (loginName.equals("") || password.equals("") || username.equals("") || group == null) {
-			JOptionPane.showMessageDialog(null, "Bạn phải điền đầy đủ thông tin.", "", JOptionPane.WARNING_MESSAGE);
-		}else {
-			String sql = "{cal dbo.sp_TaoLogin(?, ?, ?, ?)}";
-			Program.ExecSqlDML(sql, loginName, password, username, group);
-			JOptionPane.showMessageDialog(null, "Tạo thành công.", "Success", JOptionPane.INFORMATION_MESSAGE);
-			exitForm();
+		if (validate(username, loginName, password, passwordConfirm, group)) {
+			String sql = "{? = call dbo.sp_TaoLogin(?, ?, ?, ?)}";
+			int res = Program.ExecSqlNoQuery(sql, loginName, password, username, group);
+			if (res != -1) {
+				JOptionPane.showMessageDialog(null, "Tạo thành công.", "Success", JOptionPane.INFORMATION_MESSAGE);
+				exitForm();
+			}
 		}
+		
+	}
+	
+	private void chooseNhanVien() {
+		NhanVienOptionForm form = new NhanVienOptionForm();
+		form.setVisible(true);
+		form.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 }
