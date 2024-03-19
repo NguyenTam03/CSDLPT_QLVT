@@ -132,7 +132,6 @@ public class Program {
 		}
 		return -1;
 	}
-	
 	public static int ExecSqlNonQuery(String strlenh) {
         try {
             statement = conn.createStatement();
@@ -147,7 +146,6 @@ public class Program {
             return ex.getErrorCode();
         }
     }
-	
 	private static List<String> getMaCn() {
 		String sql = "SELECT MACN FROM ChiNhanh";
 		List<String> macn = new ArrayList<String>();

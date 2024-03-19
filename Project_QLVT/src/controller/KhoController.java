@@ -244,6 +244,7 @@ public class KhoController {
 			khoView.getTable().getSelectionModel().setSelectionInterval(khoView.getTable().getRowCount() - 1,
 					khoView.getTable().getRowCount() - 1);
 			khoView.getList().add(khoModel);
+			row = khoView.getTable().getRowCount() - 1;
 			// Luu truy van de hoan tac yeu cau them
 			String sqlUndo;
 			sqlUndo = "DELETE FROM Kho WHERE MAKHO = '" + khoModel.getMaKho() + "'";
