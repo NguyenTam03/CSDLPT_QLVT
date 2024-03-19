@@ -87,8 +87,12 @@ public class VatTuController {
 					JOptionPane.WARNING_MESSAGE);
 		} else {
 			sql = "INSERT INTO Kho (MAVT, TENVT, DVT, SOLUONGTON) VALUES (?, ?, ?, ?)";
-			if (Program.ExecSqlDML(sql, maVT, tenVT, donVi, soLuong) == -1)
-				return;
+			try {
+				Program.ExecSqlDML(sql, maVT, tenVT, donVi, soLuong);
+			}catch(Exception e) {
+				JOptionPane.showMessageDialog(null, "Lỗi thêm vật tư!", "Error", JOptionPane.ERROR_MESSAGE);
+				reFreshData();
+			}
 
 			Object[] newRow = { maVT, tenVT, donVi, soLuong };
 			vatTuForm.getModel().addRow(newRow);

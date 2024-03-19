@@ -54,4 +54,22 @@ public class CTDDHDao extends IAbstractDao<CTDDHModel> {
 		}
 		return null;
 	}
+
+	@Override
+	public void insert(CTDDHModel t) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void update(CTDDHModel t) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void delete(CTDDHModel t) {
+		// TODO Auto-generated method stub
+		
+	}
 }
