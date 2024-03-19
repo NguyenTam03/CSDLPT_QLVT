@@ -35,21 +35,18 @@ public class NhanVienDao extends IAbstractDao<NhanVienModel> {
 	}
 
 	@Override
-	public int insert(NhanVienModel t) {
+	public void insert(NhanVienModel t) {
 		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	@Override
-	public int update(NhanVienModel t) {
+	public void update(NhanVienModel t) {
 		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	@Override
-	public int delete(NhanVienModel t) {
+	public void delete(NhanVienModel t) {
 		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	@SuppressWarnings("unused")
