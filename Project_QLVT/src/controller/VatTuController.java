@@ -116,13 +116,13 @@ public class VatTuController {
 		}
 
 		String sqlUndo = undoList.pop();
-		if (Program.ExecSqlDML(sqlUndo) == -1)
-			return;
-		System.out.println(sqlUndo);
+		Program.ExecSqlDML(sqlUndo);
+//		System.out.println(sqlUndo);
 		reFreshData();
 		if (row <= vatTuForm.getTable().getRowCount() - 1) {
 			vatTuForm.getTable().getSelectionModel().setSelectionInterval(row, row);
 		}
+
 	}
 
 	private void pushDataToDB() {
@@ -238,24 +238,30 @@ public class VatTuController {
 	private void addDataToDB(VattuModel vattuModel) {
 //		Execute query
 		String sql = "{? = call dbo.sp_TraCuu_MaVT(?)}";
-//		chưa có sp_TraCuu_MaVT
-		int res = Program.ExecSqlNoQuery(sql, vattuModel.getMavt());
-//		execute fail
-		if (res == -1)
+		int res = 0;
+		try {
+			res = Program.ExecSqlNoQuery(sql, vattuModel.getMavt());
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Lỗi kiểm tra vật tư!", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
+		}
 //		execute return 1, dữ liệu đã tồn tại
 		if (res == 1) {
 			JOptionPane.showMessageDialog(null,
 					"Đã tồn tại mã vật tư " + vattuModel.getMavt() + " này, vui lòng nhập lại", "Warning",
 					JOptionPane.WARNING_MESSAGE);
 		} else {
-
-			if (vatTuForm.getDao().insert(vattuModel) == -1)
+			try {
+				Object[] newRow = { vattuModel.getMavt(), vattuModel.getTenVT(), vattuModel.getDvt(),
+						vattuModel.getSoLuongTon() };
+				vatTuForm.getModel().addRow(newRow);
+				vatTuForm.getDao().insert(vattuModel);
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "Lỗi thêm vật tư!", "Error", JOptionPane.ERROR_MESSAGE);
+				reFreshData();
+				vatTuForm.getTable().getSelectionModel().setSelectionInterval(row, row);
 				return;
-
-			Object[] newRow = { vattuModel.getMavt(), vattuModel.getTenVT(), vattuModel.getDvt(),
-					vattuModel.getSoLuongTon() };
-			vatTuForm.getModel().addRow(newRow);
+			}
 			JOptionPane.showMessageDialog(null, "Ghi thành công!", "Thông báo", JOptionPane.OK_OPTION);
 
 			vatTuForm.getTable().setEnabled(true);
@@ -282,15 +288,23 @@ public class VatTuController {
 		String donVi = vatTuForm.getTable().getValueAt(vatTuForm.getTable().getSelectedRow(), 2).toString();
 		String soLuong = vatTuForm.getTable().getValueAt(vatTuForm.getTable().getSelectedRow(), 3).toString();
 
-		if (vatTuForm.getDao().update(vattuModel) == -1)
+		try {
+			vatTuForm.getTable().setValueAt(vattuModel.getTenVT(), vatTuForm.getTable().getSelectedRow(), 1);
+			vatTuForm.getTable().setValueAt(vattuModel.getDvt(), vatTuForm.getTable().getSelectedRow(), 2);
+			vatTuForm.getTable().setValueAt(vattuModel.getSoLuongTon(), vatTuForm.getTable().getSelectedRow(), 3);
+			vatTuForm.getDao().update(vattuModel);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Lỗi update vật tư!", "Error", JOptionPane.ERROR_MESSAGE);
+			reFreshData();
+			vatTuForm.getTable().getSelectionModel().setSelectionInterval(row, row);
 			return;
+		}
+
 		vatTuForm.getBtnHoanTac().setEnabled(true);
-		vatTuForm.getTable().setValueAt(vattuModel.getTenVT(), vatTuForm.getTable().getSelectedRow(), 1);
-		vatTuForm.getTable().setValueAt(vattuModel.getDvt(), vatTuForm.getTable().getSelectedRow(), 2);
-		vatTuForm.getTable().setValueAt(vattuModel.getSoLuongTon(), vatTuForm.getTable().getSelectedRow(), 3);
 		JOptionPane.showMessageDialog(null, "Ghi thành công!", "Thông báo", JOptionPane.OK_OPTION);
 		vatTuForm.getTable().getSelectionModel().setSelectionInterval(row, row);
-		System.out.println(vatTuForm.getList().set(row, vattuModel));
+//		cập nhật vật tư có trong list
+		vatTuForm.getList().set(row, vattuModel);
 //		Lưu truy vấn để hoàn tác yêu cầu update
 		String sqlUndo;
 		sqlUndo = "UPDATE Vattu SET TENVT = N'" + tenVT + "', DVT = N'" + donVi + "', SOLUONGTON = " + soLuong
@@ -303,6 +317,7 @@ public class VatTuController {
 		vatTuForm.getModel().setRowCount(0);
 		vatTuForm.loadDataIntoTable();
 		vatTuForm.getTable().getSelectionModel().addListSelectionListener(vatTuForm.getSelectionListener());
+		vatTuForm.getTable().getSelectionModel().setSelectionInterval(0, 0);
 	}
 
 	private boolean checkCTDDH(String maVT) {
@@ -310,7 +325,7 @@ public class VatTuController {
 		Program.myReader = Program.ExecSqlDataReader(sql, maVT);
 		try {
 			Program.myReader.next();
-			if (Program.myReader.getString(1) != null) {
+			if (Program.myReader.getRow() > 0) {
 				return true;
 			}
 		} catch (SQLException e) {
@@ -325,7 +340,7 @@ public class VatTuController {
 		Program.myReader = Program.ExecSqlDataReader(sql, maVT);
 		try {
 			Program.myReader.next();
-			if (Program.myReader.getString(1) != null) {
+			if (Program.myReader.getRow() > 0) {
 				return true;
 			}
 		} catch (SQLException e) {
@@ -340,7 +355,7 @@ public class VatTuController {
 		Program.myReader = Program.ExecSqlDataReader(sql, maVT);
 		try {
 			Program.myReader.next();
-			if (Program.myReader.getString(1) != null) {
+			if (Program.myReader.getRow() > 0) {
 				return true;
 			}
 		} catch (SQLException e) {
@@ -351,13 +366,22 @@ public class VatTuController {
 	}
 
 	private void deleteData() {
-		if (vatTuForm.getTable().getRowCount() == 0)
-			vatTuForm.getBtnXoa().setEnabled(false);
+//		if (vatTuForm.getTable().getRowCount() == 0)
+//			vatTuForm.getBtnXoa().setEnabled(false);
+
+//		chưa chọn hàng thì không được xóa
+		if (vatTuForm.getTable().getSelectedRow() == -1)
+			return;
+		if (JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa dữ liệu này không?", "Confirm",
+				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) != JOptionPane.OK_OPTION) {
+			return;
+		}
+//		set dữ liệu của row đó
 		vattuModel.setMavt(vatTuForm.getTextFieldMaVT().getText());
 		vattuModel.setTenVT(vatTuForm.getTextFieldTenVT().getText());
 		vattuModel.setDvt(vatTuForm.getTextFieldDonVi().getText());
 		vattuModel.setSoLuongTon((Integer) vatTuForm.getSpinner().getValue());
-
+//		kiểm tra vật tư đã tồn tại ở ctddh, ctpn, ctpx
 		if (checkCTDDH(vattuModel.getMavt())) {
 			JOptionPane.showConfirmDialog(null, "Không thể xóa vật tư này vì đã lập đơn đặt hàng", "Thông báo",
 					JOptionPane.WARNING_MESSAGE);
@@ -374,39 +398,37 @@ public class VatTuController {
 			return;
 		}
 
-		int reply = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa dữ liệu này không?", "Confirm",
-				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-		if (reply == JOptionPane.NO_OPTION)
-			return;
 		row = vatTuForm.getTable().getSelectedRow();
 
-//		not execute
-		if (vatTuForm.getDao().delete(vattuModel) == -1)
-//			xóa ở db
-			return;
+
 		// delete selected row in table
-		if (vatTuForm.getTable().getSelectedRow() != -1) {
+		try {
 			vatTuForm.getTable().getSelectionModel().removeListSelectionListener(vatTuForm.getSelectionListener());
 			vatTuForm.getModel().removeRow(vatTuForm.getTable().getSelectedRow());
-			JOptionPane.showMessageDialog(null, "Xóa thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 			vatTuForm.getTable().getSelectionModel().addListSelectionListener(vatTuForm.getSelectionListener());
-
 			vatTuForm.getTextFieldMaVT().setText("");
-
 			vatTuForm.getTextFieldTenVT().setText("");
-
 			vatTuForm.getTextFieldDonVi().setText("");
-
 			vatTuForm.getSpinner().setValue(0);
-//			xóa ở danh sánh
-			System.out.println(vatTuForm.getList().remove(row));
+			vatTuForm.getDao().delete(vattuModel);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Lỗi xóa vật tư!", "Error", JOptionPane.ERROR_MESSAGE);
+			reFreshData();
+			vatTuForm.getTable().getSelectionModel().setSelectionInterval(row, row);
+			return;
 		}
-
-		String sqlUndo = "INSERT INTO Vattu(MAVT,TENVT,DVT,SOLUONGTON) " + " VALUES( '"
-				+ vattuModel.getMavt() + "',N'" + vattuModel.getTenVT() + "',N'"
-				+ vattuModel.getDvt() + "', " + vattuModel.getSoLuongTon() + " ) ";
+		JOptionPane.showMessageDialog(null, "Xóa thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+		vatTuForm.getTable().getSelectionModel().addListSelectionListener(vatTuForm.getSelectionListener());
+		vatTuForm.getBtnHoanTac().setEnabled(true);
+//			xóa ở danh sánh
+		vatTuForm.getList().remove(row);
+		String sqlUndo = "INSERT INTO Vattu(MAVT,TENVT,DVT,SOLUONGTON) " + " VALUES( '" + vattuModel.getMavt() + "',N'"
+				+ vattuModel.getTenVT() + "',N'" + vattuModel.getDvt() + "', " + vattuModel.getSoLuongTon() + " ) ";
 
 		undoList.push(sqlUndo);
+		if (vatTuForm.getTable().getRowCount() == 0) {
+			vatTuForm.getBtnXoa().setEnabled(false);
+		}
 
 	}
 

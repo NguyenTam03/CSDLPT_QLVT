@@ -3,11 +3,17 @@ package views;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
+import java.awt.event.ItemEvent;
+import java.sql.SQLException;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import dao.VatTuDao;
+import main.Program;
 import model.VattuModel;
 import java.awt.Color;
 import javax.swing.JTextField;
@@ -100,8 +106,13 @@ public class VatTuForm extends CommonView<VattuModel, VatTuDao> {
 //		load chi nhánh lên combobox
 		loadChiNhanh();
 //		load data lên table
+		dao = VatTuDao.getInstance();
 		loadDataIntoTable();
 		
+		if (table.getRowCount() == 0) {
+			getBtnXoa().setEnabled(false);
+		}
+		comboBox.addItemListener(l -> loadDataOtherServer(l));
 //		lắng nghe sự kiện chọn row đồng thời in dữ liệu ra textfield
 		selectionListener = e -> {
 			textFieldMaVT.setText(table.getValueAt(table.getSelectedRow(), 0).toString());
@@ -144,7 +155,31 @@ public class VatTuForm extends CommonView<VattuModel, VatTuDao> {
 		}
 	}
 	
-	
+	private void loadDataOtherServer(ItemEvent l) {
+		if (l.getStateChange() == ItemEvent.SELECTED) {
+			if (Program.conn != null) {
+				try {
+					Program.conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			Program.servername = Program.servers.get(comboBox.getSelectedItem());
+			Program.mlogin = Program.remotelogin;
+			Program.password = Program.remotepassword;
+			Program.mChinhanh = comboBox.getSelectedIndex();
+			if (Program.Connect() == 0) {
+				JOptionPane.showMessageDialog(null, "Đã xảy ra lỗi kết nối với chi nhánh hiện tại", "Thông báo", JOptionPane.OK_OPTION);
+				return;
+			}
+			
+			table.getSelectionModel().removeListSelectionListener(selectionListener);
+			model.setRowCount(0);
+			loadDataIntoTable();
+			table.getSelectionModel().addListSelectionListener(selectionListener);
+		}
+	}
 	
 
 }

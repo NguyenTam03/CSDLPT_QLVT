@@ -33,21 +33,21 @@ public class VatTuDao extends IAbstractDao<VattuModel>{
 
 	
 	@Override
-	public int insert(VattuModel t) {
+	public void insert(VattuModel t) {
 		String sql = "INSERT INTO Vattu (MAVT, TENVT, DVT, SOLUONGTON) VALUES (?, ?, ?, ?)";
-		return Program.ExecSqlDML(sql, t.getMavt(), t.getTenVT(), t.getDvt(), t.getSoLuongTon());
+		Program.ExecSqlDML(sql, t.getMavt(), t.getTenVT(), t.getDvt(), t.getSoLuongTon());
 	}
 
 	@Override
-	public int update(VattuModel t) {
+	public void update(VattuModel t) {
 		String sql = "UPDATE Vattu SET TENVT = ?, DVT = ?, SOLUONGTON = ? WHERE MAVT = ?";
-		return Program.ExecSqlDML(sql, t.getTenVT(), t.getDvt(), t.getSoLuongTon(), t.getMavt());
+		Program.ExecSqlDML(sql, t.getTenVT(), t.getDvt(), t.getSoLuongTon(), t.getMavt());
 	}
 
 	@Override
-	public int delete(VattuModel t) {
+	public void delete(VattuModel t) {
 		String sql = "DELETE FROM Vattu WHERE MAVT = ?";
-		return Program.ExecSqlDML(sql, t.getMavt());
+		Program.ExecSqlDML(sql, t.getMavt());
 	}
 
 	@Override
