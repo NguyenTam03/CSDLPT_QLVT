@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -22,14 +23,14 @@ public class Program {
 	public static String connstr;
 
 	public static ResultSet myReader;
-	public static String servername = "ADMIN-PC";
+	public static String servername = "TAM";
 	public static String username = "";
 	public static String mlogin = "";
 	public static String password = "";
 
 	public static String database = "QLVT_DATHANG";
 	public static String remotelogin = "htkn";
-	public static String remotepassword = "123456";
+	public static String remotepassword = "0312";
 
 	public static String mloginDN = "";
 	public static String passwordDN = "";
@@ -42,6 +43,7 @@ public class Program {
 	public static LoginForm login;
 	
 	public static FrameMain frmMain;
+	public static Statement statement = null;
 	
 	public static int Connect() {
 		if (Program.conn != null) {
@@ -130,7 +132,20 @@ public class Program {
 		}
 		return -1;
 	}
-	
+	public static int ExecSqlNonQuery(String strlenh) {
+        try {
+            statement = conn.createStatement();
+            statement.executeUpdate(strlenh);
+            statement.close();
+            return 0;
+        } catch (SQLException ex) {
+            if (ex.getMessage().contains("Error converting data type varchar to int"))
+                JOptionPane.showMessageDialog(null, "Bạn format Cell lại cột \"Ngày Thi\" qua kiểu Number hoặc mở File Excel.");
+            else
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            return ex.getErrorCode();
+        }
+    }
 	private static List<String> getMaCn() {
 		String sql = "SELECT MACN FROM ChiNhanh";
 		List<String> macn = new ArrayList<String>();
@@ -150,7 +165,7 @@ public class Program {
 	public static HashMap<String, String> getServer() {
     	Program.mlogin = Program.remotelogin;
     	Program.password = Program.remotepassword; 
-    	Program.servername = "ADMIN-PC";
+    	Program.servername = "TAM";
     	Program.Connect();
         HashMap<String, String> server = new LinkedHashMap<String, String>();
         try {
