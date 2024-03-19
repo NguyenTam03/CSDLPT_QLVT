@@ -3,11 +3,17 @@ package views;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
+import java.awt.event.ItemEvent;
+import java.sql.SQLException;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import dao.VatTuDao;
+import main.Program;
 import model.VattuModel;
 import java.awt.Color;
 import javax.swing.JTextField;
@@ -34,6 +40,7 @@ public class VatTuForm extends CommonView<VattuModel, VatTuDao> {
 		lblMVtT.setFont(new Font("Tahoma", Font.PLAIN, 14));
 
 		textFieldMaVT = new JTextField();
+		textFieldMaVT.setEditable(false);
 		textFieldMaVT.setColumns(10);
 
 		JLabel lblTenVT = new JLabel("Tên Vật Tư");
@@ -52,29 +59,35 @@ public class VatTuForm extends CommonView<VattuModel, VatTuDao> {
 		lblSoLuong.setFont(new Font("Tahoma", Font.PLAIN, 14));
 
 		spinner = new JSpinner();
-		spinner.setModel(new SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(100000)));
+		spinner.setModel(new SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
 
 		GroupLayout gl_panel_2 = new GroupLayout(panel_2);
-		gl_panel_2.setHorizontalGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_2.createSequentialGroup().addContainerGap()
-						.addComponent(lblMVtT, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addComponent(textFieldMaVT, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-								GroupLayout.PREFERRED_SIZE)
-						.addGap(37).addComponent(lblTenVT, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addComponent(textFieldTenVT, GroupLayout.PREFERRED_SIZE, 144, GroupLayout.PREFERRED_SIZE)
-						.addGap(43).addComponent(lblDonVi, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addComponent(textFieldDonVi, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-								GroupLayout.PREFERRED_SIZE)
-						.addGap(31)
-						.addComponent(lblSoLuong, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addComponent(spinner, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE).addGap(19)));
-		gl_panel_2.setVerticalGroup(gl_panel_2.createParallelGroup(Alignment.LEADING).addGroup(gl_panel_2
-				.createSequentialGroup().addGap(26)
-				.addGroup(gl_panel_2.createParallelGroup(Alignment.BASELINE)
+		gl_panel_2.setHorizontalGroup(
+			gl_panel_2.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_2.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblMVtT, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(textFieldMaVT, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGap(37)
+					.addComponent(lblTenVT, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(textFieldTenVT, GroupLayout.PREFERRED_SIZE, 153, GroupLayout.PREFERRED_SIZE)
+					.addGap(34)
+					.addComponent(lblDonVi, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(textFieldDonVi, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGap(31)
+					.addComponent(lblSoLuong, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(spinner, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
+					.addGap(19))
+		);
+		gl_panel_2.setVerticalGroup(
+			gl_panel_2.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_2.createSequentialGroup()
+					.addGap(26)
+					.addGroup(gl_panel_2.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblMVtT, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
 						.addComponent(textFieldMaVT, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblTenVT, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
@@ -83,7 +96,8 @@ public class VatTuForm extends CommonView<VattuModel, VatTuDao> {
 						.addComponent(textFieldDonVi, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblSoLuong, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
 						.addComponent(spinner, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
-				.addContainerGap(120, Short.MAX_VALUE)));
+					.addContainerGap(120, Short.MAX_VALUE))
+		);
 		panel_2.setLayout(gl_panel_2);
 //		table.setModel(new DefaultTableModel(new Object[][] { { null, null, null, null }, { null, null, null, null }, },
 //				new String[] { "M\u00E3 V\u1EADt T\u01B0", "T\u00EAn V\u1EADt T\u01B0",
@@ -92,8 +106,13 @@ public class VatTuForm extends CommonView<VattuModel, VatTuDao> {
 //		load chi nhánh lên combobox
 		loadChiNhanh();
 //		load data lên table
+		dao = VatTuDao.getInstance();
 		loadDataIntoTable();
 		
+		if (table.getRowCount() == 0) {
+			getBtnXoa().setEnabled(false);
+		}
+		comboBox.addItemListener(l -> loadDataOtherServer(l));
 //		lắng nghe sự kiện chọn row đồng thời in dữ liệu ra textfield
 		selectionListener = e -> {
 			textFieldMaVT.setText(table.getValueAt(table.getSelectedRow(), 0).toString());
@@ -136,7 +155,31 @@ public class VatTuForm extends CommonView<VattuModel, VatTuDao> {
 		}
 	}
 	
-	
+	private void loadDataOtherServer(ItemEvent l) {
+		if (l.getStateChange() == ItemEvent.SELECTED) {
+			if (Program.conn != null) {
+				try {
+					Program.conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			Program.servername = Program.servers.get(comboBox.getSelectedItem());
+			Program.mlogin = Program.remotelogin;
+			Program.password = Program.remotepassword;
+			Program.mChinhanh = comboBox.getSelectedIndex();
+			if (Program.Connect() == 0) {
+				JOptionPane.showMessageDialog(null, "Đã xảy ra lỗi kết nối với chi nhánh hiện tại", "Thông báo", JOptionPane.OK_OPTION);
+				return;
+			}
+			
+			table.getSelectionModel().removeListSelectionListener(selectionListener);
+			model.setRowCount(0);
+			loadDataIntoTable();
+			table.getSelectionModel().addListSelectionListener(selectionListener);
+		}
+	}
 	
 
 }

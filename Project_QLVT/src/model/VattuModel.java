@@ -13,6 +13,14 @@ public class VattuModel {
 		this.dvt = dvt;
 		this.soLuongTon = soLuongTon;
 	}
+	
+	
+
+	public VattuModel() {
+		
+	}
+
+
 
 	public String getMavt() {
 		return mavt;

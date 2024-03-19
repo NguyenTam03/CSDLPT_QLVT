@@ -53,7 +53,7 @@ public class KhoDao extends IAbstractDao<KhoModel> {
 	@Override
 	public ArrayList<KhoModel> selectAll() {
 		ArrayList<KhoModel> dsKho = new ArrayList<KhoModel>();
-		String sql = "SELECT * FROM dbo.Danh_Sach_Kho";
+		String sql = "SELECT * FROM dbo.Kho";
 		Program.myReader = Program.ExecSqlDataReader(sql);
 		
 		try {
