@@ -23,21 +23,13 @@ public abstract class IAbstractDao<T> {
 		this.colName = colName;
 	}
 
-	public int insert(T t) {
-		return 0;
-	}
+	public abstract void insert(T t);
 	
-	public int update(T t) {
-		return 0;
-	}
+	public abstract void update(T t);
 	
-	public int delete(T t) {
-		return 0;
-	}
+	public abstract void delete(T t);
 	
-	public ArrayList<T> selectAll() {
-		return null;
-	}
+	public abstract ArrayList<T> selectAll();
 	
 	public T selectById(T t) {
 		return null;

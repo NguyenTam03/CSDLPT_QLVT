@@ -32,9 +32,9 @@ public class DatHangDao extends IAbstractDao<DatHangModel> {
 	}
 	
 	@Override
-	public int insert(DatHangModel t) {
+	public void insert(DatHangModel t) {
 		String sql = "INSERT INTO DatHang (MasoDDH, NGAY, NhaCC, MANV, MAKHO) VALUES (?, ?, ?, ?, ?)";
-		return Program.ExecSqlDML(sql, t.getMaSoDDH(), t.getNgay(), t.getNhaCC(), t.getManv(), t.getMakho());
+		Program.ExecSqlDML(sql, t.getMaSoDDH(), t.getNgay(), t.getNhaCC(), t.getManv(), t.getMakho());
 	}
 	
 	@Override
@@ -60,5 +60,17 @@ public class DatHangDao extends IAbstractDao<DatHangModel> {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	@Override
+	public void update(DatHangModel t) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void delete(DatHangModel t) {
+		// TODO Auto-generated method stub
+		
 	}
 }

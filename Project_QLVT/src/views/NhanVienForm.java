@@ -20,8 +20,6 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import java.awt.event.ItemEvent;
 import java.sql.SQLException;
-import java.text.NumberFormat;
-import java.util.Locale;
 import com.toedter.calendar.JDateChooser;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;

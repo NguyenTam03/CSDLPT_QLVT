@@ -42,19 +42,21 @@ public class NavController {
 			}
 		});
 
-		frmMain.getMnCreateTK().addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				createLogin();
-			}
-		});
+		if (!Program.mGroup.equals("USER")) {
+			frmMain.getMnCreateTK().addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					createLogin();
+				}
+			});
 
-		 clickedComponentShowTab("Nhân viên", "Tab nhân viên",
-		 frmMain.getMnNhanVien(), frmMain.getPanel_NV(), NhanVienForm.class);
+		}
+
+		clickedComponentShowTab("Nhân viên", "Tab nhân viên", frmMain.getMnNhanVien(), frmMain.getPanel_NV(),
+				NhanVienForm.class);
 		// --------
 		// mouse listener vat tu
-		 clickedComponentShowTab("Vật tư", "Tab vật tư", frmMain.getMnVatTu(),
-		 frmMain.getPanel_VT(), VatTuForm.class);
+		clickedComponentShowTab("Vật tư", "Tab vật tư", frmMain.getMnVatTu(), frmMain.getPanel_VT(), VatTuForm.class);
 
 		// ---------------
 		// mouse listener kho hang
