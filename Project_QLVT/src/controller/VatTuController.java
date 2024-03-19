@@ -2,6 +2,7 @@ package controller;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.sql.SQLException;
 import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,7 +33,6 @@ public class VatTuController {
 		vatTuForm.getBtnXoa().addActionListener(l -> deleteData());
 		vatTuForm.getBtnThoat().addActionListener(l -> exitVatTu());
 		vatTuForm.getBtnHoanTac().addActionListener(l -> btnHoanTacClicked());
-		vatTuForm.getBtnTim().addActionListener(l -> searchVatTu());
 		autoSearchVatTu();
 	}
 
@@ -82,6 +82,7 @@ public class VatTuController {
 		vatTuForm.getTextFieldTenVT().setText("");
 		vatTuForm.getTextFieldDonVi().setText("");
 		vatTuForm.getSpinner().setValue(0);
+		vatTuForm.getTextFieldTim().setEnabled(false);
 
 		vatTuForm.getTable().getSelectionModel().removeListSelectionListener(vatTuForm.getSelectionListener());
 		vatTuForm.getTable().getSelectionModel().clearSelection();
@@ -101,7 +102,7 @@ public class VatTuController {
 			vatTuForm.getTextFieldTenVT().setText("");
 			vatTuForm.getTextFieldDonVi().setText("");
 			vatTuForm.getSpinner().setValue(0);
-
+			vatTuForm.getTextFieldTim().setEnabled(true);
 			vatTuForm.getTable().setEnabled(true);
 //			trở về dòng được trọn trước đó
 			vatTuForm.getTable().getSelectionModel().addListSelectionListener(vatTuForm.getSelectionListener());
@@ -167,7 +168,7 @@ public class VatTuController {
 			vatTuForm.getTextFieldMaVT().setFocusable(true);
 			return false;
 		}
-		if (!regexMatch("^[a-zA-Z0-9]+", vattuModel.getMavt())) {
+		if (!regexMatch("^[a-zA-Z0-9]*$", vattuModel.getMavt())) {
 			JOptionPane.showMessageDialog(null, "Mã vật tư chỉ gồm chữ cái và số", "Thông báo",
 					JOptionPane.WARNING_MESSAGE);
 			vatTuForm.getTextFieldMaVT().setFocusable(true);
@@ -263,6 +264,7 @@ public class VatTuController {
 			vatTuForm.getBtnLamMoi().setEnabled(true);
 			vatTuForm.getBtnHoanTac().setEnabled(true);
 			vatTuForm.getBtnThoat().setEnabled(true);
+			vatTuForm.getTextFieldTim().setEnabled(true);
 			vatTuForm.getTable().getSelectionModel().addListSelectionListener(vatTuForm.getSelectionListener());
 			vatTuForm.getTable().getSelectionModel().setSelectionInterval(vatTuForm.getTable().getRowCount() - 1,
 					vatTuForm.getTable().getRowCount() - 1);
@@ -291,7 +293,7 @@ public class VatTuController {
 		System.out.println(vatTuForm.getList().set(row, vattuModel));
 //		Lưu truy vấn để hoàn tác yêu cầu update
 		String sqlUndo;
-		sqlUndo = "UPDATE Vattu SET TENVT = '" + tenVT + "', DVT = '" + donVi + "', SOLUONGTON = " + soLuong
+		sqlUndo = "UPDATE Vattu SET TENVT = N'" + tenVT + "', DVT = N'" + donVi + "', SOLUONGTON = " + soLuong
 				+ " WHERE MAVT = '" + vattuModel.getMavt() + "'";
 		undoList.push(sqlUndo);
 	}
@@ -303,21 +305,84 @@ public class VatTuController {
 		vatTuForm.getTable().getSelectionModel().addListSelectionListener(vatTuForm.getSelectionListener());
 	}
 
+	private boolean checkCTDDH(String maVT) {
+		String sql = "SELECT DISTINCT MAVT FROM CTDDH WHERE MAVT = ?";
+		Program.myReader = Program.ExecSqlDataReader(sql, maVT);
+		try {
+			Program.myReader.next();
+			if (Program.myReader.getString(1) != null) {
+				return true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	private boolean checkCTPN(String maVT) {
+		String sql = "SELECT DISTINCT MAVT FROM CTPN WHERE MAVT = ?";
+		Program.myReader = Program.ExecSqlDataReader(sql, maVT);
+		try {
+			Program.myReader.next();
+			if (Program.myReader.getString(1) != null) {
+				return true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	private boolean checkCTPX(String maVT) {
+		String sql = "SELECT DISTINCT MAVT FROM CTPX WHERE MAVT = ?";
+		Program.myReader = Program.ExecSqlDataReader(sql, maVT);
+		try {
+			Program.myReader.next();
+			if (Program.myReader.getString(1) != null) {
+				return true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+
 	private void deleteData() {
+		if (vatTuForm.getTable().getRowCount() == 0)
+			vatTuForm.getBtnXoa().setEnabled(false);
+		vattuModel.setMavt(vatTuForm.getTextFieldMaVT().getText());
+		vattuModel.setTenVT(vatTuForm.getTextFieldTenVT().getText());
+		vattuModel.setDvt(vatTuForm.getTextFieldDonVi().getText());
+		vattuModel.setSoLuongTon((Integer) vatTuForm.getSpinner().getValue());
+
+		if (checkCTDDH(vattuModel.getMavt())) {
+			JOptionPane.showConfirmDialog(null, "Không thể xóa vật tư này vì đã lập đơn đặt hàng", "Thông báo",
+					JOptionPane.WARNING_MESSAGE);
+			return;
+		}
+		if (checkCTPN(vattuModel.getMavt())) {
+			JOptionPane.showConfirmDialog(null, "Không thể xóa vật tư này vì đã lập phiếu nhập", "Thông báo",
+					JOptionPane.WARNING_MESSAGE);
+			return;
+		}
+		if (checkCTPX(vattuModel.getMavt())) {
+			JOptionPane.showConfirmDialog(null, "Không thể xóa vật tư này vì đã lập phiếu xuất", "Thông báo",
+					JOptionPane.WARNING_MESSAGE);
+			return;
+		}
+
 		int reply = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa dữ liệu này không?", "Confirm",
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 		if (reply == JOptionPane.NO_OPTION)
 			return;
-		// Execute sql delete vattu table
-		String maVT = vatTuForm.getTextFieldMaVT().getText();
-		String sql = "DELETE FROM Vattu WHERE MAVT = ?";
+		row = vatTuForm.getTable().getSelectedRow();
 
-		String cauTruyVanHoanTac = "INSERT INTO Vattu( MAVT,TENVT,DVT,SOLUONGTON) " + " VALUES( '"
-				+ vatTuForm.getTextFieldMaVT().getText() + "','" + vatTuForm.getTextFieldTenVT().getText() + "','"
-				+ vatTuForm.getTextFieldDonVi().getText() + "', " + vatTuForm.getSpinner().getValue() + " ) ";
-		undoList.push(cauTruyVanHoanTac);
-		// not execute
-		if (Program.ExecSqlDML(sql, maVT) == -1)
+//		not execute
+		if (vatTuForm.getDao().delete(vattuModel) == -1)
+//			xóa ở db
 			return;
 		// delete selected row in table
 		if (vatTuForm.getTable().getSelectedRow() != -1) {
@@ -333,28 +398,16 @@ public class VatTuController {
 			vatTuForm.getTextFieldDonVi().setText("");
 
 			vatTuForm.getSpinner().setValue(0);
+//			xóa ở danh sánh
+			System.out.println(vatTuForm.getList().remove(row));
 		}
 
-	}
+		String sqlUndo = "INSERT INTO Vattu(MAVT,TENVT,DVT,SOLUONGTON) " + " VALUES( '"
+				+ vattuModel.getMavt() + "',N'" + vattuModel.getTenVT() + "',N'"
+				+ vattuModel.getDvt() + "', " + vattuModel.getSoLuongTon() + " ) ";
 
-	private void undo() {
-		if (vatTuForm.getBtnThem().isSelected()) {
-			vatTuForm.getBtnThem().setEnabled(true);
-			vatTuForm.getBtnXoa().setEnabled(true);
-			vatTuForm.getBtnLamMoi().setEnabled(true);
-			vatTuForm.getBtnHoanTac().setEnabled(false);
-			vatTuForm.getBtnThoat().setEnabled(true);
+		undoList.push(sqlUndo);
 
-			vatTuForm.getTextFieldMaVT().setEditable(false);
-		}
-		if (undoList.empty()) {
-			JOptionPane.showMessageDialog(null, "Không còn thao tác nào để khôi phục", "Warning",
-					JOptionPane.INFORMATION_MESSAGE);
-			vatTuForm.getBtnHoanTac().setEnabled(false);
-			return;
-		}
-		String cauTruyVanHoanTac = undoList.pop().toString();
-		Program.ExecSqlNoQuery(cauTruyVanHoanTac);
 	}
 
 }
