@@ -33,21 +33,21 @@ public class VatTuDao extends IAbstractDao<VattuModel>{
 
 	
 	@Override
-	public int insert(VattuModel t) {
+	public void insert(VattuModel t) {
 		// TODO Auto-generated method stub
-		return super.insert(t);
+		
 	}
 
 	@Override
-	public int update(VattuModel t) {
+	public void update(VattuModel t) {
 		// TODO Auto-generated method stub
-		return super.update(t);
+		
 	}
 
 	@Override
-	public int delete(VattuModel t) {
+	public void delete(VattuModel t) {
 		// TODO Auto-generated method stub
-		return super.delete(t);
+		
 	}
 
 	@Override

@@ -88,18 +88,17 @@ public class Program {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			JOptionPane.showMessageDialog(null, ex.getMessage());
 			return null;
 		}
 	}
 	
-	public static int ExecSqlDML(String sql, Object... objects) {
+	public static void ExecSqlDML(String sql, Object... objects) {
 		try {
 			PreparedStatement p = Program.conn.prepareStatement(sql);
 			for (int i = 1; i <= objects.length; i++) {
 				p.setObject(i, objects[i - 1]);
 			}
-			return p.executeUpdate();
+			p.executeUpdate();
 
 		} catch (SQLException ex) {
 			try {
@@ -107,9 +106,7 @@ public class Program {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			JOptionPane.showMessageDialog(null, ex.getMessage());
 		}
-		return -1;
 	}
 	
 	public static int ExecSqlNoQuery(String sql, Object... objects) {
@@ -130,8 +127,6 @@ public class Program {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			JOptionPane.showMessageDialog(null, ex.getMessage());
-		
 		}
 		return -1;
 	}

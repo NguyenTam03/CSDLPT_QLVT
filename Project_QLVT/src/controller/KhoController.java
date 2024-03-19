@@ -33,7 +33,7 @@ public class KhoController {
 		khoView.getBtnHoanTac().addActionListener(l -> btnHoanTacClicked());
 		autoSearchKho();
 	}
-	
+
 	private void autoSearchKho() {
 		khoView.getTextFieldTim().addKeyListener(new KeyAdapter() {
 			@Override
@@ -42,15 +42,15 @@ public class KhoController {
 			}
 		});
 	}
-	
+
 	private void searchKho() {
 		String input = khoView.getTextFieldTim().getText().trim().toLowerCase();
 		khoView.getTable().getSelectionModel().removeListSelectionListener(khoView.getSelectionListener());
 		khoView.getModel().setRowCount(0);
-		
+
 		for (KhoModel kho : khoView.getList()) {
 			if (kho.getTenKho().toLowerCase().contains(input)) {
-				Object[] rowData = {kho.getMaKho(), kho.getTenKho(), kho.getDiaChi(), kho.getMacn()};
+				Object[] rowData = { kho.getMaKho(), kho.getTenKho(), kho.getDiaChi(), kho.getMacn() };
 				khoView.getModel().addRow(rowData);
 			}
 		}
@@ -106,18 +106,17 @@ public class KhoController {
 			return;
 		}
 
-		if (undoList.empty()) {
-			khoView.getBtnHoanTac().setEnabled(false);
-			return;
-		}
-
 		String sqlUndo = undoList.pop();
-		if (Program.ExecSqlDML(sqlUndo) == -1)
-			return;
-		System.out.println(sqlUndo);
+		Program.ExecSqlDML(sqlUndo);
+
 		reFreshData();
 		if (row <= khoView.getTable().getRowCount() - 1) {
 			khoView.getTable().getSelectionModel().setSelectionInterval(row, row);
+		}
+
+		if (undoList.empty()) {
+			khoView.getBtnHoanTac().setEnabled(false);
+			return;
 		}
 	}
 
@@ -134,8 +133,8 @@ public class KhoController {
 			khoModel.setDiaChi(diaChi);
 			khoModel.setMacn(macn);
 			row = khoView.getTable().getSelectedRow();
-			boolean check = checkInputData(khoModel);
-			if (check) {
+			
+			if (checkInputData(khoModel)) {
 				if (!khoView.getBtnThem().isEnabled()) {
 					addDataToDB(khoModel);
 				} else {
@@ -179,7 +178,7 @@ public class KhoController {
 			khoView.getTextFieldTenKho().requestFocusInWindow();
 			return false;
 		}
-		
+
 		if (!regexMatch(khoModel.getTenKho())) {
 			JOptionPane.showMessageDialog(null, "Tên kho chỉ được gồm các chữ cái số và khoảng trắng!", "Thông báo",
 					JOptionPane.WARNING_MESSAGE);
@@ -207,20 +206,31 @@ public class KhoController {
 	private void addDataToDB(KhoModel khoModel) {
 //		Execute query
 		String sql = "{? = call dbo.sp_TraCuu_MaKho(?)}";
-		int res = Program.ExecSqlNoQuery(sql, khoModel.getMaKho());
-//		execute fail
-		if (res == -1)
+		int res = 0;
+		try {
+			res = Program.ExecSqlNoQuery(sql, khoModel.getMaKho());
+		}catch(Exception e) {
+			JOptionPane.showMessageDialog(null, "Lỗi kiểm tra kho!", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
+		}
+		
 //		execute return 1, dữ liệu đã tồn tại
 		if (res == 1) {
 			JOptionPane.showMessageDialog(null, "Đã tồn tại mã kho " + khoModel.getMaKho() + " nay, vui lòng nhập lại",
 					"Warning", JOptionPane.WARNING_MESSAGE);
 		} else {
-			if (khoView.getDao().insert(khoModel) == -1)
+			try {
+				Object[] newRow = { khoModel.getMaKho(), khoModel.getTenKho(), khoModel.getDiaChi(), khoModel.getMacn() };
+				khoView.getModel().addRow(newRow);
+				khoView.getDao().insert(khoModel);
+			}catch(Exception e) {
+				JOptionPane.showMessageDialog(null, "Lỗi thêm kho!", "Error", JOptionPane.ERROR_MESSAGE);
+				reFreshData();
+				khoView.getTable().getSelectionModel().setSelectionInterval(row, row);
 				return;
+			}
 
-			Object[] newRow = { khoModel.getMaKho(), khoModel.getTenKho(), khoModel.getDiaChi(), khoModel.getMacn() };
-			khoView.getModel().addRow(newRow);
+			
 			JOptionPane.showMessageDialog(null, "Ghi thành công!", "Thông báo", JOptionPane.OK_OPTION);
 
 			khoView.getTable().setEnabled(true);
@@ -246,14 +256,21 @@ public class KhoController {
 		String tenKho = khoView.getTable().getValueAt(khoView.getTable().getSelectedRow(), 1).toString();
 		String diaChi = khoView.getTable().getValueAt(khoView.getTable().getSelectedRow(), 2).toString();
 
-		if (khoView.getDao().update(khoModel) == -1)
+		try {
+			khoView.getTable().setValueAt(khoModel.getTenKho(), khoView.getTable().getSelectedRow(), 1);
+			khoView.getTable().setValueAt(khoModel.getDiaChi(), khoView.getTable().getSelectedRow(), 2);
+			khoView.getDao().update(khoModel);
+		}catch(Exception e) {
+			JOptionPane.showMessageDialog(null, "Lỗi update kho!", "Error", JOptionPane.ERROR_MESSAGE);
+			reFreshData();
+			khoView.getTable().getSelectionModel().setSelectionInterval(row, row);
 			return;
+		}
 		khoView.getBtnHoanTac().setEnabled(true);
-		khoView.getTable().setValueAt(khoModel.getTenKho(), khoView.getTable().getSelectedRow(), 1);
-		khoView.getTable().setValueAt(khoModel.getDiaChi(), khoView.getTable().getSelectedRow(), 2);
+		
 		JOptionPane.showMessageDialog(null, "Ghi thành công!", "Thông báo", JOptionPane.OK_OPTION);
 		khoView.getTable().getSelectionModel().setSelectionInterval(row, row);
-		System.out.println(khoView.getList().set(row, khoModel));
+		khoView.getList().set(row, khoModel);
 		// Luu truy van de hoan tac yeu cau update
 		String sqlUndo;
 		sqlUndo = "UPDATE Kho SET TENKHO = '" + tenKho + "'," + "DIACHI = '" + diaChi + "' " + "WHERE MAKHO = '"
@@ -276,7 +293,7 @@ public class KhoController {
 
 		try {
 			Program.myReader.next();
-			if (Program.myReader.getString(1) != null)
+			if (Program.myReader.getRow() > 0)
 				return true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -292,7 +309,7 @@ public class KhoController {
 
 		try {
 			Program.myReader.next();
-			if (Program.myReader.getString(1) != null)
+			if (Program.myReader.getRow() > 0)
 				return true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -308,8 +325,9 @@ public class KhoController {
 
 		try {
 			Program.myReader.next();
-			if (Program.myReader.getString(1) != null)
+			if (Program.myReader.getRow() > 0) 
 				return true;
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -319,15 +337,19 @@ public class KhoController {
 	}
 
 	private void deleteData() {
-		if (khoView.getTable().getRowCount() == 0) {
-			khoView.getBtnXoa().setEnabled(false);
+//		chưa chọn hàng thì không xóa được
+		if (khoView.getTable().getSelectedRow() == -1)
+			return;
+		if (JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa dữ liệu này không?", "Confirm",
+				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) != JOptionPane.OK_OPTION) {
+			return;
 		}
-
+//		set dữ liệu của row đó
 		khoModel.setMaKho(khoView.getTextFieldMaKho().getText());
 		khoModel.setTenKho(khoView.getTextFieldTenKho().getText());
 		khoModel.setDiaChi(khoView.getTextFieldDiaChi().getText());
 		khoModel.setMacn(khoView.getTextFieldMaCN().getText());
-
+//		check exist
 		if (checkDatHang(khoModel.getMaKho())) {
 			JOptionPane.showMessageDialog(null, "Không thể xóa kho hàng này vì đã lập đơn đặt hàng.", "Thông báo",
 					JOptionPane.WARNING_MESSAGE);
@@ -344,30 +366,33 @@ public class KhoController {
 			return;
 		}
 
-		int reply = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa dữ liệu này không?", "Confirm",
-				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-		if (reply == JOptionPane.NO_OPTION)
-			return;
 		row = khoView.getTable().getSelectedRow();
 
-		// not execute
-		if (khoView.getDao().delete(khoModel) == -1)
-			return;
-		// delete selected row in table
-		if (khoView.getTable().getSelectedRow() != -1) {
+		try {
 			khoView.getTable().getSelectionModel().removeListSelectionListener(khoView.getSelectionListener());
 			khoView.getModel().removeRow(khoView.getTable().getSelectedRow());
-			JOptionPane.showMessageDialog(null, "Xóa thành công!", "Thông báo", JOptionPane.OK_OPTION);
-			khoView.getTable().getSelectionModel().addListSelectionListener(khoView.getSelectionListener());
-			khoView.getBtnHoanTac().setEnabled(true);
 			khoView.getTextFieldMaKho().setText("");
 			khoView.getTextFieldTenKho().setText("");
 			khoView.getTextFieldDiaChi().setText("");
-			System.out.println(khoView.getList().remove(row));
+			khoView.getDao().delete(khoModel);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Lỗi xóa kho!", "Error", JOptionPane.ERROR_MESSAGE);
+			reFreshData();
+			khoView.getTable().getSelectionModel().setSelectionInterval(row, row);
+			return;
 		}
+
+		JOptionPane.showMessageDialog(null, "Xóa thành công!", "Thông báo", JOptionPane.OK_OPTION);
+		khoView.getTable().getSelectionModel().addListSelectionListener(khoView.getSelectionListener());
+		khoView.getBtnHoanTac().setEnabled(true);
+		khoView.getList().remove(row);
+		
 		String sqlUndo = "INSERT INTO Kho (MAKHO, TENKHO, DIACHI, MACN) VALUES ('" + khoModel.getMaKho() + "', '"
 				+ khoModel.getTenKho() + "', '" + khoModel.getDiaChi() + "', '" + khoModel.getMacn() + "')";
 		undoList.push(sqlUndo);
 
+		if (khoView.getTable().getRowCount() == 0) {
+			khoView.getBtnXoa().setEnabled(false);
+		}
 	}
 }
