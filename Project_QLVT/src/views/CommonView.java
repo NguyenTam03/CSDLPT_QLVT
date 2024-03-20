@@ -184,6 +184,7 @@ public class CommonView<E, T> extends JPanel {
 			comboBox.addItem(key);
 		}
 		comboBox.setSelectedIndex(Program.mChinhanh);
+		System.out.println(Program.mChinhanh);
 	}
 
 	private void formLoad() {

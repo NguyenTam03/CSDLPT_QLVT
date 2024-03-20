@@ -32,7 +32,7 @@ public class DatHangDao extends IAbstractDao<DatHangModel> {
 	}
 	
 	@Override
-	public void insert(DatHangModel t) {
+	public void insert(DatHangModel t) throws SQLException {
 		String sql = "INSERT INTO DatHang (MasoDDH, NGAY, NhaCC, MANV, MAKHO) VALUES (?, ?, ?, ?, ?)";
 		Program.ExecSqlDML(sql, t.getMaSoDDH(), t.getNgay(), t.getNhaCC(), t.getManv(), t.getMakho());
 	}

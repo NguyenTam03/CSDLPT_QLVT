@@ -38,6 +38,12 @@ public class NhanVienController {
 		NhanVienFrm.getBtnHoanTac().addActionListener(e -> undoData());
 		NhanVienFrm.getBtnXoa().addActionListener(e -> deleteNhanVien());
 		NhanVienFrm.getBtnChuyenChiNhanh().addActionListener(e -> chuyenChiNhanh());
+		NhanVienFrm.getBtnThoat().addActionListener(l -> exitNhanVien());
+	}
+	
+	private void exitNhanVien() {
+		Program.frmMain.getTabbedPane_Main().removeTabAt(Program.frmMain.getTabbedPane_Main().getSelectedIndex());
+		Program.frmMain.getPanel_VT().remove(NhanVienFrm);
 	}
 
 	public void addNhanVien() {

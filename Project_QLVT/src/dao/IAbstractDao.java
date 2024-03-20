@@ -1,5 +1,6 @@
 package dao;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 
@@ -23,11 +24,11 @@ public abstract class IAbstractDao<T> {
 		this.colName = colName;
 	}
 
-	public abstract void insert(T t);
+	public abstract void insert(T t) throws SQLException;
 	
-	public abstract void update(T t);
+	public abstract void update(T t) throws SQLException;
 	
-	public abstract void delete(T t);
+	public abstract void delete(T t) throws SQLException;
 	
 	public abstract ArrayList<T> selectAll();
 	

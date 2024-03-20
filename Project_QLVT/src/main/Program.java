@@ -33,7 +33,6 @@ public class Program {
 	public static String remotelogin = "htkn";
 	public static String remotepassword = "0312";
 
-
 	public static String mloginDN = "";
 	public static String passwordDN = "";
 	public static String mGroup = "";
@@ -43,10 +42,10 @@ public class Program {
 	public static List<String> macn;
 	public static HashMap<String, String> servers;
 	public static LoginForm login;
-	
+
 	public static FrameMain frmMain;
 	public static Statement statement = null;
-	
+
 	public static int Connect() {
 		if (Program.conn != null) {
 			try {
@@ -62,17 +61,17 @@ public class Program {
 					+ Program.password;
 			try {
 				Program.conn = DriverManager.getConnection(Program.connstr);
-			}catch (SQLException e) {
+			} catch (SQLException e) {
 				JOptionPane.showMessageDialog(null,
 						"Lỗi kết nối cơ sở dữ liệu.\nBạn xem lại user name và password.\n " + e.getMessage(), "",
 						JOptionPane.WARNING_MESSAGE);
 				return 0;
 			}
-			
-//			System.out.println(Program.connstr);
+
+			System.out.println(Program.connstr);
 			return 1;
 		} catch (ClassNotFoundException e) {
-			JOptionPane.showMessageDialog(null,"", e.getMessage(), JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, "", e.getMessage(), JOptionPane.WARNING_MESSAGE);
 			return 0;
 		}
 	}
@@ -87,67 +86,51 @@ public class Program {
 			myReader = p.executeQuery();
 			return myReader;
 		} catch (SQLException ex) {
-			try {
-				Program.conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			ex.printStackTrace();
 			return null;
 		}
 	}
-	
-	public static void ExecSqlDML(String sql, Object... objects) {
-		try {
-			PreparedStatement p = Program.conn.prepareStatement(sql);
-			for (int i = 1; i <= objects.length; i++) {
-				p.setObject(i, objects[i - 1]);
-			}
-			p.executeUpdate();
 
-		} catch (SQLException ex) {
-			try {
-				Program.conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+	public static void ExecSqlDML(String sql, Object... objects) throws SQLException {
+
+		PreparedStatement p = Program.conn.prepareStatement(sql);
+		for (int i = 1; i <= objects.length; i++) {
+			p.setObject(i, objects[i - 1]);
 		}
+		p.executeUpdate();
+
 	}
-	
-	public static int ExecSqlNoQuery(String sql, Object... objects) {
-		try(CallableStatement c = Program.conn.prepareCall(sql)) {
-			
-			c.registerOutParameter(1, java.sql.Types.INTEGER);
-			for (int i = 2; i <= objects.length + 1; i++) {
-				c.setObject(i, objects[i - 2]);
-			}
-			
-			c.execute();
-			int res = c.getInt(1);
-			c.close();
-			return res;
-		} catch (SQLException ex) {
-			try {
-				Program.conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+
+	public static int ExecSqlNoQuery(String sql, Object... objects) throws SQLException {
+		CallableStatement c = Program.conn.prepareCall(sql);
+
+		c.registerOutParameter(1, java.sql.Types.INTEGER);
+		for (int i = 2; i <= objects.length + 1; i++) {
+			c.setObject(i, objects[i - 2]);
 		}
-		return -1;
+
+		c.execute();
+		int res = c.getInt(1);
+		c.close();
+		return res;
 	}
+
 	public static int ExecSqlNonQuery(String strlenh) {
-        try {
-            statement = conn.createStatement();
-            statement.executeUpdate(strlenh);
-            statement.close();
-            return 0;
-        } catch (SQLException ex) {
-            if (ex.getMessage().contains("Error converting data type varchar to int"))
-                JOptionPane.showMessageDialog(null, "Bạn format Cell lại cột \"Ngày Thi\" qua kiểu Number hoặc mở File Excel.");
-            else
-                JOptionPane.showMessageDialog(null, ex.getMessage());
-            return ex.getErrorCode();
-        }
-    }
+		try {
+			statement = conn.createStatement();
+			statement.executeUpdate(strlenh);
+			statement.close();
+			return 0;
+		} catch (SQLException ex) {
+			if (ex.getMessage().contains("Error converting data type varchar to int"))
+				JOptionPane.showMessageDialog(null,
+						"Bạn format Cell lại cột \"Ngày Thi\" qua kiểu Number hoặc mở File Excel.");
+			else
+				JOptionPane.showMessageDialog(null, ex.getMessage());
+			return ex.getErrorCode();
+		}
+	}
+
 	private static List<String> getMaCn() {
 		String sql = "SELECT MACN FROM ChiNhanh";
 		List<String> macn = new ArrayList<String>();
@@ -163,35 +146,35 @@ public class Program {
 		}
 		return null;
 	}
-	
-	public static HashMap<String, String> getServer() {
-    	Program.mlogin = Program.remotelogin;
-    	Program.password = Program.remotepassword; 
-    	Program.servername = "TAM";
 
-    	Program.Connect();
-        HashMap<String, String> server = new LinkedHashMap<String, String>();
-        try {
-            String sql = "SELECT * FROM [dbo].[V_DS_PHANMANH] ";
-            PreparedStatement statement = Program.conn.prepareStatement(sql);
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                server.put(rs.getString("TENCN"), rs.getString("TENSERVER"));
-            }
-       
-        } catch (Exception e) {
-            e.printStackTrace();
-        }finally {
-        	Program.macn = Program.getMaCn();
+	public static HashMap<String, String> getServer() {
+		Program.mlogin = Program.remotelogin;
+		Program.password = Program.remotepassword;
+		Program.servername = "ADMIN-PC";
+
+		Program.Connect();
+		HashMap<String, String> server = new LinkedHashMap<String, String>();
+		try {
+			String sql = "SELECT * FROM [dbo].[V_DS_PHANMANH] ";
+			PreparedStatement statement = Program.conn.prepareStatement(sql);
+			ResultSet rs = statement.executeQuery();
+			while (rs.next()) {
+				server.put(rs.getString("TENCN"), rs.getString("TENSERVER"));
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			Program.macn = Program.getMaCn();
 			try {
 				Program.conn.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
-        
-        return server;
-    }
+
+		return server;
+	}
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
