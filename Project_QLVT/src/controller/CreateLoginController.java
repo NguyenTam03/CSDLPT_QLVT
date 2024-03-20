@@ -2,6 +2,7 @@ package controller;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.SQLException;
 import java.util.Enumeration;
 
 import javax.swing.AbstractButton;
@@ -67,8 +68,16 @@ public class CreateLoginController {
 		}
 		if (validate(username, loginName, password, passwordConfirm, group)) {
 			String sql = "{? = call dbo.sp_TaoLogin(?, ?, ?, ?)}";
-			int res = Program.ExecSqlNoQuery(sql, loginName, password, username, group);
-			if (res != -1) {
+			int res = 0;
+			try {
+				res = Program.ExecSqlNoQuery(sql, loginName, password, username, group);
+			}catch(SQLException e) {
+				JOptionPane.showMessageDialog(null, e.getMessage(), "Thông báo", JOptionPane.WARNING_MESSAGE);
+				System.out.println(res);
+				return;
+			}
+			
+			if (res == 0) {
 				JOptionPane.showMessageDialog(null, "Tạo thành công.", "Success", JOptionPane.INFORMATION_MESSAGE);
 				exitForm();
 			}

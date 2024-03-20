@@ -107,7 +107,14 @@ public class KhoController {
 		}
 
 		String sqlUndo = undoList.pop();
-		Program.ExecSqlDML(sqlUndo);
+		
+		try {
+			Program.ExecSqlDML(sqlUndo);
+		}catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Đã xảy ra lỗi, undo không thành công!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+			return;
+		}
+		
 
 		reFreshData();
 		if (row <= khoView.getTable().getRowCount() - 1) {

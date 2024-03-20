@@ -94,9 +94,17 @@ public class NavController {
 		t.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				Component form;
 				try {
-					Component form = (Component) formClass.getDeclaredConstructor().newInstance();
-					t1.add(form, BorderLayout.CENTER);
+					if (t1.getComponents().length == 0) {
+						form = (Component) formClass.getDeclaredConstructor().newInstance();
+						t1.add(form, BorderLayout.CENTER);
+					}else if (t1.getComponents().length > 0 && Program.mGroup.equals("CONGTY")) {
+						t1.removeAll();
+						form = (Component) formClass.getDeclaredConstructor().newInstance();
+						t1.add(form, BorderLayout.CENTER);
+					}
+					
 					frmMain.getTabbedPane_Main().addTab(label, null, t1, tip);
 					frmMain.getTabbedPane_Main().setSelectedComponent(t1);
 				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException

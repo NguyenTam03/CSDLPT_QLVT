@@ -240,7 +240,10 @@ public class NhanVienOptionForm extends JFrame {
 
 	private void chooseNhanVien() {
 		String manv = table.getValueAt(table.getSelectedRow(), 0).toString();
+		String firstName = table.getValueAt(table.getSelectedRow(), 1).toString().trim();
+		String lastName = table.getValueAt(table.getSelectedRow(), 2).toString().trim();
 		CreateLoginForm.getTextFieldMaNV().setText(manv);
+		CreateLoginForm.getTextFieldName().setText(firstName + " " + lastName);
 		this.dispose();
 	}
 

@@ -33,19 +33,19 @@ public class KhoDao extends IAbstractDao<KhoModel> {
 	}
 
 	@Override
-	public void insert(KhoModel t) {
+	public void insert(KhoModel t) throws SQLException {
 		String sql = "INSERT INTO Kho (MAKHO, TENKHO, DIACHI, MACN) VALUES (?, ?, ?, ?)";
 		Program.ExecSqlDML(sql, t.getMaKho(), t.getTenKho(), t.getDiaChi(), t.getMacn());
 	}
 
 	@Override
-	public void update(KhoModel t) {
+	public void update(KhoModel t) throws SQLException {
 		String sql = "UPDATE Kho SET TENKHO = ?, DIACHI = ? WHERE MAKHO = ?";
 		Program.ExecSqlDML(sql, t.getTenKho(), t.getDiaChi(), t.getMaKho());
 	}
 
 	@Override
-	public void delete(KhoModel t) {
+	public void delete(KhoModel t) throws SQLException {
 		String sql = "DELETE FROM Kho WHERE MAKHO = ?";
 		Program.ExecSqlDML(sql, t.getMaKho());
 	}

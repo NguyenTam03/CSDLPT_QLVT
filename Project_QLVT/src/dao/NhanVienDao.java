@@ -35,7 +35,7 @@ public class NhanVienDao extends IAbstractDao<NhanVienModel> {
 	}
 
 	@Override
-	public void insert(NhanVienModel nhanVienModel) {
+	public void insert(NhanVienModel nhanVienModel) throws SQLException {
 		// TODO Auto-generated method stub
 		String sql = "Insert into NhanVien(MaNV, Ho, Ten, SoCMND, DiaChi, NgaySinh, Luong, MaCN, TrangThaiXoa) values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		Program.ExecSqlDML(sql, nhanVienModel.getManv(), nhanVienModel.getHo(), nhanVienModel.getTen(),
@@ -44,7 +44,7 @@ public class NhanVienDao extends IAbstractDao<NhanVienModel> {
 	}
 
 	@Override
-	public void update(NhanVienModel t) {
+	public void update(NhanVienModel t) throws SQLException {
 		// TODO Auto-generated method stub
 		String sql = "Update NhanVien set Ho = ?, Ten = ?, SoCMND = ?, DiaChi = ?, NgaySinh = ?, Luong = ? where MaNV = ?";
 		Program.ExecSqlDML(sql, t.getHo(), t.getTen(), t.getSoCMND(), t.getDiaChi(), t.getNgaySinh(), t.getLuong(), t.getManv());

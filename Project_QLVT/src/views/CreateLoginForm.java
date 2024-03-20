@@ -41,6 +41,7 @@ public class CreateLoginForm extends JFrame {
 	private JButton btnAccept;
 	private JButton btnExit;
 	private JButton btnNVOption;
+	private static JTextField textFieldName;
 
 	public CreateLoginForm() {
 		setTitle("Tạo tài khoản");
@@ -71,11 +72,11 @@ public class CreateLoginForm extends JFrame {
 		panelCenter.setLayout(null);
 
 		JLabel lblMaNV = new JLabel("Mã Nhân Viên:");
+		lblMaNV.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblMaNV.setBounds(92, 24, 115, 14);
 		panelCenter.add(lblMaNV);
 
 		textFieldMaNV = new JTextField();
-		textFieldMaNV.setEnabled(false);
 		textFieldMaNV.setEditable(false);
 		textFieldMaNV.setBounds(233, 21, 120, 20);
 		panelCenter.add(textFieldMaNV);
@@ -86,41 +87,57 @@ public class CreateLoginForm extends JFrame {
 		panelCenter.add(btnNVOption);
 
 		JLabel lblLogin = new JLabel("Tên Tài Khoản:");
-		lblLogin.setBounds(92, 65, 115, 14);
+		lblLogin.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblLogin.setBounds(92, 101, 115, 14);
 		panelCenter.add(lblLogin);
 
 		textFieldLogin = new JTextField();
-		textFieldLogin.setBounds(233, 62, 171, 20);
+		textFieldLogin.setBounds(233, 98, 171, 20);
 		panelCenter.add(textFieldLogin);
 		textFieldLogin.setColumns(10);
 
 		JLabel lblPassword = new JLabel("Mật Khẩu:");
-		lblPassword.setBounds(92, 103, 115, 14);
+		lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblPassword.setBounds(92, 137, 115, 14);
 		panelCenter.add(lblPassword);
 
 		passwordField = new JPasswordField();
-		passwordField.setBounds(233, 100, 171, 20);
+		passwordField.setBounds(233, 134, 171, 20);
 		panelCenter.add(passwordField);
 
 		lblPasswordConfirm = new JLabel("Xác Nhận Mật Khẩu:");
-		lblPasswordConfirm.setBounds(92, 141, 115, 14);
+		lblPasswordConfirm.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblPasswordConfirm.setBounds(92, 177, 131, 14);
 		panelCenter.add(lblPasswordConfirm);
 
 		passwordFieldAccept = new JPasswordField();
-		passwordFieldAccept.setBounds(233, 138, 171, 20);
+		passwordFieldAccept.setBounds(233, 174, 171, 20);
 		panelCenter.add(passwordFieldAccept);
 
 		lblGroup = new JLabel("Vai Trò:");
-		lblGroup.setBounds(92, 185, 115, 14);
+		lblGroup.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblGroup.setBounds(92, 225, 115, 14);
 		panelCenter.add(lblGroup);
 
 		JPanel panelGroup = new JPanel();
-		panelGroup.setBounds(233, 179, 251, 33);
+		panelGroup.setBounds(230, 206, 251, 33);
 		panelCenter.add(panelGroup);
+		
+		JLabel lblName = new JLabel("Họ và tên:");
+		lblName.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblName.setBounds(92, 61, 115, 14);
+		panelCenter.add(lblName);
+		
+		textFieldName = new JTextField();
+		textFieldName.setEditable(false);
+		textFieldName.setBounds(233, 58, 171, 20);
+		panelCenter.add(textFieldName);
+		textFieldName.setColumns(10);
 		
 		bg = new ButtonGroup();
 		if (Program.mGroup.equals("CONGTY")) {
 			rdbtnCT = new JRadioButton("CONGTY");
+			rdbtnCT.setSelected(true);
 			panelGroup.add(rdbtnCT);
 			bg.add(rdbtnCT);
 		} else {
@@ -195,6 +212,12 @@ public class CreateLoginForm extends JFrame {
 
 	public JButton getBtnNVOption() {
 		return btnNVOption;
+	}
+	
+	
+
+	public static JTextField getTextFieldName() {
+		return textFieldName;
 	}
 
 	public ButtonGroup getBg() {
