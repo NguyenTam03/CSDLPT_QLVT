@@ -27,6 +27,7 @@ public class FrameMain extends JFrame {
 	private JPanel panel_VT, panel_NV, panel_Kho, panel_dathang, panel_phieulap, panel_phieudat;
 	private JMenu mnNhanVien, mnVatTu, mnKho, mnLapPhieu, mnLogout, mnExit, mnCreateTK;
 	private JMenuItem mntmDatHang, mntmPhieuLap, mntmPhieuXuat;
+	private JMenu mnDeleteUser;
 
 	public FrameMain() {
 		setTitle("Quản Lý Vật Tư");
@@ -109,9 +110,15 @@ public class FrameMain extends JFrame {
 		mnCreateTK.setFont(new Font("Segoe UI", Font.PLAIN, 13));
 		mnCreateTK.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/plus.png")));
 		menuBarHeThong.add(mnCreateTK);
+		
+		mnDeleteUser = new JMenu("Xóa tài khoản");
+		mnDeleteUser.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+		mnDeleteUser.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/delete_user.png")));
+		menuBarHeThong.add(mnDeleteUser);
 
 		if (Program.mGroup.equals("USER")) {
 			mnCreateTK.setEnabled(false);
+			mnDeleteUser.setEnabled(false);
 		}
 
 //		------------Bao Cao---------------
@@ -203,6 +210,10 @@ public class FrameMain extends JFrame {
 
 	public JPanel getPanel_dathang() {
 		return panel_dathang;
+	}
+
+	public JMenu getMnDeleteUser() {
+		return mnDeleteUser;
 	}
 
 }

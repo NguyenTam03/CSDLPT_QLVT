@@ -82,6 +82,8 @@ public class LoginForm extends JFrame {
 		lblChiNhanh.setBounds(22, 11, 61, 14);
 		panel.add(lblChiNhanh);
 		
+		Program.readInfoDBFile();
+		
 		Program.servers = Program.getServer();
 		cbChiNhanh = new JComboBox<String>();
 		cbChiNhanh.setFont(new Font("Tahoma", Font.PLAIN, 12));
