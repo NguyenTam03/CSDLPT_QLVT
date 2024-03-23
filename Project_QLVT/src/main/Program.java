@@ -150,7 +150,7 @@ public class Program {
 	public static HashMap<String, String> getServer() {
 		Program.mlogin = Program.remotelogin;
 		Program.password = Program.remotepassword;
-		Program.servername = "ADMIN-PC";
+		Program.servername = "TAM";
 
 		Program.Connect();
 		HashMap<String, String> server = new LinkedHashMap<String, String>();
