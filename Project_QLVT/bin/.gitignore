@@ -1,4 +1,5 @@
-/views/
-/main/
-/controller/
 /dao/
+/main/
+/model/
+/views/
+/controller/

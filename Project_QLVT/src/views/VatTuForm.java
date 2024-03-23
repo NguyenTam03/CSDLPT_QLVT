@@ -123,7 +123,10 @@ public class VatTuForm extends CommonView<VattuModel, VatTuDao> {
 		
 //		thêm sự kiện chọn
 		table.getSelectionModel().addListSelectionListener(selectionListener);
-		
+
+		if (table.getRowCount() > 0) {
+			table.getSelectionModel().setSelectionInterval(0, 0);
+		}
 //		Listener event
 		VatTuController ac = new VatTuController(this);
 		ac.initController();

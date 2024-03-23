@@ -123,6 +123,10 @@ public class KhoForm extends CommonView<KhoModel, KhoDao> {
 			textFieldDiaChi.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
 		};
 		table.getSelectionModel().addListSelectionListener(selectionListener);
+		
+		if (table.getRowCount() > 0) {
+			table.getSelectionModel().setSelectionInterval(0, 0);
+		}
 //		Listener event
 		KhoController ac = new KhoController(this);
 		ac.initController();

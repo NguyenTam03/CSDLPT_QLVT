@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 
+import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -18,6 +19,7 @@ import views.FrameMain;
 import views.KhoForm;
 import views.LoginForm;
 import views.NhanVienForm;
+import views.NhanVienOptionForm;
 import views.VatTuForm;
 
 public class NavController {
@@ -49,7 +51,12 @@ public class NavController {
 					createLogin();
 				}
 			});
-
+			frmMain.getMnDeleteUser().addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					deleteLogin();
+				}
+			});
 		}
 
 		clickedComponentShowTab("Nhân viên", "Tab nhân viên", frmMain.getMnNhanVien(), frmMain.getPanel_NV(),
@@ -88,6 +95,12 @@ public class NavController {
 
 	private void createLogin() {
 		new CreateLoginForm().setVisible(true);
+	}
+	
+	private void deleteLogin() {
+		NhanVienOptionForm form = new NhanVienOptionForm(true);
+		form.setVisible(true);
+		form.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 
 	private void clickedComponentShowTab(String label, String tip, JMenu t, JPanel t1, Class<?> formClass) {
