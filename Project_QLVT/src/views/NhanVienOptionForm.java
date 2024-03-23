@@ -14,6 +14,8 @@ import model.NhanVienModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -44,12 +46,13 @@ public class NhanVienOptionForm extends JFrame {
 	private NhanVienDao dao;
 	private List<NhanVienModel> list;
 	private JComboBox<String> comboBox;
-
+	private boolean hasAccount;
 	/**
 	 * Create the frame.
 	 */
-	public NhanVienOptionForm() {
+	public NhanVienOptionForm(boolean hasAccount) {
 		super("Chọn Nhân Viên");
+		this.hasAccount = hasAccount;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 814, 409);
 		contentPane = new JPanel();
@@ -69,9 +72,10 @@ public class NhanVienOptionForm extends JFrame {
 		for (String key : Program.servers.keySet()) {
 			comboBox.addItem(key);
 		}
+		comboBox.setSelectedIndex(Program.mChinhanh);
 		comboBox.addItemListener(l -> loadDataOtherServer(l));
 
-		comboBox.setSelectedIndex(Program.mChinhanh);
+		
 		if (Program.mGroup.equals("CONGTY"))
 			comboBox.setEnabled(true);
 
@@ -178,14 +182,14 @@ public class NhanVienOptionForm extends JFrame {
 						.addContainerGap()));
 		panelFooter.setLayout(gl_panelFooter);
 		setLocationRelativeTo(null);
-		
+//		init
+		dao = NhanVienDao.getInstance();
+		list = new ArrayList<NhanVienModel>();
 		loadNhanVien();
 	}
 
-	private void loadNhanVienNotAccount() {
-		dao = NhanVienDao.getInstance();
-		list = new ArrayList<NhanVienModel>();
-		String sql = "{call sp_DS_NhanVien_ChuaCoTK}";
+	private List<NhanVienModel> loadNhanVienAccount(String sql) {
+		List<NhanVienModel> list = new ArrayList<NhanVienModel>();
 		Program.myReader = Program.ExecSqlDataReader(sql);
 		try {
 			while (Program.myReader.next()) {
@@ -195,14 +199,22 @@ public class NhanVienOptionForm extends JFrame {
 						Program.myReader.getBoolean(9));
 				list.add(nv);
 			}
+			return list;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
+		return null;
 	}
 
 	private void loadNhanVien() {
-		loadNhanVienNotAccount();
+		String sql = "";
+		if (!hasAccount) {
+			sql = "{call sp_DS_NhanVien_ChuaCoTK}";
+		}else {
+			sql = "{call sp_DS_NhanVien_CoTK}";
+		}
+		list = loadNhanVienAccount(sql);
 		model = (DefaultTableModel) table.getModel();
 		model.setColumnIdentifiers(dao.getColName());
 
@@ -240,10 +252,27 @@ public class NhanVienOptionForm extends JFrame {
 
 	private void chooseNhanVien() {
 		String manv = table.getValueAt(table.getSelectedRow(), 0).toString();
-		String firstName = table.getValueAt(table.getSelectedRow(), 1).toString().trim();
-		String lastName = table.getValueAt(table.getSelectedRow(), 2).toString().trim();
-		CreateLoginForm.getTextFieldMaNV().setText(manv);
-		CreateLoginForm.getTextFieldName().setText(firstName + " " + lastName);
+		if (!hasAccount) {
+			String firstName = table.getValueAt(table.getSelectedRow(), 1).toString().trim();
+			String lastName = table.getValueAt(table.getSelectedRow(), 2).toString().trim();
+			CreateLoginForm.getTextFieldMaNV().setText(manv);
+			CreateLoginForm.getTextFieldName().setText(firstName + " " + lastName);
+		}else {
+			String sql = "{? = call SP_XOA_USER_LOGIN(?)}";
+			int res = 0;
+			try {
+				res = Program.ExecSqlNoQuery(sql, manv);
+			}catch(SQLException e) {
+				JOptionPane.showMessageDialog(null, e.getMessage(), "Thông báo", JOptionPane.WARNING_MESSAGE);
+				System.out.println(res);
+				return;
+			}
+			if (res == 0) {
+				JOptionPane.showMessageDialog(null, "Xóa tài khoản thành công", "Success", JOptionPane.INFORMATION_MESSAGE);
+				exitForm();
+			}
+		}
+		
 		this.dispose();
 	}
 

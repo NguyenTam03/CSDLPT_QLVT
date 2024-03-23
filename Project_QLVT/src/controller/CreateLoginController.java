@@ -86,7 +86,7 @@ public class CreateLoginController {
 	}
 	
 	private void chooseNhanVien() {
-		NhanVienOptionForm form = new NhanVienOptionForm();
+		NhanVienOptionForm form = new NhanVienOptionForm(false);
 		form.setVisible(true);
 		form.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}

@@ -1,6 +1,8 @@
 package main;
 
 import java.awt.EventQueue;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -12,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Scanner;
 
 import javax.swing.JOptionPane;
 
@@ -23,15 +26,15 @@ public class Program {
 	public static String connstr;
 
 	public static ResultSet myReader;
-	public static String servername = "ADMIN-PC";
+	public static String servername = "";
 
 	public static String username = "";
 	public static String mlogin = "";
 	public static String password = "";
 
-	public static String database = "QLVT_DATHANG";
-	public static String remotelogin = "htkn";
-	public static String remotepassword = "123456";
+	public static String database = "";
+	public static String remotelogin = "";
+	public static String remotepassword = "";
 
 	public static String mloginDN = "";
 	public static String passwordDN = "";
@@ -57,10 +60,9 @@ public class Program {
 		try {
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 			Program.connstr = "jdbc:sqlserver://" + Program.servername + ";databaseName=" + Program.database
-					+ ";encrypt=true;trustServerCertificate=true" + ";user=" + Program.mlogin + ";password="
-					+ Program.password;
+					+ ";encrypt=true;trustServerCertificate=true";
 			try {
-				Program.conn = DriverManager.getConnection(Program.connstr);
+				Program.conn = DriverManager.getConnection(Program.connstr, Program.mlogin, Program.password);
 			} catch (SQLException e) {
 				JOptionPane.showMessageDialog(null,
 						"Lỗi kết nối cơ sở dữ liệu.\nBạn xem lại user name và password.\n " + e.getMessage(), "",
@@ -73,6 +75,22 @@ public class Program {
 		} catch (ClassNotFoundException e) {
 			JOptionPane.showMessageDialog(null, "", e.getMessage(), JOptionPane.WARNING_MESSAGE);
 			return 0;
+		}
+	}
+	
+	@SuppressWarnings("resource")
+	public static void readInfoDBFile() {
+		String file = "D:\\infoDB.txt";
+		try {
+			File myFile = new File(file);
+			Scanner reader = new Scanner(myFile);
+			Program.servername = reader.nextLine();
+			Program.remotelogin = reader.nextLine();
+			Program.remotepassword = reader.nextLine();
+			Program.database = reader.nextLine();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
@@ -150,7 +168,6 @@ public class Program {
 	public static HashMap<String, String> getServer() {
 		Program.mlogin = Program.remotelogin;
 		Program.password = Program.remotepassword;
-		Program.servername = "ADMIN-PC";
 
 		Program.Connect();
 		HashMap<String, String> server = new LinkedHashMap<String, String>();
