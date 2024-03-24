@@ -6,12 +6,10 @@ import java.awt.Color;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 
-import dao.CTDDHDao;
-import dao.DatHangDao;
+import dao.CTPLDao;
 import dao.PhieuLapDao;
 import main.Program;
-import model.CTDDHModel;
-import model.DatHangModel;
+import model.CTPLModel;
 import model.PhieuLapModel;
 
 import javax.swing.JPanel;
@@ -23,8 +21,8 @@ import javax.swing.border.LineBorder;
 import javax.swing.JComboBox;
 import javax.swing.JSpinner;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
-import controller.DatHangController;
 import controller.PhieuLapController;
 
 import javax.swing.JScrollPane;
@@ -37,22 +35,26 @@ import javax.swing.SwingConstants;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JMenuBar;
+import javax.swing.border.EtchedBorder;
+import com.toedter.calendar.JCalendar;
+import com.toedter.calendar.JDateChooser;
 
 public class PhieuLapForm extends CommonView<PhieuLapModel, PhieuLapDao> {
 	private static final long serialVersionUID = 1L;
-	private JButton btnVatTuOption, btnKhoOption;
-	private JTextField textFieldMaDH;
-	private JTextField textFieldNCC;
-	private JTextField textFieldMaNV;
-	private JTextField textFieldMaKho;
-	private JTextField textFieldMaVT;
-	private JTable tableCTDH;
-	private JSpinner spinnerSoLuong, spinnerDonGia;
-	private JComboBox<String> comboBoxNgay;
+	private JButton btnCTDHOption, btnDHOption;
+	private JTextField TFMaPN;
+	private JTextField TFMaNV;
+	private JTextField TFMaKho;
+	private JTextField TFMaVT;
+	private JTable tableCTPN;
+	private JSpinner SoLuong, DonGia;
 	private DefaultTableModel ctdhModel;
-	private CTDDHDao ctdhDao;
-	private ArrayList<CTDDHModel> ctdhList;
-	private JMenuItem mntmDatHang, mntmCTDH;
+	private CTPLDao ctplDao;
+	private ArrayList<CTPLModel> ctdhList;
+	private JMenuItem MenuItemPN, MenuItemCTPN;
+	private JTextField TFMaDDH;
+	private JMenu mnOption;
+	protected ListSelectionListener selectionListener_CTDH;
 
 	public PhieuLapForm() {
 		super();
@@ -81,142 +83,164 @@ public class PhieuLapForm extends CommonView<PhieuLapModel, PhieuLapDao> {
 		lblNewLabel.setBackground(Color.LIGHT_GRAY);
 		lblNewLabel.setForeground(Color.DARK_GRAY);
 
-		JLabel lblNewLabel_1 = new JLabel("Chi Tiết Đơn Đặt Hàng");
+		JLabel lblNewLabel_1 = new JLabel("Chi Tiết Phiếu Nhập");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblNewLabel_1.setOpaque(true);
 		lblNewLabel_1.setBackground(Color.LIGHT_GRAY);
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 
 		GroupLayout gl_panel_2 = new GroupLayout(panel_2);
-		gl_panel_2.setHorizontalGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
+		gl_panel_2.setHorizontalGroup(
+			gl_panel_2.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_2.createSequentialGroup()
-						.addComponent(panelInfo, GroupLayout.PREFERRED_SIZE, 331, GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
-								.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 497, Short.MAX_VALUE)
-								.addComponent(lblNewLabel_1, GroupLayout.DEFAULT_SIZE, 497, Short.MAX_VALUE)))
-				.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 834, Short.MAX_VALUE));
-		gl_panel_2.setVerticalGroup(gl_panel_2.createParallelGroup(Alignment.TRAILING).addGroup(gl_panel_2
-				.createSequentialGroup().addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
-				.addPreferredGap(ComponentPlacement.RELATED)
-				.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING, false)
+					.addComponent(panelInfo, GroupLayout.PREFERRED_SIZE, 380, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(gl_panel_2.createParallelGroup(Alignment.TRAILING)
+						.addComponent(scrollPane)
+						.addComponent(lblNewLabel_1, GroupLayout.DEFAULT_SIZE, 536, Short.MAX_VALUE)))
+				.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 926, Short.MAX_VALUE)
+		);
+		gl_panel_2.setVerticalGroup(
+			gl_panel_2.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_panel_2.createSequentialGroup()
+					.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_panel_2.createSequentialGroup()
-								.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(ComponentPlacement.RELATED)
-								.addComponent(scrollPane, 0, 0, Short.MAX_VALUE))
-						.addComponent(panelInfo, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE))));
+							.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(scrollPane, 0, 0, Short.MAX_VALUE))
+						.addGroup(gl_panel_2.createSequentialGroup()
+							.addComponent(panelInfo, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE)
+							.addGap(10))))
+		);
 
-		tableCTDH = new JTable();
-		tableCTDH.setEnabled(false);
-		scrollPane.setViewportView(tableCTDH);
+		tableCTPN = new JTable();
+		tableCTPN.setEnabled(false);
+		scrollPane.setViewportView(tableCTPN);
 
-		JPanel panelDatHang = new JPanel();
-		panelDatHang.setBorder(
-				new TitledBorder(null, "\u0110\u01A1n H\u00E0ng", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panelDatHang.setLayout(null);
+		JPanel panelPhieuNhap = new JPanel();
+		panelPhieuNhap.setBorder(
+				new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Phi\u1EBFu Nh\u1EADp", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panelPhieuNhap.setLayout(null);
 
-		JLabel lblMaDH = new JLabel("Mã Đặt Hàng");
-		lblMaDH.setBounds(20, 15, 103, 14);
-		panelDatHang.add(lblMaDH);
+		JLabel lblMaPN = new JLabel("Mã Phiếu Nhập");
+		lblMaPN.setBounds(10, 15, 86, 14);
+		panelPhieuNhap.add(lblMaPN);
 
-		textFieldMaDH = new JTextField();
-		textFieldMaDH.setBounds(133, 12, 71, 20);
-		panelDatHang.add(textFieldMaDH);
-		textFieldMaDH.setColumns(10);
-		textFieldMaDH.setEditable(false);
+		TFMaPN = new JTextField();
+		TFMaPN.setBounds(101, 13, 114, 19);
+		panelPhieuNhap.add(TFMaPN);
+		TFMaPN.setColumns(10);
+		TFMaPN.setEditable(false);
 
 		JLabel lblNgay = new JLabel("Ngày");
-		lblNgay.setBounds(20, 36, 49, 14);
-		panelDatHang.add(lblNgay);
-
-		comboBoxNgay = new JComboBox<>();
-		comboBoxNgay.setBounds(133, 33, 152, 20);
-		panelDatHang.add(comboBoxNgay);
-		comboBoxNgay.setEnabled(false);
-
-		JLabel lblNCC = new JLabel("Nhà Cung Cấp");
-		lblNCC.setBounds(20, 58, 103, 14);
-		panelDatHang.add(lblNCC);
-
-		textFieldNCC = new JTextField();
-		textFieldNCC.setBounds(133, 55, 71, 20);
-		panelDatHang.add(textFieldNCC);
-		textFieldNCC.setColumns(10);
-		textFieldNCC.setEditable(false);
+		lblNgay.setBounds(225, 15, 49, 14);
+		panelPhieuNhap.add(lblNgay);
 
 		JLabel lblMaNV = new JLabel("Mã Nhân Viên");
-		lblMaNV.setBounds(20, 78, 103, 14);
-		panelDatHang.add(lblMaNV);
+		lblMaNV.setBounds(10, 39, 103, 14);
+		panelPhieuNhap.add(lblMaNV);
 
-		textFieldMaNV = new JTextField();
-		textFieldMaNV.setColumns(10);
-		textFieldMaNV.setBounds(133, 77, 71, 20);
-		panelDatHang.add(textFieldMaNV);
-		textFieldMaNV.setEditable(false);
+		TFMaNV = new JTextField();
+		TFMaNV.setColumns(10);
+		TFMaNV.setBounds(101, 37, 114, 20);
+		panelPhieuNhap.add(TFMaNV);
+		TFMaNV.setEditable(false);
 
 		JLabel lblMaKho = new JLabel("Mã Kho");
-		lblMaKho.setBounds(20, 100, 46, 14);
-		panelDatHang.add(lblMaKho);
+		lblMaKho.setBounds(10, 65, 46, 14);
+		panelPhieuNhap.add(lblMaKho);
 
-		textFieldMaKho = new JTextField();
-		textFieldMaKho.setEditable(false);
-		textFieldMaKho.setBounds(101, 99, 86, 20);
-		panelDatHang.add(textFieldMaKho);
-		textFieldMaKho.setColumns(10);
+		TFMaKho = new JTextField();
+		TFMaKho.setEditable(false);
+		TFMaKho.setBounds(101, 63, 114, 20);
+		panelPhieuNhap.add(TFMaKho);
+		TFMaKho.setColumns(10);
 
 		JPanel panelCTDH = new JPanel();
-		panelCTDH.setBorder(new TitledBorder(null, "Chi Ti\u1EBFt \u0110\u01A1n H\u00E0ng", TitledBorder.LEADING,
-				TitledBorder.TOP, null, null));
+		panelCTDH.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Chi Ti\u1EBFt Phi\u1EBFu Nh\u1EADp", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		GroupLayout gl_panelInfo = new GroupLayout(panelInfo);
-		gl_panelInfo.setHorizontalGroup(gl_panelInfo.createParallelGroup(Alignment.LEADING)
-				.addComponent(panelDatHang, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-				.addComponent(panelCTDH, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE));
-		gl_panelInfo.setVerticalGroup(gl_panelInfo.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panelInfo.createSequentialGroup()
-						.addComponent(panelDatHang, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(ComponentPlacement.UNRELATED)
-						.addComponent(panelCTDH, GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)));
+		gl_panelInfo.setHorizontalGroup(
+			gl_panelInfo.createParallelGroup(Alignment.LEADING)
+				.addComponent(panelPhieuNhap, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+				.addComponent(panelCTDH, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+		);
+		gl_panelInfo.setVerticalGroup(
+			gl_panelInfo.createParallelGroup(Alignment.LEADING)
+				.addGroup(Alignment.TRAILING, gl_panelInfo.createSequentialGroup()
+					.addComponent(panelPhieuNhap, GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(panelCTDH, GroupLayout.PREFERRED_SIZE, 124, GroupLayout.PREFERRED_SIZE))
+		);
 		panelCTDH.setLayout(null);
 
 		JLabel lblMaVT = new JLabel("Mã Vật Tư");
-		lblMaVT.setBounds(20, 25, 59, 14);		
+		lblMaVT.setBounds(10, 53, 59, 14);		
 		panelCTDH.add(lblMaVT);
 
-		textFieldMaVT = new JTextField();
-		textFieldMaVT.setEditable(false);
-		textFieldMaVT.setBounds(101, 22, 86, 20);
-		panelCTDH.add(textFieldMaVT);
-		textFieldMaVT.setColumns(10);
+		TFMaVT = new JTextField();
+		TFMaVT.setEditable(false);
+		TFMaVT.setBounds(111, 51, 86, 20);
+		panelCTDH.add(TFMaVT);
+		TFMaVT.setColumns(10);
 
-		btnVatTuOption = new JButton("Chọn Vật Tư");
-		btnVatTuOption.setEnabled(false);
-		btnVatTuOption.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		btnVatTuOption.setBounds(216, 21, 103, 23);
-		panelCTDH.add(btnVatTuOption);
+		btnCTDHOption = new JButton("Chọn Chi Tiết Đơn Hàng");
+		btnCTDHOption.setEnabled(false);
+		btnCTDHOption.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		btnCTDHOption.setBounds(223, 10, 144, 23);
+		panelCTDH.add(btnCTDHOption);
 
 		JLabel lblSoLuong = new JLabel("Số Lượng");
-		lblSoLuong.setBounds(20, 50, 59, 14);
+		lblSoLuong.setBounds(10, 83, 59, 14);
 		panelCTDH.add(lblSoLuong);
 
-		spinnerSoLuong = new JSpinner();
-		spinnerSoLuong.setEnabled(false);
-		spinnerSoLuong.setBounds(101, 47, 86, 20);
-		panelCTDH.add(spinnerSoLuong);
+		SoLuong = new JSpinner();
+		SoLuong.setEnabled(false);
+		SoLuong.setBounds(111, 81, 86, 20);
+		panelCTDH.add(SoLuong);
 
 		JLabel lblDonGia = new JLabel("Đơn Giá");
-		lblDonGia.setBounds(20, 73, 46, 14);
+		lblDonGia.setBounds(208, 83, 63, 14);
 		panelCTDH.add(lblDonGia);
 
-		spinnerDonGia = new JSpinner();
-		spinnerDonGia.setEnabled(false);
-		spinnerDonGia.setBounds(101, 70, 86, 20);
-		panelCTDH.add(spinnerDonGia);
+		DonGia = new JSpinner();
+		DonGia.setEnabled(false);
+		DonGia.setBounds(281, 81, 86, 20);
+		panelCTDH.add(DonGia);
+		
+		JLabel lbMaDDH = new JLabel("Mã Đơn Đặt Hàng");
+		lbMaDDH.setBounds(10, 26, 109, 13);
+		panelCTDH.add(lbMaDDH);
+		
+		TFMaDDH = new JTextField();
+		TFMaDDH.setEditable(false);
+		TFMaDDH.setBounds(111, 23, 86, 19);
+		panelCTDH.add(TFMaDDH);
+		TFMaDDH.setColumns(10);
+		
+		JLabel lbTenVatTu = new JLabel("");
+		lbTenVatTu.setBounds(223, 54, 133, 13);
+		panelCTDH.add(lbTenVatTu);
 
-		btnKhoOption = new JButton("Chọn Kho Hàng");
-		btnKhoOption.setEnabled(false);
-		btnKhoOption.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		btnKhoOption.setBounds(212, 96, 107, 23);
-		panelDatHang.add(btnKhoOption);
+		btnDHOption = new JButton("Chọn Đơn Hàng");
+		btnDHOption.setEnabled(false);
+		btnDHOption.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		btnDHOption.setBounds(224, 86, 144, 23);
+		panelPhieuNhap.add(btnDHOption);
+		
+		JDateChooser Ngay = new JDateChooser();
+		Ngay.getCalendarButton().setEnabled(false);
+		Ngay.setBounds(255, 15, 103, 20);
+		panelPhieuNhap.add(Ngay);
+		
+		JLabel lbHoTenNV = new JLabel("");
+		lbHoTenNV.setBounds(225, 39, 133, 13);
+		panelPhieuNhap.add(lbHoTenNV);
+		
+		JLabel lbTenKho = new JLabel("");
+		lbTenKho.setBounds(225, 66, 133, 13);
+		panelPhieuNhap.add(lbTenKho);
 		panelInfo.setLayout(gl_panelInfo);
 		panel_2.setLayout(gl_panel_2);
 
@@ -225,26 +249,26 @@ public class PhieuLapForm extends CommonView<PhieuLapModel, PhieuLapDao> {
 		JMenuBar menuBar = new JMenuBar();
 		panel_4.add(menuBar);
 
-		JMenu mnOption = new JMenu("Chọn chế độ");
+		mnOption = new JMenu("Chọn chế độ");
 		mnOption.setBackground(Color.LIGHT_GRAY);
 		mnOption.setFont(new Font("Segoe UI", Font.PLAIN, 13));
 		menuBar.add(mnOption);
 
-		mntmDatHang = new JMenuItem("Đặt hàng");
-		mnOption.add(mntmDatHang);
+		MenuItemPN = new JMenuItem("Phiếu Nhập");
+		mnOption.add(MenuItemPN);
 
-		mntmCTDH = new JMenuItem("Chi tiết đặt hàng");
-		mnOption.add(mntmCTDH);
+		MenuItemCTPN = new JMenuItem("Chi Tiết Phiếu Nhập");
+		mnOption.add(MenuItemCTPN);
 
 //      load chi nhánh lên combobox
 		loadChiNhanh();
 
-//		Đơn đặt hàng table
+//		Phiếu Lập table
 		dao = PhieuLapDao.getInstance();
 		loadDataIntoTable();
 
 //		Chi tiết đơn đặt hàng table
-		ctdhDao = CTDDHDao.getInstance();
+		ctplDao = CTPLDao.getInstance();
 		ctdhModel = new DefaultTableModel() {
 			private static final long serialVersionUID = 1L;
 			@Override
@@ -252,12 +276,12 @@ public class PhieuLapForm extends CommonView<PhieuLapModel, PhieuLapDao> {
 				return false;
 			}
 		};
-		tableCTDH.setModel(ctdhModel);
-		ctdhModel = (DefaultTableModel) tableCTDH.getModel();
-		ctdhModel.setColumnIdentifiers(ctdhDao.getColName());
-		ctdhList = ctdhDao.selectAll();
-		for (CTDDHModel dh : ctdhList) {
-			Object[] rowData = { dh.getMaSoDDH(), dh.getMavt(), dh.getSoLuong(), dh.getDonGia() };
+		tableCTPN.setModel(ctdhModel);
+		ctdhModel = (DefaultTableModel) tableCTPN.getModel();
+		ctdhModel.setColumnIdentifiers(ctplDao.getColName());
+		ctdhList = ctplDao.selectAll();
+		for (CTPLModel pl : ctdhList) {
+			Object[] rowData = { pl.getMaPN(), pl.getMavt(), pl.getSoLuong(), pl.getDonGia()};
 			ctdhModel.addRow(rowData);
 		}
 
@@ -266,63 +290,103 @@ public class PhieuLapForm extends CommonView<PhieuLapModel, PhieuLapDao> {
 
 //		lắng nghe sự kiện chọn row đồng thời in dữ liệu ra textfield
 		selectionListener = e -> {
-			textFieldMaDH.setText(table.getValueAt(table.getSelectedRow(), 0).toString());
-			//comboBoxNgay.setSelectedItem(table.getValueAt(table.getSelectedRow(), 1).toString());
-			textFieldNCC.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
-			textFieldMaNV.setText(table.getValueAt(table.getSelectedRow(), 3).toString());
-			textFieldMaKho.setText(table.getValueAt(table.getSelectedRow(), 4).toString());
+			TFMaPN.setText(table.getValueAt(table.getSelectedRow(), 0).toString());
+			Ngay.setDate((java.util.Date) table.getValueAt(table.getSelectedRow(), 1));
+			TFMaDDH.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
+			TFMaNV.setText(table.getValueAt(table.getSelectedRow(), 3).toString());
+			String sql = "SELECT Ho +' '+Ten FROM NHANVIEN WHERE MANV = ?";
+			Program.myReader = Program.ExecSqlDataReader(sql, TFMaNV.getText());
+			try {
+				Program.myReader.next();
+				lbHoTenNV.setText(Program.myReader.getString(1)); 
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+			TFMaKho.setText(table.getValueAt(table.getSelectedRow(), 4).toString());
+			sql = "SELECT TENKHO FROM KHO WHERE MAKHO = ?";
+			Program.myReader = Program.ExecSqlDataReader(sql, TFMaKho.getText());
+			try {
+				Program.myReader.next();
+				lbTenKho.setText(Program.myReader.getString(1));
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
 		};
 		table.setEnabled(false);
 		table.getSelectionModel().addListSelectionListener(selectionListener);
 		
-//		DatHangController ac = new PhieuLapController(this);
-//		ac.initController();
+		
+//		selectionListener_CTDH = e -> {
+//			TFMaPN.setText(table.getValueAt(table.getSelectedRow(), 0).toString());
+//			Ngay.setDate((java.util.Date) table.getValueAt(table.getSelectedRow(), 1));
+//			TFMaDDH.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
+//			TFMaNV.setText(table.getValueAt(table.getSelectedRow(), 3).toString());
+//			TFMaKho.setText(table.getValueAt(table.getSelectedRow(), 4).toString());
+//		};
+//		tableCTDH.setEnabled(false);
+//		tableCTDH.getSelectionModel().addListSelectionListener(selectionListener_CTDH);
+		PhieuLapController ac = new PhieuLapController(this);
+		ac.initController();
 	}
 
-	public JButton getBtnVatTuOption() {
-		return btnVatTuOption;
+
+
+	public JButton getBtnCTDHOption() {
+		return btnCTDHOption;
 	}
 
-	public JButton getBtnKhoOption() {
-		return btnKhoOption;
+	public JButton getBtnDHOption() {
+		return btnDHOption;
 	}
 
-	public JTextField getTextFieldMaDH() {
-		return textFieldMaDH;
+	public JTextField getTFMaPN() {
+		return TFMaPN;
 	}
 
-	public JTextField getTextFieldNCC() {
-		return textFieldNCC;
+	public JTextField getTFMaNV() {
+		return TFMaNV;
 	}
 
-	public JTextField getTextFieldMaNV() {
-		return textFieldMaNV;
+	public JTextField getTFMaKho() {
+		return TFMaKho;
 	}
 
-	public JTextField getTextFieldMaKho() {
-		return textFieldMaKho;
+	public JTextField getTFMaVT() {
+		return TFMaVT;
 	}
 
-	public JTextField getTextFieldMaVT() {
-		return textFieldMaVT;
+	public JSpinner getSoLuong() {
+		return SoLuong;
 	}
 
-	public JTable getTableCTDH() {
-		return tableCTDH;
+	public JSpinner getDonGia() {
+		return DonGia;
 	}
 
-	public JMenuItem getMntmDatHang() {
-		return mntmDatHang;
+	public JMenuItem getMenuItemPN() {
+		return MenuItemPN;
 	}
 
-	public JMenuItem getMntmCTDH() {
-		return mntmCTDH;
+	public JMenuItem getMenuItemCTPN() {
+		return MenuItemCTPN;
 	}
 
+	public JTextField getTFMaDDH() {
+		return TFMaDDH;
+	}
+
+	public JTable getTableCTPN() {
+		return tableCTPN;
+	}
+
+	public JMenu getMnOption() {
+		return mnOption;
+	}
+	
 	public void loadDataIntoTable() {
 		loadData();
 		for (PhieuLapModel pl : list) {
-			Object[] rowData = { pl.getMaSoDDH(), pl.getNgay(), pl.getMaSoDDH(), pl.getManv(), pl.getMaKho()};
+			Object[] rowData = { pl.getMapn(), pl.getNgay(), pl.getMaSoDDH(), pl.getManv(), pl.getMaKho()};
 			model.addRow(rowData);
 		}
 	}

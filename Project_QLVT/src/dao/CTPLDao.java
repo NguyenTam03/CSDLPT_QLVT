@@ -4,9 +4,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import main.Program;
-import model.CTPNModel;
+import model.CTPLModel;
 
-public class CTPLDao extends IAbstractDao<CTPNModel> {
+public class CTPLDao extends IAbstractDao<CTPLModel> {
 	public CTPLDao() {
 		init();
 	}
@@ -32,14 +32,14 @@ public class CTPLDao extends IAbstractDao<CTPNModel> {
 	}
 	
 	@Override
-	public ArrayList<CTPNModel> selectAll() {
-		ArrayList<CTPNModel> ctdhList = new ArrayList<>();
+	public ArrayList<CTPLModel> selectAll() {
+		ArrayList<CTPLModel> ctdhList = new ArrayList<>();
 		String sql = "SELECT * FROM CTPN";
 		Program.myReader = Program.ExecSqlDataReader(sql);
 		
 		try {
 			while (Program.myReader.next()) {
-				CTPNModel CTPhieuNhap = new CTPNModel(
+				CTPLModel CTPhieuNhap = new CTPLModel(
 						Program.myReader.getString(1),
 						Program.myReader.getString(2),
 						Program.myReader.getInt(3),
@@ -56,19 +56,19 @@ public class CTPLDao extends IAbstractDao<CTPNModel> {
 	}
 
 	@Override
-	public void insert(CTPNModel t) {
+	public void insert(CTPLModel t) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void update(CTPNModel t) {
+	public void update(CTPLModel t) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void delete(CTPNModel t) {
+	public void delete(CTPLModel t) {
 		// TODO Auto-generated method stub
 		
 	}

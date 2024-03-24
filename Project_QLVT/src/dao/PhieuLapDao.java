@@ -5,8 +5,9 @@ import java.util.ArrayList;
 
 import main.Program;
 import model.DatHangModel;
+import model.PhieuLapModel;
 
-public class PhieuLapDao extends IAbstractDao<DatHangModel> {
+public class PhieuLapDao extends IAbstractDao<PhieuLapModel> {
 	public PhieuLapDao() {
 		init();
 	}
@@ -32,29 +33,29 @@ public class PhieuLapDao extends IAbstractDao<DatHangModel> {
 	}
 	
 	@Override
-	public void insert(DatHangModel t) throws SQLException {
-		String sql = "INSERT INTO PhieuLap (MasoDDH, NGAY, NhaCC, MANV, MAKHO) VALUES (?, ?, ?, ?, ?)";
-		Program.ExecSqlDML(sql, t.getMaSoDDH(), t.getNgay(), t.getNhaCC(), t.getManv(), t.getMakho());
+	public void insert(PhieuLapModel t) throws SQLException {
+//		String sql = "INSERT INTO PhieuLap (MasoDDH, NGAY, NhaCC, MANV, MAKHO) VALUES (?, ?, ?, ?, ?)";
+//		Program.ExecSqlDML(sql, t.getMaSoDDH(), t.getNgay(), t.getNhaCC(), t.getManv(), t.getMaKho());
 	}
 	
 	@Override
-	public ArrayList<DatHangModel> selectAll() {
-		ArrayList<DatHangModel> datHangList = new ArrayList<DatHangModel>();
+	public ArrayList<PhieuLapModel> selectAll() {
+		ArrayList<PhieuLapModel> phieuLapList = new ArrayList<PhieuLapModel>();
 		String sql = "SELECT * FROM PhieuNhap";
 		Program.myReader = Program.ExecSqlDataReader(sql);
 		
 		try {
 			while (Program.myReader.next()) {
-				DatHangModel datHang = new DatHangModel(
+				PhieuLapModel phieuLap = new PhieuLapModel(
 						Program.myReader.getString(1),
 						Program.myReader.getDate(2),
 						Program.myReader.getString(3),
 						Program.myReader.getInt(4),
 						Program.myReader.getString(5));
 						
-				datHangList.add(datHang);
+				phieuLapList.add(phieuLap);
 			}
-			return datHangList;
+			return phieuLapList;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -63,13 +64,13 @@ public class PhieuLapDao extends IAbstractDao<DatHangModel> {
 	}
 
 	@Override
-	public void update(DatHangModel t) {
+	public void update(PhieuLapModel t) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void delete(DatHangModel t) {
+	public void delete(PhieuLapModel t) {
 		// TODO Auto-generated method stub
 		
 	}

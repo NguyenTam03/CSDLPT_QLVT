@@ -82,6 +82,8 @@ public class FrameMain extends JFrame {
 		mnLapPhieu.add(mntmDatHang);
 
 		mntmPhieuLap = new JMenuItem("Phiếu lập");
+//		mntmPhieuLap.setInheritsPopupMenu(true);
+//		mntmPhieuLap.setIgnoreRepaint(true);
 		mntmPhieuLap.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/invoice.png")));
 		mnLapPhieu.add(mntmPhieuLap);
 
@@ -143,6 +145,9 @@ public class FrameMain extends JFrame {
 
 		panel_dathang = new JPanel();
 		panel_dathang.setLayout(new BorderLayout(0, 0));
+		
+		panel_phieulap = new JPanel();
+		panel_phieulap.setLayout(new BorderLayout(0, 0));
 
 		lblInfoNV = new JLabel(
 				"MANV: " + Program.username + " HOTEN: " + Program.mHoten + " VAI TRO:" + Program.mGroup);
@@ -210,6 +215,10 @@ public class FrameMain extends JFrame {
 
 	public JPanel getPanel_dathang() {
 		return panel_dathang;
+	}
+
+	public JPanel getPanel_phieulap() {
+		return panel_phieulap;
 	}
 
 	public JMenu getMnDeleteUser() {

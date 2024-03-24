@@ -32,6 +32,14 @@ public class NhanVienController {
 	}
 
 	public void initController() {
+		if (Program.mGroup.equals("CONGTY")) {
+			NhanVienFrm.getBtnThem().setEnabled(false);
+			NhanVienFrm.getBtnXoa().setEnabled(false);
+			NhanVienFrm.getBtnGhi().setEnabled(false);
+			NhanVienFrm.getBtnHoanTac().setEnabled(false);
+			NhanVienFrm.getBtnLamMoi().setEnabled(false);
+			NhanVienFrm.getBtnChuyenChiNhanh().setEnabled(false);
+		}
 		NhanVienFrm.getBtnThem().addActionListener(e -> addNhanVien());
 		NhanVienFrm.getBtnGhi().addActionListener(e -> pushDataToDB());
 		NhanVienFrm.getBtnLamMoi().addActionListener(e -> refreshData());
