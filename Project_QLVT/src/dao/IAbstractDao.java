@@ -3,6 +3,8 @@ package dao;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import model.CTPLModel;
+
 
 public abstract class IAbstractDao<T> {
 	private int colCount;

@@ -29,13 +29,12 @@ public class CTPLDao extends IAbstractDao<CTPLModel> {
 	
 	public static CTPLDao getInstance() {
 		return new CTPLDao();
-	}
-	
-	@Override
-	public ArrayList<CTPLModel> selectAll() {
-		ArrayList<CTPLModel> ctdhList = new ArrayList<>();
-		String sql = "SELECT * FROM CTPN";
-		Program.myReader = Program.ExecSqlDataReader(sql);
+	}	
+
+	public ArrayList<CTPLModel> selectAllCTPN(String MaPN) {
+		ArrayList<CTPLModel> ctpnList = new ArrayList<>();
+		String sql = "SELECT * FROM CTPN where MaPN = ?";
+		Program.myReader = Program.ExecSqlDataReader(sql, MaPN);
 		
 		try {
 			while (Program.myReader.next()) {
@@ -45,9 +44,9 @@ public class CTPLDao extends IAbstractDao<CTPLModel> {
 						Program.myReader.getInt(3),
 						Program.myReader.getDouble(4));
 						
-				ctdhList.add(CTPhieuNhap);
+				ctpnList.add(CTPhieuNhap);
 			}
-			return ctdhList;
+			return ctpnList;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -71,5 +70,9 @@ public class CTPLDao extends IAbstractDao<CTPLModel> {
 	public void delete(CTPLModel t) {
 		// TODO Auto-generated method stub
 		
+	}
+	@Override
+	public ArrayList<CTPLModel> selectAll() {
+		return null;
 	}
 }

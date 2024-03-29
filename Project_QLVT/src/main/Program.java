@@ -27,6 +27,7 @@ public class Program {
 
 	public static ResultSet myReader;
 	public static String servername = "";
+	public static String servernameLeft = "";
 
 
 	public static String username = "";

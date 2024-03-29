@@ -48,13 +48,13 @@ public class PhieuLapForm extends CommonView<PhieuLapModel, PhieuLapDao> {
 	private JTextField TFMaVT;
 	private JTable tableCTPN;
 	private JSpinner SoLuong, DonGia;
-	private DefaultTableModel ctdhModel;
-	private CTPLDao ctplDao;
-	private ArrayList<CTPLModel> ctdhList;
+	private DefaultTableModel ctplModel;
 	private JMenuItem MenuItemPN, MenuItemCTPN;
 	private JTextField TFMaDDH;
 	private JMenu mnOption;
-	protected ListSelectionListener selectionListener_CTDH;
+	private JDateChooser Ngay;
+	private JLabel lbTenVatTu, lbTenKho,lbHoTenNV ;
+
 
 	public PhieuLapForm() {
 		super();
@@ -219,7 +219,7 @@ public class PhieuLapForm extends CommonView<PhieuLapModel, PhieuLapDao> {
 		panelCTDH.add(TFMaDDH);
 		TFMaDDH.setColumns(10);
 		
-		JLabel lbTenVatTu = new JLabel("");
+		lbTenVatTu = new JLabel("");
 		lbTenVatTu.setBounds(223, 54, 133, 13);
 		panelCTDH.add(lbTenVatTu);
 
@@ -229,16 +229,16 @@ public class PhieuLapForm extends CommonView<PhieuLapModel, PhieuLapDao> {
 		btnDHOption.setBounds(224, 86, 144, 23);
 		panelPhieuNhap.add(btnDHOption);
 		
-		JDateChooser Ngay = new JDateChooser();
+		Ngay = new JDateChooser();
 		Ngay.getCalendarButton().setEnabled(false);
 		Ngay.setBounds(255, 15, 103, 20);
 		panelPhieuNhap.add(Ngay);
 		
-		JLabel lbHoTenNV = new JLabel("");
+		lbHoTenNV = new JLabel("");
 		lbHoTenNV.setBounds(225, 39, 133, 13);
 		panelPhieuNhap.add(lbHoTenNV);
 		
-		JLabel lbTenKho = new JLabel("");
+		lbTenKho = new JLabel("");
 		lbTenKho.setBounds(225, 66, 133, 13);
 		panelPhieuNhap.add(lbTenKho);
 		panelInfo.setLayout(gl_panelInfo);
@@ -267,64 +267,23 @@ public class PhieuLapForm extends CommonView<PhieuLapModel, PhieuLapDao> {
 		dao = PhieuLapDao.getInstance();
 		loadDataIntoTable();
 
-//		Chi tiết đơn đặt hàng table
-		ctplDao = CTPLDao.getInstance();
-		ctdhModel = new DefaultTableModel() {
+//		Chi tiết phiếu nhập table
+		
+		ctplModel = new DefaultTableModel() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return false;
 			}
 		};
-		tableCTPN.setModel(ctdhModel);
-		ctdhModel = (DefaultTableModel) tableCTPN.getModel();
-		ctdhModel.setColumnIdentifiers(ctplDao.getColName());
-		ctdhList = ctplDao.selectAll();
-		for (CTPLModel pl : ctdhList) {
-			Object[] rowData = { pl.getMaPN(), pl.getMavt(), pl.getSoLuong(), pl.getDonGia()};
-			ctdhModel.addRow(rowData);
-		}
+		tableCTPN.setModel(ctplModel);
+		ctplModel = (DefaultTableModel) tableCTPN.getModel();
+		
 
 //		CONGTY có thể chọn chi nhánh để xem dữ liệu
 		comboBox.addItemListener(l -> loadDataOtherServer(l));
-
-//		lắng nghe sự kiện chọn row đồng thời in dữ liệu ra textfield
-		selectionListener = e -> {
-			TFMaPN.setText(table.getValueAt(table.getSelectedRow(), 0).toString());
-			Ngay.setDate((java.util.Date) table.getValueAt(table.getSelectedRow(), 1));
-			TFMaDDH.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
-			TFMaNV.setText(table.getValueAt(table.getSelectedRow(), 3).toString());
-			String sql = "SELECT Ho +' '+Ten FROM NHANVIEN WHERE MANV = ?";
-			Program.myReader = Program.ExecSqlDataReader(sql, TFMaNV.getText());
-			try {
-				Program.myReader.next();
-				lbHoTenNV.setText(Program.myReader.getString(1)); 
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
-			TFMaKho.setText(table.getValueAt(table.getSelectedRow(), 4).toString());
-			sql = "SELECT TENKHO FROM KHO WHERE MAKHO = ?";
-			Program.myReader = Program.ExecSqlDataReader(sql, TFMaKho.getText());
-			try {
-				Program.myReader.next();
-				lbTenKho.setText(Program.myReader.getString(1));
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
-		};
+		
 		table.setEnabled(false);
-		table.getSelectionModel().addListSelectionListener(selectionListener);
-		
-		
-//		selectionListener_CTDH = e -> {
-//			TFMaPN.setText(table.getValueAt(table.getSelectedRow(), 0).toString());
-//			Ngay.setDate((java.util.Date) table.getValueAt(table.getSelectedRow(), 1));
-//			TFMaDDH.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
-//			TFMaNV.setText(table.getValueAt(table.getSelectedRow(), 3).toString());
-//			TFMaKho.setText(table.getValueAt(table.getSelectedRow(), 4).toString());
-//		};
-//		tableCTDH.setEnabled(false);
-//		tableCTDH.getSelectionModel().addListSelectionListener(selectionListener_CTDH);
 		PhieuLapController ac = new PhieuLapController(this);
 		ac.initController();
 	}
@@ -346,6 +305,12 @@ public class PhieuLapForm extends CommonView<PhieuLapModel, PhieuLapDao> {
 	public JTextField getTFMaNV() {
 		return TFMaNV;
 	}
+
+	public JDateChooser getNgay() {
+		return Ngay;
+	}
+
+
 
 	public JTextField getTFMaKho() {
 		return TFMaKho;
@@ -383,6 +348,25 @@ public class PhieuLapForm extends CommonView<PhieuLapModel, PhieuLapDao> {
 		return mnOption;
 	}
 	
+	public JLabel getLbTenVatTu() {
+		return lbTenVatTu;
+	}
+
+	public JLabel getLbTenKho() {
+		return lbTenKho;
+	}
+
+	public JLabel getLbHoTenNV() {
+		return lbHoTenNV;
+	}
+	
+	
+	public DefaultTableModel getCtplModel() {
+		return ctplModel;
+	}
+
+
+
 	public void loadDataIntoTable() {
 		loadData();
 		for (PhieuLapModel pl : list) {
