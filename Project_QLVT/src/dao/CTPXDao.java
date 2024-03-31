@@ -60,7 +60,7 @@ public class CTPXDao extends IAbstractDao<CTPXModel> {
 						Program.myReader.getString(1),
 						Program.myReader.getString(2),
 						Program.myReader.getInt(3),
-						Program.myReader.getDouble(4));
+						Program.myReader.getFloat(4));
 				ctpxList.add(ctpxModel);
 			}
 			return ctpxList;
@@ -82,7 +82,7 @@ public class CTPXDao extends IAbstractDao<CTPXModel> {
 						Program.myReader.getString(1),
 						Program.myReader.getString(2),
 						Program.myReader.getInt(3),
-						Program.myReader.getDouble(4));
+						Program.myReader.getFloat(4));
 				ctpxList.add(ctpxModel);
 			}
 			return ctpxList;
