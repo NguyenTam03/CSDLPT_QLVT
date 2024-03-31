@@ -55,6 +55,7 @@ public class PhieuLapForm extends CommonView<PhieuLapModel, PhieuLapDao> {
 	private JMenu mnOption;
 	private JDateChooser Ngay;
 	private JLabel lbTenVatTu, lbTenKho,lbHoTenNV ;
+	private JButton btnKho;
 
 
 	public PhieuLapForm() {
@@ -242,6 +243,12 @@ public class PhieuLapForm extends CommonView<PhieuLapModel, PhieuLapDao> {
 		lbTenKho = new JLabel("");
 		lbTenKho.setBounds(225, 66, 133, 13);
 		panelPhieuNhap.add(lbTenKho);
+		
+		btnKho = new JButton("Chọn Kho");
+		btnKho.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		btnKho.setEnabled(false);
+		btnKho.setBounds(101, 86, 104, 23);
+		panelPhieuNhap.add(btnKho);
 		panelInfo.setLayout(gl_panelInfo);
 		panel_2.setLayout(gl_panel_2);
 
@@ -365,6 +372,10 @@ public class PhieuLapForm extends CommonView<PhieuLapModel, PhieuLapDao> {
 	
 	public DefaultTableModel getCtplModel() {
 		return ctplModel;
+	}
+
+	public JButton getBtnKho() {
+		return btnKho;
 	}
 
 	public void loadDataIntoTable() {
