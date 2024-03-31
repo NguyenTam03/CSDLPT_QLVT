@@ -14,6 +14,7 @@ import model.PhieuLapModel;
 
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JLabel;
@@ -129,10 +130,10 @@ public class PhieuLapForm extends CommonView<PhieuLapModel, PhieuLapDao> {
 		panelPhieuNhap.add(lblMaPN);
 
 		TFMaPN = new JTextField();
+		TFMaPN.setEditable(false);
 		TFMaPN.setBounds(101, 13, 114, 19);
 		panelPhieuNhap.add(TFMaPN);
 		TFMaPN.setColumns(10);
-		TFMaPN.setEditable(false);
 
 		JLabel lblNgay = new JLabel("Ngày");
 		lblNgay.setBounds(225, 15, 49, 14);
@@ -143,10 +144,10 @@ public class PhieuLapForm extends CommonView<PhieuLapModel, PhieuLapDao> {
 		panelPhieuNhap.add(lblMaNV);
 
 		TFMaNV = new JTextField();
+		TFMaNV.setEditable(false);
 		TFMaNV.setColumns(10);
 		TFMaNV.setBounds(101, 37, 114, 20);
 		panelPhieuNhap.add(TFMaNV);
-		TFMaNV.setEditable(false);
 
 		JLabel lblMaKho = new JLabel("Mã Kho");
 		lblMaKho.setBounds(10, 65, 46, 14);
@@ -282,7 +283,8 @@ public class PhieuLapForm extends CommonView<PhieuLapModel, PhieuLapDao> {
 
 //		CONGTY có thể chọn chi nhánh để xem dữ liệu
 		comboBox.addItemListener(l -> loadDataOtherServer(l));
-		
+		//	chỉ cho chọn 1 dòng
+		tableCTPN.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setEnabled(false);
 		PhieuLapController ac = new PhieuLapController(this);
 		ac.initController();
@@ -364,8 +366,6 @@ public class PhieuLapForm extends CommonView<PhieuLapModel, PhieuLapDao> {
 	public DefaultTableModel getCtplModel() {
 		return ctplModel;
 	}
-
-
 
 	public void loadDataIntoTable() {
 		loadData();

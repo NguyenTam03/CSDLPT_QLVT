@@ -3,6 +3,9 @@ package model;
 public class CTPLModel extends CTAbstractModel {
 	private String mapn;
 
+	public CTPLModel() {
+		super();
+	}
 	public CTPLModel(String mapn, String mavt, Integer soLuong, Double donGia) {
 		super(mavt, soLuong, donGia);
 		this.mapn = mapn;

@@ -55,21 +55,24 @@ public class CTPLDao extends IAbstractDao<CTPLModel> {
 	}
 
 	@Override
-	public void insert(CTPLModel t) {
+	public void insert(CTPLModel t) throws SQLException{
 		// TODO Auto-generated method stub
-		
+		String sql = "INSERT INTO CTPN (MaPN, MaVT, SoLuong, DonGia) VALUES (?, ?, ?, ?)";
+		Program.ExecSqlDML(sql, t.getMaPN(), t.getMavt(), t.getSoLuong(), t.getDonGia());
 	}
 
 	@Override
-	public void update(CTPLModel t) {
+	public void update(CTPLModel t) throws SQLException {
 		// TODO Auto-generated method stub
-		
+		String sql = "UPDATE CTPN SET SoLuong = ?, DonGia = ? WHERE MaPN = ? AND MaVT = ?";
+		Program.ExecSqlDML(sql, t.getSoLuong(), t.getDonGia(), t.getMaPN(), t.getMavt());
 	}
 
 	@Override
-	public void delete(CTPLModel t) {
+	public void delete(CTPLModel t) throws SQLException {
 		// TODO Auto-generated method stub
-		
+		String sql = "DELETE FROM CTPN WHERE MaPN = ? AND MaVT = ?";
+		Program.ExecSqlDML(sql, t.getMaPN(), t.getMavt());
 	}
 	@Override
 	public ArrayList<CTPLModel> selectAll() {

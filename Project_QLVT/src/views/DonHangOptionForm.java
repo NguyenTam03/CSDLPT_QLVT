@@ -8,6 +8,7 @@ import java.awt.event.FocusListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import java.awt.BorderLayout;
 import javax.swing.JTable;
@@ -123,6 +124,7 @@ public class DonHangOptionForm extends JFrame {
 		tableDH = new JTable();
 		scrollPane.setViewportView(tableDH);
 		this.setLocationRelativeTo(null);
+		tableDH.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	}
 
 	public JTextField getTFTim() {

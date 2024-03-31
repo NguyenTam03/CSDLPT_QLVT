@@ -8,7 +8,10 @@ public class PhieuLapModel {
 	private String maSoDDH;
 	private Integer manv;
 	private String maKho;
-	
+
+	public PhieuLapModel() {
+		super();
+	}
 	public PhieuLapModel(String mapn, Date ngay, String maSoDDH, Integer manv, String maKho) {
 		super();
 		this.mapn = mapn;

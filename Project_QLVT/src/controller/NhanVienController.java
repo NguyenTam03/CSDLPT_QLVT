@@ -64,7 +64,7 @@ public class NhanVienController {
 		NhanVienFrm.getModel().setRowCount(0);
 
 		for (NhanVienModel nv : NhanVienFrm.getList()) {
-			if (nv.getTen().toLowerCase().contains(input)) {
+			if (nv.getTen().toLowerCase().contains(input) || nv.getManv().toString().contains(input)) {
 				Object[] rowData = { nv.getManv(), nv.getHo(), nv.getTen(), nv.getSoCMND(), nv.getDiaChi(),
                         nv.getNgaySinh(), formatObjecttoMoney(nv.getLuong()), nv.getMacn(), nv.getTrangThaiXoa()};
 				NhanVienFrm.getModel().addRow(rowData);
@@ -204,7 +204,7 @@ public class NhanVienController {
 			NhanVienFrm.getDao().insert(nhanVienModel);
 		}
 		catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Lỗi thêm nhân viên!!", "THông Báo", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Lỗi thêm nhân viên!! \n "+e.getMessage(), "THông Báo", JOptionPane.WARNING_MESSAGE);
 			refreshData();
 			NhanVienFrm.getTable().getSelectionModel().setSelectionInterval(rowSelected, rowSelected);
 			return;
@@ -250,7 +250,7 @@ public class NhanVienController {
 			NhanVienFrm.getDao().update(nhanVienModel);
 		}
 		catch(Exception e){
-			JOptionPane.showMessageDialog(null, "Lỗi cập nhật nhân viên!!", "THông Báo", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Lỗi cập nhật nhân viên!! \n "+e.getMessage(), "THông Báo", JOptionPane.WARNING_MESSAGE);
             refreshData();
             NhanVienFrm.getTable().getSelectionModel().setSelectionInterval(rowSelected, rowSelected);
             return;
@@ -268,7 +268,7 @@ public class NhanVienController {
 
 	private void refreshData() {
 		NhanVienFrm.getTable().getSelectionModel().removeListSelectionListener(NhanVienFrm.getSelectionListener());
-		// .setRowCount(0) : xóa hết dữ liệu trong table
+		// .setRowCount(0) : xóa hết dữ liệu
 		NhanVienFrm.getModel().setRowCount(0);
 		NhanVienFrm.loadDataIntoTable();
 		NhanVienFrm.getTable().getSelectionModel().addListSelectionListener(NhanVienFrm.getSelectionListener());
@@ -338,7 +338,6 @@ public class NhanVienController {
 		} else {
 			NhanVienFrm.getTable().getSelectionModel().setSelectionInterval(0, 0);
 			rowSelected = 0;
-
 		}
 	}
 
@@ -409,15 +408,15 @@ public class NhanVienController {
 		NhanVienModel.setLuong(Float.valueOf(formatMoneyToInteger(NhanVienFrm.getTable().getValueAt(rowSelected, 6))));
 		NhanVienModel.setMacn(NhanVienFrm.getTable().getValueAt(rowSelected, 7).toString());
 		NhanVienModel.setTrangThaiXoa((Boolean) NhanVienFrm.getTable().getValueAt(rowSelected, 8));
-
+		if (NhanVienModel.getTrangThaiXoa() == true) {
+			JOptionPane.showMessageDialog(null, "Nhân viên này đã bị xóa", "Thông Báo",
+					JOptionPane.WARNING_MESSAGE);
+			return;
+		}
 		int reply = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa nhân viên này không?", "Confirm",
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 		if (reply == JOptionPane.YES_OPTION) {
-			if (NhanVienModel.getTrangThaiXoa() == true) {
-				JOptionPane.showMessageDialog(null, "Nhân viên này đã bị xóa", "Thông Báo",
-						JOptionPane.WARNING_MESSAGE);
-				return;
-			}
+			
 			// Nếu nhân viên đã làm việc thì không xóa mà chỉ đổi trạng thái xóa
 			if (checkPhieuXuat(NhanVienModel.getManv().toString()) || checkPhieuNhap(NhanVienModel.getManv().toString())
 					|| checkDatHang(NhanVienModel.getManv().toString())) {
@@ -550,7 +549,7 @@ public class NhanVienController {
 					CCNFrm.dispose();
 				}
 				catch (Exception e1) {
-					JOptionPane.showMessageDialog(null, "Chuyển chi nhánh thất bại", "Thông Báo",
+					JOptionPane.showMessageDialog(null, "Chuyển chi nhánh thất bại\n  "+e1.getMessage(), "Thông Báo",
 							JOptionPane.WARNING_MESSAGE);
 					e1.printStackTrace();
 					return;
@@ -569,7 +568,7 @@ public class NhanVienController {
 					CCNFrm.dispose();
 				}
 				catch (Exception e1) {
-                    JOptionPane.showMessageDialog(null, "Chuyển chi nhánh thất bại", "Thông Báo",
+                    JOptionPane.showMessageDialog(null, "Chuyển chi nhánh thất bại\n "+e1.getMessage(), "Thông Báo",
                             JOptionPane.WARNING_MESSAGE);
                     e1.printStackTrace();
                     return;

@@ -34,8 +34,8 @@ public class PhieuLapDao extends IAbstractDao<PhieuLapModel> {
 	
 	@Override
 	public void insert(PhieuLapModel t) throws SQLException {
-//		String sql = "INSERT INTO PhieuLap (MasoDDH, NGAY, NhaCC, MANV, MAKHO) VALUES (?, ?, ?, ?, ?)";
-//		Program.ExecSqlDML(sql, t.getMaSoDDH(), t.getNgay(), t.getNhaCC(), t.getManv(), t.getMaKho());
+		String sql = "INSERT INTO PhieuNhap (Mapn, Ngay, MasoDDH, MaNV, Makho) VALUES (?, ?, ?, ?, ?)";
+		Program.ExecSqlDML(sql, t.getMapn(), t.getNgay(), t.getMaSoDDH(), t.getManv(), t.getMaKho());
 	}
 	
 	@Override
@@ -64,14 +64,16 @@ public class PhieuLapDao extends IAbstractDao<PhieuLapModel> {
 	}
 
 	@Override
-	public void update(PhieuLapModel t) {
+	public void update(PhieuLapModel t) throws SQLException {
 		// TODO Auto-generated method stub
-		
+		String sql = "UPDATE PhieuNhap SET Ngay = ?, MasoDDH = ?, Makho = ? WHERE Mapn = ?";
+		Program.ExecSqlDML(sql, t.getNgay(), t.getMaSoDDH(), t.getMaKho(), t.getMapn());
 	}
 
 	@Override
-	public void delete(PhieuLapModel t) {
+	public void delete(PhieuLapModel t) throws SQLException {
 		// TODO Auto-generated method stub
-		
+		String sql = "DELETE FROM PhieuNhap WHERE Mapn = ?";
+		Program.ExecSqlDML(sql, t.getMapn());
 	}
 }
