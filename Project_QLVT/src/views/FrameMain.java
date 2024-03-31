@@ -82,6 +82,8 @@ public class FrameMain extends JFrame {
 		mnLapPhieu.add(mntmDatHang);
 
 		mntmPhieuLap = new JMenuItem("Phiếu lập");
+//		mntmPhieuLap.setInheritsPopupMenu(true);
+//		mntmPhieuLap.setIgnoreRepaint(true);
 		mntmPhieuLap.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/invoice.png")));
 		mnLapPhieu.add(mntmPhieuLap);
 
@@ -148,9 +150,11 @@ public class FrameMain extends JFrame {
 		
 		panel_phieuxuat = new JPanel();
 		panel_phieuxuat.setLayout(new BorderLayout(0, 0));
+		panel_phieulap = new JPanel();
+		panel_phieulap.setLayout(new BorderLayout(0, 0));
 
 		lblInfoNV = new JLabel(
-				"MANV: " + Program.username + " HOTEN: " + Program.mHoten + " VAI TRO:" + Program.mGroup);
+				"MANV: " + Program.username + " HOTEN: " + Program.mHoten + " VAI TRO: " + Program.mGroup);
 		lblInfoNV.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblInfoNV.setBackground(Color.WHITE);
 		contentPane.add(lblInfoNV, BorderLayout.SOUTH);
@@ -219,6 +223,10 @@ public class FrameMain extends JFrame {
 	
 	public JPanel getPanel_phieuxuat() {
 		return panel_phieuxuat;
+	}
+
+	public JPanel getPanel_phieulap() {
+		return panel_phieulap;
 	}
 
 	public JMenu getMnDeleteUser() {
