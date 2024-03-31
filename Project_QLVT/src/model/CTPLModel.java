@@ -6,7 +6,7 @@ public class CTPLModel extends CTAbstractModel {
 	public CTPLModel() {
 		super();
 	}
-	public CTPLModel(String mapn, String mavt, Integer soLuong, Double donGia) {
+	public CTPLModel(String mapn, String mavt, Integer soLuong, Float donGia) {
 		super(mavt, soLuong, donGia);
 		this.mapn = mapn;
 	}

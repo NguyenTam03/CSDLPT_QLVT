@@ -7,6 +7,7 @@ import java.util.Stack;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionListener;
 
+import common.method.Formatter;
 import main.Program;
 import model.PhieuXuatModel;
 import views.PhieuXuatForm;
@@ -101,7 +102,7 @@ public class PhieuXuatController {
 				}
 				px.getSpinnerSoLuong()
 						.setValue(px.getTableCTPX().getValueAt(px.getTableCTPX().getSelectedRow(), 2));
-				px.getSpinnerDonGia().setValue(NhanVienController.formatMoneyToInteger(
+				px.getSpinnerDonGia().setValue(Formatter.formatMoneyToInteger(
 						px.getTableCTPX().getValueAt(px.getTableCTPX().getSelectedRow(), 3)));
 			}
 		};

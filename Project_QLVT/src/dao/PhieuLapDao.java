@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import main.Program;
-import model.DatHangModel;
 import model.PhieuLapModel;
 
 public class PhieuLapDao extends IAbstractDao<PhieuLapModel> {
@@ -75,5 +74,17 @@ public class PhieuLapDao extends IAbstractDao<PhieuLapModel> {
 		// TODO Auto-generated method stub
 		String sql = "DELETE FROM PhieuNhap WHERE Mapn = ?";
 		Program.ExecSqlDML(sql, t.getMapn());
+	}
+
+	@Override
+	public <E> PhieuLapModel selectById(E t) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<PhieuLapModel> selectByCondition(String sql, Object... objects) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -42,7 +42,7 @@ public class CTPLDao extends IAbstractDao<CTPLModel> {
 						Program.myReader.getString(1),
 						Program.myReader.getString(2),
 						Program.myReader.getInt(3),
-						Program.myReader.getDouble(4));
+						Program.myReader.getFloat(4));
 						
 				ctpnList.add(CTPhieuNhap);
 			}
@@ -76,6 +76,18 @@ public class CTPLDao extends IAbstractDao<CTPLModel> {
 	}
 	@Override
 	public ArrayList<CTPLModel> selectAll() {
+		return null;
+	}
+
+	@Override
+	public <E> CTPLModel selectById(E t) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<CTPLModel> selectByCondition(String sql, Object... objects) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 }

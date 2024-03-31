@@ -24,12 +24,6 @@ public class CreateLoginController {
 		form.getBtnExit().addActionListener(l -> exitForm());
 		form.getBtnAccept().addActionListener(l -> createLogin());
 		form.getBtnNVOption().addActionListener(l -> chooseNhanVien());
-		form.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				e.getWindow().dispose();
-			}
-		});
 	}
 	
 	private void exitForm() {
@@ -88,6 +82,5 @@ public class CreateLoginController {
 	private void chooseNhanVien() {
 		NhanVienOptionForm form = new NhanVienOptionForm(false);
 		form.setVisible(true);
-		form.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 }

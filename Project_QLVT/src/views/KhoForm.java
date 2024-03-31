@@ -151,7 +151,7 @@ public class KhoForm extends CommonView<KhoModel, KhoDao> {
 	public void loadDataIntoTableKho() {
 		loadData();
 		for (KhoModel kho : list) {
-			Object[] rowData = { kho.getMaKho(), kho.getTenKho(), kho.getDiaChi(), kho.getMacn() };
+			Object[] rowData = { kho.getMaKho(), kho.getTenKho(), kho.getDiaChi() };
 			model.addRow(rowData);
 		}
 	}

@@ -91,13 +91,14 @@ public class NhanVienDao extends IAbstractDao<NhanVienModel> {
 	}
 	
 	@Override
-	public NhanVienModel selectById(NhanVienModel t) {
+	public ArrayList<NhanVienModel> selectByCondition(String sql, Object...objects) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
+
 	@Override
-	public ArrayList<NhanVienModel> selectByCondition(String condition) {
+	public <E> NhanVienModel selectById(E t) {
 		// TODO Auto-generated method stub
 		return null;
 	}

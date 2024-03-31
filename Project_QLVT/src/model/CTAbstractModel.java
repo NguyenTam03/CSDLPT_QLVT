@@ -1,15 +1,25 @@
 package model;
 
-public class CTAbstractModel {
+import javax.swing.JOptionPane;
+
+import common.method.IValidation;
+
+public class CTAbstractModel implements IValidation {
 	private String mavt;
 	private Integer soLuong;
-	private Double donGia;
+	private Float donGia;
+	public static enum ValidateError {
+		ERROR_MAVT,
+		ERROR_SOLUONG,
+		ERROR_DONGIA
+	}
+	public static ValidateError validateError;
 	
 	public CTAbstractModel() {
 		
 	}
 	
-	public CTAbstractModel(String mavt, Integer soLuong, Double donGia) {
+	public CTAbstractModel(String mavt, Integer soLuong, Float donGia) {
 		
 		this.mavt = mavt;
 		this.soLuong = soLuong;
@@ -32,14 +42,36 @@ public class CTAbstractModel {
 		this.soLuong = soLuong;
 	}
 
-	public Double getDonGia() {
+	public Float getDonGia() {
 		return donGia;
 	}
 
-	public void setDonGia(Double donGia) {
+	public void setDonGia(Float donGia) {
 		this.donGia = donGia;
 	}
-	
 
-	
+	@Override
+	public boolean validate() {
+		if (mavt.equals("")) {
+			JOptionPane.showMessageDialog(null, "Mã vật tư không được bỏ trống.", "Thông báo",
+					JOptionPane.WARNING_MESSAGE);
+			validateError = ValidateError.ERROR_MAVT;
+			return false;
+		}
+		
+		if (soLuong <= 0) {
+			JOptionPane.showMessageDialog(null, "Số lượng phải lớn hơn 0.", "Thông báo",
+					JOptionPane.WARNING_MESSAGE);
+			validateError = ValidateError.ERROR_SOLUONG;
+			return false;
+		}
+		
+		if (donGia <= 0) {
+			JOptionPane.showMessageDialog(null, "Đơn giá phải lớn hơn 0.", "Thông báo",
+					JOptionPane.WARNING_MESSAGE);
+			validateError = ValidateError.ERROR_DONGIA;
+			return false;
+		}
+		return true;
+	}
 }

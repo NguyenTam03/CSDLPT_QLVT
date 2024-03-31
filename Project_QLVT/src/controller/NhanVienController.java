@@ -3,7 +3,9 @@ package controller;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.Date;
+
 import java.text.NumberFormat;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
@@ -11,6 +13,7 @@ import java.util.Stack;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import common.method.Formatter;
 import main.Program;
 import views.ChuyenChiNhanhForm;
 import views.NhanVienForm;
@@ -66,7 +69,7 @@ public class NhanVienController {
 		for (NhanVienModel nv : NhanVienFrm.getList()) {
 			if (nv.getTen().toLowerCase().contains(input) || nv.getManv().toString().contains(input)) {
 				Object[] rowData = { nv.getManv(), nv.getHo(), nv.getTen(), nv.getSoCMND(), nv.getDiaChi(),
-                        nv.getNgaySinh(), formatObjecttoMoney(nv.getLuong()), nv.getMacn(), nv.getTrangThaiXoa()};
+                        nv.getNgaySinh(), Formatter.formatObjecttoMoney(nv.getLuong()), nv.getMacn(), nv.getTrangThaiXoa()};
 				NhanVienFrm.getModel().addRow(rowData);
 			}
 		}
@@ -198,7 +201,7 @@ public class NhanVienController {
 		try {
 			Object[] newRow = { nhanVienModel.getManv(), nhanVienModel.getHo(), nhanVienModel.getTen(),
 					nhanVienModel.getSoCMND(), nhanVienModel.getDiaChi(), nhanVienModel.getNgaySinh(),
-					formatObjecttoMoney(nhanVienModel.getLuong()), nhanVienModel.getMacn(),
+					Formatter.formatObjecttoMoney(nhanVienModel.getLuong()), nhanVienModel.getMacn(),
 					nhanVienModel.getTrangThaiXoa() };
 			NhanVienFrm.getModel().addRow(newRow);
 			NhanVienFrm.getDao().insert(nhanVienModel);
@@ -247,7 +250,7 @@ public class NhanVienController {
 			NhanVienFrm.getTable().setValueAt(nhanVienModel.getSoCMND(), rowSelected, 3);
 			NhanVienFrm.getTable().setValueAt(nhanVienModel.getDiaChi(), rowSelected, 4);
 			NhanVienFrm.getTable().setValueAt(nhanVienModel.getNgaySinh(), rowSelected, 5);
-			NhanVienFrm.getTable().setValueAt(formatObjecttoMoney(nhanVienModel.getLuong()), rowSelected, 6);
+			NhanVienFrm.getTable().setValueAt(Formatter.formatObjecttoMoney(nhanVienModel.getLuong()), rowSelected, 6);
 			NhanVienFrm.getDao().update(nhanVienModel);
 		}
 		catch(Exception e){
@@ -261,7 +264,7 @@ public class NhanVienController {
 		NhanVienFrm.getTable().getSelectionModel().setSelectionInterval(rowSelected, rowSelected);
 		String sqlUndo = "Update NhanVien set Ho = N'" + Ho + "', Ten = N'" + Ten + "', SoCMND = '" + CMND
 				+ "', DiaChi = N'" + DiaChi + "', NgaySinh = '" + NgaySinh + "', Luong = '"
-				+ formatMoneyToInteger(Luong) + "' where MaNV = '" + nhanVienModel.getManv().toString() + "'";
+				+ Formatter.formatMoneyToInteger(Luong) + "' where MaNV = '" + nhanVienModel.getManv().toString() + "'";
 		undoList.push(sqlUndo);
 		NhanVienFrm.getBtnHoanTac().setEnabled(true);
 		JOptionPane.showConfirmDialog(null, "Ghi Thành Công", "Thông Báo", JOptionPane.CLOSED_OPTION);
@@ -406,7 +409,7 @@ public class NhanVienController {
 		NhanVienModel.setSoCMND(NhanVienFrm.getTable().getValueAt(rowSelected, 3).toString());
 		NhanVienModel.setDiaChi(NhanVienFrm.getTable().getValueAt(rowSelected, 4).toString());
 		NhanVienModel.setNgaySinh((Date) NhanVienFrm.getTable().getValueAt(rowSelected, 5));
-		NhanVienModel.setLuong(Float.valueOf(formatMoneyToInteger(NhanVienFrm.getTable().getValueAt(rowSelected, 6))));
+		NhanVienModel.setLuong(Float.valueOf(Formatter.formatMoneyToInteger(NhanVienFrm.getTable().getValueAt(rowSelected, 6))));
 		NhanVienModel.setMacn(NhanVienFrm.getTable().getValueAt(rowSelected, 7).toString());
 		NhanVienModel.setTrangThaiXoa((Boolean) NhanVienFrm.getTable().getValueAt(rowSelected, 8));
 		if (NhanVienModel.getTrangThaiXoa() == true) {
@@ -481,7 +484,7 @@ public class NhanVienController {
 		NhanVienModel.setSoCMND(NhanVienFrm.getTable().getValueAt(rowSelected, 3).toString());
 		NhanVienModel.setDiaChi(NhanVienFrm.getTable().getValueAt(rowSelected, 4).toString());
 		NhanVienModel.setNgaySinh((Date) NhanVienFrm.getTable().getValueAt(rowSelected, 5));
-		NhanVienModel.setLuong(Float.valueOf(formatMoneyToInteger(NhanVienFrm.getTable().getValueAt(rowSelected, 6))));
+		NhanVienModel.setLuong(Float.valueOf(Formatter.formatMoneyToInteger(NhanVienFrm.getTable().getValueAt(rowSelected, 6))));
 		NhanVienModel.setMacn(NhanVienFrm.getTable().getValueAt(rowSelected, 7).toString());
 		NhanVienModel.setTrangThaiXoa((Boolean) NhanVienFrm.getTable().getValueAt(rowSelected, 8));
 		
@@ -585,17 +588,6 @@ public class NhanVienController {
 		
 	}
 
-	// format x.000đ => x000 ( Integer)
-	public static Integer formatMoneyToInteger(Object money) {
-		return Integer.parseInt(((String) money).replaceAll("[^0-9]", ""));
-	}
-
-	// format x000 => x.000 đ
-	public static String formatObjecttoMoney(Object string) {
-		if (string == null)
-			return null;
-		NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
-		return currencyFormat.format(string);
-	}
+	
 
 }

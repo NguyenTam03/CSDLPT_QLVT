@@ -4,8 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
@@ -23,6 +21,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
+import common.method.Searcher;
 import dao.IAbstractDao;
 import main.Program;
 
@@ -41,10 +40,6 @@ public class CommonView<E, T> extends JPanel {
 	protected DefaultTableModel model;
 	protected ListSelectionListener selectionListener;
 	protected T dao;
-
-	/**
-	 * Create the panel.
-	 */
 
 	public CommonView() {
 		setLayout(new BorderLayout(0, 0));
@@ -133,30 +128,12 @@ public class CommonView<E, T> extends JPanel {
 		textFieldTim.setColumns(15);
 		textFieldTim.setText("Search");
 		textFieldTim.setForeground(Color.LIGHT_GRAY);
-		textFieldTim.addFocusListener(new FocusListener() {
-			
-			@Override
-			public void focusLost(FocusEvent e) {
-				// TODO Auto-generated method stub
-				if (textFieldTim.getText().isEmpty()) {
-					textFieldTim.setText("Search");
-					textFieldTim.setForeground(Color.LIGHT_GRAY);
-				}
-			}
-			
-			@Override
-			public void focusGained(FocusEvent e) {
-				// TODO Auto-generated method stub
-				if (textFieldTim.getText().equals("Search")) {
-					textFieldTim.setText("");
-					textFieldTim.setForeground(Color.BLACK);
-				}
-			}
-		});
+		Searcher.focusInput(textFieldTim);
+		
 		panel_3.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
 		panel_3.add(textFieldTim);
 		// Không cho phép chỉnh sửa dữ liệu trực tiếp ở bảng
-		DefaultTableModel model = new DefaultTableModel() {
+		model = new DefaultTableModel() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -165,18 +142,17 @@ public class CommonView<E, T> extends JPanel {
 			}
 		};
 		table.setModel(model);
-
+		model = (DefaultTableModel) table.getModel();
 		formLoad();
 
-//       Chi duoc select 1 hang khong dc select nhieu hang
+       //Chi duoc select 1 hang khong dc select nhieu hang
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	}
 
 	@SuppressWarnings({ "unchecked" })
 	protected void loadData() {
-		model = (DefaultTableModel) table.getModel();
-		model.setColumnIdentifiers(((IAbstractDao<E>) dao).getColName());
 		list = ((IAbstractDao<E>) dao).selectAll();
+		model.setColumnIdentifiers(((IAbstractDao<E>) dao).getColName());
 	}
 
 	protected void loadChiNhanh() {
