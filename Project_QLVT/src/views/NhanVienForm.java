@@ -65,8 +65,7 @@ public class NhanVienForm extends CommonView<NhanVienModel, NhanVienDao> {
 
 		Luong = new JSpinner();
 		Luong.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		Luong.setModel(new SpinnerNumberModel(Integer.valueOf(4000000), Integer.valueOf(4000000), null,
-				Integer.valueOf(100000)));
+		Luong.setModel(new SpinnerNumberModel(Float.valueOf(4000000), Float.valueOf(4000000), null, Float.valueOf(100000)));
 
 		TFDiaChi = new JTextField();
 		TFDiaChi.setColumns(10);
@@ -304,7 +303,7 @@ public class NhanVienForm extends CommonView<NhanVienModel, NhanVienDao> {
 			TFDiaChi.setText(table.getValueAt(table.getSelectedRow(), 4).toString());
 			NgaySinh.setDate((java.util.Date) table.getValueAt(table.getSelectedRow(), 5));
 			// format money => integer
-			Luong.setValue(Formatter.formatMoneyToInteger(table.getValueAt(table.getSelectedRow(), 6)));
+			Luong.setValue(Formatter.formatMoneyToFloat(table.getValueAt(table.getSelectedRow(), 6)));
 			TFMaCN.setText(table.getValueAt(table.getSelectedRow(), 7).toString());
 			CheckBoxTrangThaiXoa.setSelected((boolean) table.getValueAt(table.getSelectedRow(), 8));
 		};

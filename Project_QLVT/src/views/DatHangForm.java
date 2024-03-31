@@ -37,6 +37,7 @@ import javax.swing.SwingConstants;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JMenuBar;
+import javax.swing.SpinnerNumberModel;
 
 public class DatHangForm extends CommonView<DatHangModel, DatHangDao> {
 	private static final long serialVersionUID = 1L;
@@ -216,6 +217,7 @@ public class DatHangForm extends CommonView<DatHangModel, DatHangDao> {
 		panelCTDH.add(lblDonGia);
 
 		spinnerDonGia = new JSpinner();
+		spinnerDonGia.setModel(new SpinnerNumberModel(Float.valueOf(0), null, null, Float.valueOf(1)));
 		spinnerDonGia.setEnabled(false);
 		spinnerDonGia.setBounds(101, 70, 86, 20);
 		panelCTDH.add(spinnerDonGia);
@@ -283,7 +285,7 @@ public class DatHangForm extends CommonView<DatHangModel, DatHangDao> {
 		selectionCTDHListener = e -> {
 			textFieldMaVT.setText(tableCTDH.getValueAt(tableCTDH.getSelectedRow(), 1).toString());
 			spinnerSoLuong.setValue(tableCTDH.getValueAt(tableCTDH.getSelectedRow(), 2));
-			spinnerDonGia.setValue(Formatter.formatMoneyToInteger(tableCTDH.getValueAt(tableCTDH.getSelectedRow(), 3)));
+			spinnerDonGia.setValue(Formatter.formatMoneyToFloat(tableCTDH.getValueAt(tableCTDH.getSelectedRow(), 3)));
 		};
 
 		selectionListener = e -> {

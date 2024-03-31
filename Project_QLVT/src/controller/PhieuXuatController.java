@@ -102,7 +102,7 @@ public class PhieuXuatController {
 				}
 				px.getSpinnerSoLuong()
 						.setValue(px.getTableCTPX().getValueAt(px.getTableCTPX().getSelectedRow(), 2));
-				px.getSpinnerDonGia().setValue(Formatter.formatMoneyToInteger(
+				px.getSpinnerDonGia().setValue(Formatter.formatMoneyToFloat(
 						px.getTableCTPX().getValueAt(px.getTableCTPX().getSelectedRow(), 3)));
 			}
 		};

@@ -7,8 +7,8 @@ import java.time.format.DateTimeFormatter;
 
 public class Formatter {
 	// format x.000đ => x000 ( Integer)
-	public static Integer formatMoneyToInteger(Object money) {
-		return Integer.parseInt(((String) money).replaceAll("[^0-9]", ""));
+	public static float formatMoneyToFloat(Object money) {
+		return Float.parseFloat(((String) money).replaceAll("[^0-9]", ""));
 	}
 
 	// format x000 => x.000 đ

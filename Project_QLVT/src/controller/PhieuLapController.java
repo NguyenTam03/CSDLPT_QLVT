@@ -378,7 +378,7 @@ public class PhieuLapController {
 				}
 				PLForm.getSoLuong()
 						.setValue(PLForm.getTableCTPN().getValueAt(PLForm.getTableCTPN().getSelectedRow(), 2));
-				PLForm.getDonGia().setValue(Formatter.formatMoneyToInteger(
+				PLForm.getDonGia().setValue(Formatter.formatMoneyToFloat(
 						PLForm.getTableCTPN().getValueAt(PLForm.getTableCTPN().getSelectedRow(), 3)));
 			}
 		};
@@ -479,7 +479,7 @@ public class PhieuLapController {
 				DHOptionView.getTableDH().getValueAt(DHOptionView.getTableDH().getSelectedRow(), 1).toString());
 		PLForm.getSoLuong()
 				.setValue(DHOptionView.getTableDH().getValueAt(DHOptionView.getTableDH().getSelectedRow(), 2));
-		PLForm.getDonGia().setValue(Formatter.formatMoneyToInteger(
+		PLForm.getDonGia().setValue(Formatter.formatMoneyToFloat(
 				DHOptionView.getTableDH().getValueAt(DHOptionView.getTableDH().getSelectedRow(), 3)));
 		String sql = "SELECT TENVT FROM VATTU WHERE MAVT = ?";
 		Program.myReader = Program.ExecSqlDataReader(sql, PLForm.getTFMaVT().getText());
@@ -780,7 +780,7 @@ public class PhieuLapController {
 	private void updateDataCTPNToDB(CTPLModel ctplmodel) {
 		String MaVT = PLForm.getTableCTPN().getValueAt(rowSelectedCTPN, 1).toString();
 		int SoLuong = (int) PLForm.getTableCTPN().getValueAt(rowSelectedCTPN, 2);
-		int DonGia = Formatter.formatMoneyToInteger(PLForm.getTableCTPN().getValueAt(rowSelectedCTPN, 3));
+		float DonGia = Formatter.formatMoneyToFloat(PLForm.getTableCTPN().getValueAt(rowSelectedCTPN, 3));
 
 		try {
 			PLForm.getTableCTPN().setValueAt(ctplmodel.getMavt(), rowSelectedCTPN, 1);
@@ -881,7 +881,7 @@ public class PhieuLapController {
 			ctplModel.setMaPN(PLForm.getTableCTPN().getValueAt(rowSelectedCTPN, 0).toString());
 			ctplModel.setMavt(PLForm.getTableCTPN().getValueAt(rowSelectedCTPN, 1).toString());
 			ctplModel.setSoLuong((int) PLForm.getTableCTPN().getValueAt(rowSelectedCTPN, 2));
-			ctplModel.setDonGia((float) Formatter.formatMoneyToInteger(PLForm.getTableCTPN().getValueAt(rowSelectedCTPN, 3)));
+			ctplModel.setDonGia((float) Formatter.formatMoneyToFloat(PLForm.getTableCTPN().getValueAt(rowSelectedCTPN, 3)));
 			int reply = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa chi tiết phiếu nhập này không?", "Confirm",
 					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 			if (reply == JOptionPane.YES_OPTION) {

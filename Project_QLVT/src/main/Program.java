@@ -201,7 +201,7 @@ public class Program {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+//					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 					login = new LoginForm();
 					login.setVisible(true);
 				} catch (Exception e) {
