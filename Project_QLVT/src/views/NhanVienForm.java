@@ -87,6 +87,15 @@ public class NhanVienForm extends CommonView<NhanVienModel, NhanVienDao> {
 		TFMaNV = new JTextField();
 		TFMaNV.setEditable(false);
 		TFMaNV.setColumns(10);
+		TFMaNV.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// Nhập ký tự đâu tiên vào TFHo tự động thành chữ in hoa
+				if (!Character.isDigit(e.getKeyChar())) {
+					e.consume();
+				}
+			}
+		});
 
 		TFHo = new JTextField();
 		TFHo.setColumns(10);

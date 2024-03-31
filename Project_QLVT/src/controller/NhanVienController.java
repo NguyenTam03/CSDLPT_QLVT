@@ -1,6 +1,11 @@
 package controller;
 
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.sql.Date;
+
+import java.text.NumberFormat;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
@@ -30,6 +35,14 @@ public class NhanVienController {
 	}
 
 	public void initController() {
+		if (Program.mGroup.equals("CONGTY")) {
+			NhanVienFrm.getBtnThem().setEnabled(false);
+			NhanVienFrm.getBtnXoa().setEnabled(false);
+			NhanVienFrm.getBtnGhi().setEnabled(false);
+			NhanVienFrm.getBtnHoanTac().setEnabled(false);
+			NhanVienFrm.getBtnLamMoi().setEnabled(false);
+			NhanVienFrm.getBtnChuyenChiNhanh().setEnabled(false);
+		}
 		NhanVienFrm.getBtnThem().addActionListener(e -> addNhanVien());
 		NhanVienFrm.getBtnGhi().addActionListener(e -> pushDataToDB());
 		NhanVienFrm.getBtnLamMoi().addActionListener(e -> refreshData());
@@ -37,6 +50,33 @@ public class NhanVienController {
 		NhanVienFrm.getBtnXoa().addActionListener(e -> deleteNhanVien());
 		NhanVienFrm.getBtnChuyenChiNhanh().addActionListener(e -> chuyenChiNhanh());
 		NhanVienFrm.getBtnThoat().addActionListener(l -> exitNhanVien());
+		autoSearchNhanVien();
+	}
+	private void autoSearchNhanVien() {
+		NhanVienFrm.getTextFieldTim().addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				searchNhanVien();
+			}
+		});
+	}
+
+	private void searchNhanVien() {
+		String input = NhanVienFrm.getTextFieldTim().getText().trim().toLowerCase();
+		NhanVienFrm.getTable().getSelectionModel().removeListSelectionListener(NhanVienFrm.getSelectionListener());
+		NhanVienFrm.getModel().setRowCount(0);
+
+		for (NhanVienModel nv : NhanVienFrm.getList()) {
+			if (nv.getTen().toLowerCase().contains(input) || nv.getManv().toString().contains(input)) {
+				Object[] rowData = { nv.getManv(), nv.getHo(), nv.getTen(), nv.getSoCMND(), nv.getDiaChi(),
+                        nv.getNgaySinh(), Formatter.formatObjecttoMoney(nv.getLuong()), nv.getMacn(), nv.getTrangThaiXoa()};
+				NhanVienFrm.getModel().addRow(rowData);
+			}
+		}
+		NhanVienFrm.getTable().getSelectionModel().addListSelectionListener(NhanVienFrm.getSelectionListener());
+		if (NhanVienFrm.getTable().getRowCount() > 0) {
+			NhanVienFrm.getTable().getSelectionModel().setSelectionInterval(0, 0);
+		}
 	}
 	
 	private void exitNhanVien() {
@@ -165,9 +205,10 @@ public class NhanVienController {
 					nhanVienModel.getTrangThaiXoa() };
 			NhanVienFrm.getModel().addRow(newRow);
 			NhanVienFrm.getDao().insert(nhanVienModel);
+			NhanVienFrm.getList().add(nhanVienModel);
 		}
 		catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Lỗi thêm nhân viên!!", "THông Báo", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Lỗi thêm nhân viên!! \n "+e.getMessage(), "THông Báo", JOptionPane.WARNING_MESSAGE);
 			refreshData();
 			NhanVienFrm.getTable().getSelectionModel().setSelectionInterval(rowSelected, rowSelected);
 			return;
@@ -213,7 +254,7 @@ public class NhanVienController {
 			NhanVienFrm.getDao().update(nhanVienModel);
 		}
 		catch(Exception e){
-			JOptionPane.showMessageDialog(null, "Lỗi cập nhật nhân viên!!", "THông Báo", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Lỗi cập nhật nhân viên!! \n "+e.getMessage(), "THông Báo", JOptionPane.WARNING_MESSAGE);
             refreshData();
             NhanVienFrm.getTable().getSelectionModel().setSelectionInterval(rowSelected, rowSelected);
             return;
@@ -231,7 +272,7 @@ public class NhanVienController {
 
 	private void refreshData() {
 		NhanVienFrm.getTable().getSelectionModel().removeListSelectionListener(NhanVienFrm.getSelectionListener());
-		// .setRowCount(0) : xóa hết dữ liệu trong table
+		// .setRowCount(0) : xóa hết dữ liệu
 		NhanVienFrm.getModel().setRowCount(0);
 		NhanVienFrm.loadDataIntoTable();
 		NhanVienFrm.getTable().getSelectionModel().addListSelectionListener(NhanVienFrm.getSelectionListener());
@@ -261,14 +302,32 @@ public class NhanVienController {
 			return;
 		}
 		String queryUndo = undoList.pop().toString();
-		if (queryUndo.contains("sp_UndoChuyenChiNhanh")) {
-			if (Program.ExecSqlNonQuery(queryUndo) == -1) {
-				JOptionPane.showConfirmDialog(null, "Khôi phục nhân viên chuyển chi nhánh thất bại!", "Thông Báo", JOptionPane.CLOSED_OPTION);
+		if (queryUndo.contains("sp_ChuyenChiNhanh")) {
+			String CurrentBranch = Program.servername;
+			String ForwardBranch = Program.servernameLeft;
+			
+			Program.servername = ForwardBranch;
+            Program.mlogin = Program.remotelogin;
+            Program.password = Program.remotepassword;
+			if (Program.Connect() == 0) {
+				System.out.println("Kết nối không thành công");
 				return;
 			}
-			else {
-				refreshData();
+			try {
+				Program.ExecSqlDML(queryUndo);
 				JOptionPane.showConfirmDialog(null, "Khôi phục nhân viên chuyển chi nhánh thành công", "Thông Báo", JOptionPane.CLOSED_OPTION);
+			}
+			catch (Exception e) {
+				JOptionPane.showConfirmDialog(null, "Khôi phục nhân viên chuyển chi nhánh thất bại!", "Thông Báo", JOptionPane.CLOSED_OPTION);
+				e.printStackTrace();
+			}	
+			
+			Program.servername = CurrentBranch;
+			Program.mlogin = Program.mloginDN;
+			Program.password = Program.passwordDN;
+			if (Program.Connect() == 0) {
+				System.out.println("Kết nối lại không thành công");
+				return;
 			}
 			
 		} else {
@@ -283,7 +342,6 @@ public class NhanVienController {
 		} else {
 			NhanVienFrm.getTable().getSelectionModel().setSelectionInterval(0, 0);
 			rowSelected = 0;
-
 		}
 	}
 
@@ -354,15 +412,15 @@ public class NhanVienController {
 		NhanVienModel.setLuong(Float.valueOf(Formatter.formatMoneyToInteger(NhanVienFrm.getTable().getValueAt(rowSelected, 6))));
 		NhanVienModel.setMacn(NhanVienFrm.getTable().getValueAt(rowSelected, 7).toString());
 		NhanVienModel.setTrangThaiXoa((Boolean) NhanVienFrm.getTable().getValueAt(rowSelected, 8));
-
+		if (NhanVienModel.getTrangThaiXoa() == true) {
+			JOptionPane.showMessageDialog(null, "Nhân viên này đã bị xóa", "Thông Báo",
+					JOptionPane.WARNING_MESSAGE);
+			return;
+		}
 		int reply = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa nhân viên này không?", "Confirm",
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 		if (reply == JOptionPane.YES_OPTION) {
-			if (NhanVienModel.getTrangThaiXoa() == true) {
-				JOptionPane.showMessageDialog(null, "Nhân viên này đã bị xóa", "Thông Báo",
-						JOptionPane.WARNING_MESSAGE);
-				return;
-			}
+			
 			// Nếu nhân viên đã làm việc thì không xóa mà chỉ đổi trạng thái xóa
 			if (checkPhieuXuat(NhanVienModel.getManv().toString()) || checkPhieuNhap(NhanVienModel.getManv().toString())
 					|| checkDatHang(NhanVienModel.getManv().toString())) {
@@ -414,7 +472,13 @@ public class NhanVienController {
 					JOptionPane.WARNING_MESSAGE);
 			return;
 		}
+		
 		NhanVienModel.setManv(Integer.parseInt(NhanVienFrm.getTable().getValueAt(rowSelected, 0).toString()));
+		if (Program.username.equals(NhanVienModel.getManv().toString())) {
+			JOptionPane.showMessageDialog(null, "Không thể chuyển chi nhánh cho chính mình", "Thông Báo",
+					JOptionPane.WARNING_MESSAGE);
+			return;
+		}
 		NhanVienModel.setHo(NhanVienFrm.getTable().getValueAt(rowSelected, 1).toString());
 		NhanVienModel.setTen(NhanVienFrm.getTable().getValueAt(rowSelected, 2).toString());
 		NhanVienModel.setSoCMND(NhanVienFrm.getTable().getValueAt(rowSelected, 3).toString());
@@ -423,9 +487,13 @@ public class NhanVienController {
 		NhanVienModel.setLuong(Float.valueOf(Formatter.formatMoneyToInteger(NhanVienFrm.getTable().getValueAt(rowSelected, 6))));
 		NhanVienModel.setMacn(NhanVienFrm.getTable().getValueAt(rowSelected, 7).toString());
 		NhanVienModel.setTrangThaiXoa((Boolean) NhanVienFrm.getTable().getValueAt(rowSelected, 8));
+		
+		if (NhanVienModel.getTrangThaiXoa() == true) {
+			JOptionPane.showMessageDialog(null, "Nhân viên này đã bị xóa", "Thông Báo", JOptionPane.WARNING_MESSAGE);
+			return;
+		}
 		ChuyenChiNhanhForm CCNFrm = new ChuyenChiNhanhForm();
 		CCNFrm.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		
 		for (String key : Program.servers.keySet()) {
 			CCNFrm.getCBBoxChuyenChiNhanh().addItem(key);
 		}
@@ -435,20 +503,48 @@ public class NhanVienController {
 		CCNFrm.setVisible(true);
 		
 		CCNFrm.getBtnXacNhan().addActionListener(e -> {
-			String sql_CCN = "sp_ChuyenChiNhanh ?, ?, ?";
+			String sql_CCN = "sp_ChuyenChiNhanh ?, ?, ?, ?";
 			Map<String, String> ChiNhanh = new HashMap<>();
 			int index = 0;
 			for (String key : Program.servers.keySet()) {
 				ChiNhanh.put(key, Program.macn.get(index++));
 			}
-			
+			// Mã Nhân Viên Chi Nhánh Khác
+			int MaNVMoi = -1;
+			// Kiểm tra xem nhân viên đã tồn tại bên site bên kia chưa
+			boolean isDeleteNVNew = false;
+			String sql_CheckMaNV = "select isnull(MaNV,-1) from link1.QLVT_DATHANG.dbo.NhanVien where ? = HO and ? = TEN and ? = SOCMND and ? =DIACHI and ? = NGAYSINH and ? = LUONG";
+			Program.myReader = Program.ExecSqlDataReader(sql_CheckMaNV, NhanVienModel.getHo(), NhanVienModel.getTen(), NhanVienModel.getSoCMND(), NhanVienModel.getDiaChi(), NhanVienModel.getNgaySinh(), NhanVienModel.getLuong());
+			try {
+				Program.myReader.next();
+				MaNVMoi = Program.myReader.getInt(1);
+			} catch (Exception e1) {
+			}
+			// Nếu nhân viên chưa tồn tại 
+			if (MaNVMoi == -1) {
+				isDeleteNVNew = true;
+				String sql_MaMVMoi = "select max(MaNV)+1 from link2.QLVT_DATHANG.dbo.NhanVien";
+				Program.myReader = Program.ExecSqlDataReader(sql_MaMVMoi);
+				try {
+					Program.myReader.next();
+					MaNVMoi = Program.myReader.getInt(1);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			}
+			// Tên sever chuyển chi nhánh
+			Program.servernameLeft = Program.servers.get(CCNFrm.getCBBoxChuyenChiNhanh().getSelectedItem());
 			// Kiểm tra xem Nhân Viên đó đã làm gì hay chưa
 			
 			if (!checkPhieuXuat(NhanVienModel.getManv().toString()) && !checkPhieuNhap(NhanVienModel.getManv().toString())
 					&& !checkDatHang(NhanVienModel.getManv().toString())) {
+				// Nếu Nhân viên này bên site kia chưa tồn tại. Xóa nhân viên bên này thì lấy mã nhân viên chuyển sang bên kia
+				if(isDeleteNVNew)
+					MaNVMoi = NhanVienModel.getManv();
 				try {
-					Program.ExecSqlDML(sql_CCN, NhanVienModel.getManv(), ChiNhanh.get(CCNFrm.getCBBoxChuyenChiNhanh().getSelectedItem()), true);
-					String sqlUndo = "exec sp_UndoChuyenChiNhanh " + NhanVienModel.getManv() + " ,'" + NhanVienModel.getMacn() + "'";
+					Program.ExecSqlDML(sql_CCN, NhanVienModel.getManv(), ChiNhanh.get(CCNFrm.getCBBoxChuyenChiNhanh().getSelectedItem()),MaNVMoi, true);
+					String sqlUndo = "exec sp_ChuyenChiNhanh "+ MaNVMoi+ " ,'" + NhanVienModel.getMacn() + "'," + NhanVienModel.getManv()+ ", "+ isDeleteNVNew;
+					System.out.println(sqlUndo);
 					undoList.push(sqlUndo);
 					NhanVienFrm.getBtnHoanTac().setEnabled(true);
 					JOptionPane.showMessageDialog(null, "Chuyển chi nhánh thành công", "Thông Báo",
@@ -457,26 +553,28 @@ public class NhanVienController {
 					CCNFrm.dispose();
 				}
 				catch (Exception e1) {
-					JOptionPane.showMessageDialog(null, "Chuyển chi nhánh thất bại", "Thông Báo",
+					JOptionPane.showMessageDialog(null, "Chuyển chi nhánh thất bại\n  "+e1.getMessage(), "Thông Báo",
 							JOptionPane.WARNING_MESSAGE);
+					e1.printStackTrace();
 					return;
                 }
 			}
 			// Nếu không thì xóa nhân viên đó đi và thêm nhân viên đó sang chi nhánh mới
 			else {
 				try {
-					Program.ExecSqlDML(sql_CCN, NhanVienModel.getManv(), ChiNhanh.get(CCNFrm.getCBBoxChuyenChiNhanh().getSelectedItem()), false);
+					Program.ExecSqlDML(sql_CCN, NhanVienModel.getManv(), ChiNhanh.get(CCNFrm.getCBBoxChuyenChiNhanh().getSelectedItem()),MaNVMoi, false);
 					NhanVienFrm.getBtnHoanTac().setEnabled(true);
-					String sqlUndo = "exec sp_UndoChuyenChiNhanh " + NhanVienModel.getManv() + " ,'" + NhanVienModel.getMacn() + "'";
+					String sqlUndo = "exec sp_ChuyenChiNhanh "+ MaNVMoi+ " ,'" + NhanVienModel.getMacn() + "'," + NhanVienModel.getManv()+ ", "+ isDeleteNVNew;
 					undoList.push(sqlUndo);
+					refreshData();
 					JOptionPane.showMessageDialog(null, "Chuyển chi nhánh thành công", "Thông Báo",
 							JOptionPane.WARNING_MESSAGE);
-					refreshData();
 					CCNFrm.dispose();
 				}
 				catch (Exception e1) {
-                    JOptionPane.showMessageDialog(null, "Chuyển chi nhánh thất bại", "Thông Báo",
+                    JOptionPane.showMessageDialog(null, "Chuyển chi nhánh thất bại\n "+e1.getMessage(), "Thông Báo",
                             JOptionPane.WARNING_MESSAGE);
+                    e1.printStackTrace();
                     return;
                 }
 			}

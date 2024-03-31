@@ -2,14 +2,17 @@ package model;
 
 import java.sql.Date;
 
-public class PhieuNhapModel {
+public class PhieuLapModel {
 	private String mapn;
 	private Date ngay;
 	private String maSoDDH;
 	private Integer manv;
 	private String maKho;
-	
-	public PhieuNhapModel(String mapn, Date ngay, String maSoDDH, Integer manv, String maKho) {
+
+	public PhieuLapModel() {
+		super();
+	}
+	public PhieuLapModel(String mapn, Date ngay, String maSoDDH, Integer manv, String maKho) {
 		super();
 		this.mapn = mapn;
 		this.ngay = ngay;
