@@ -54,6 +54,10 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 	private CTPXDao ctpxDao;
 	private ArrayList<CTPXModel> ctpxList;
 	private JMenuItem mntmPhieuXuat, mntmCTPX;
+	private JLabel lblHoTenNV;
+	private JLabel lblTenKho;
+	private JLabel lblTenVT;
+	private JMenu mnOption;
 
 	public PhieuXuatForm() {
 		comboBox.setEnabled(false);
@@ -88,23 +92,30 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 
 		GroupLayout gl_panel_2 = new GroupLayout(panel_2);
-		gl_panel_2.setHorizontalGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
+		gl_panel_2.setHorizontalGroup(
+			gl_panel_2.createParallelGroup(Alignment.LEADING)
+				.addGroup(Alignment.TRAILING, gl_panel_2.createSequentialGroup()
+					.addComponent(panelInfo, GroupLayout.DEFAULT_SIZE, 353, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel_2.createParallelGroup(Alignment.TRAILING, false)
+						.addComponent(lblNewLabel_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 695, Short.MAX_VALUE)))
+				.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 1052, Short.MAX_VALUE)
+		);
+		gl_panel_2.setVerticalGroup(
+			gl_panel_2.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_panel_2.createSequentialGroup()
-						.addComponent(panelInfo, GroupLayout.PREFERRED_SIZE, 331, GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
-								.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 497, Short.MAX_VALUE)
-								.addComponent(lblNewLabel_1, GroupLayout.DEFAULT_SIZE, 497, Short.MAX_VALUE)))
-				.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 834, Short.MAX_VALUE));
-		gl_panel_2.setVerticalGroup(gl_panel_2.createParallelGroup(Alignment.TRAILING).addGroup(gl_panel_2
-				.createSequentialGroup().addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
-				.addPreferredGap(ComponentPlacement.RELATED)
-				.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING, false)
+					.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_panel_2.createSequentialGroup()
-								.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(ComponentPlacement.RELATED)
-								.addComponent(scrollPane, 0, 0, Short.MAX_VALUE))
-						.addComponent(panelInfo, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE))));
+							.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(scrollPane, 0, 0, Short.MAX_VALUE))
+						.addGroup(gl_panel_2.createSequentialGroup()
+							.addComponent(panelInfo, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE)
+							.addContainerGap())))
+		);
 
 		tableCTPX = new JTable();
 		tableCTPX.setEnabled(false);
@@ -144,7 +155,7 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 		panelDatHang.add(lblTenKH);
 
 		textFieldTenKH = new JTextField();
-		textFieldTenKH.setBounds(133, 55, 133, 20);
+		textFieldTenKH.setBounds(133, 55, 131, 20);
 		panelDatHang.add(textFieldTenKH);
 		textFieldTenKH.setColumns(10);
 		textFieldTenKH.setEditable(false);
@@ -165,7 +176,7 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 
 		textFieldMaKho = new JTextField();
 		textFieldMaKho.setEditable(false);
-		textFieldMaKho.setBounds(101, 99, 86, 20);
+		textFieldMaKho.setBounds(65, 97, 65, 20);
 		panelDatHang.add(textFieldMaKho);
 		textFieldMaKho.setColumns(10);
 
@@ -175,14 +186,18 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 				"Chi Ti\u1EBFt Phi\u1EBFu Xu\u1EA5t", TitledBorder.LEADING, TitledBorder.TOP, null,
 				new Color(0, 0, 0)));
 		GroupLayout gl_panelInfo = new GroupLayout(panelInfo);
-		gl_panelInfo.setHorizontalGroup(gl_panelInfo.createParallelGroup(Alignment.LEADING)
+		gl_panelInfo.setHorizontalGroup(
+			gl_panelInfo.createParallelGroup(Alignment.LEADING)
 				.addComponent(panelDatHang, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-				.addComponent(panelCTPX, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE));
-		gl_panelInfo.setVerticalGroup(gl_panelInfo.createParallelGroup(Alignment.LEADING)
+				.addComponent(panelCTPX, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+		);
+		gl_panelInfo.setVerticalGroup(
+			gl_panelInfo.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panelInfo.createSequentialGroup()
-						.addComponent(panelDatHang, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(ComponentPlacement.UNRELATED)
-						.addComponent(panelCTPX, GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)));
+					.addComponent(panelDatHang, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addComponent(panelCTPX, GroupLayout.PREFERRED_SIZE, 116, GroupLayout.PREFERRED_SIZE))
+		);
 		panelCTPX.setLayout(null);
 
 		JLabel lblMaVT = new JLabel("Mã Vật Tư");
@@ -191,41 +206,41 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 
 		textFieldMaVT = new JTextField();
 		textFieldMaVT.setEditable(false);
-		textFieldMaVT.setBounds(101, 22, 86, 20);
+		textFieldMaVT.setBounds(89, 22, 86, 20);
 		panelCTPX.add(textFieldMaVT);
 		textFieldMaVT.setColumns(10);
 
 		btnVatTuOption = new JButton("Chọn Vật Tư");
 		btnVatTuOption.setEnabled(false);
 		btnVatTuOption.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		btnVatTuOption.setBounds(216, 21, 103, 23);
+		btnVatTuOption.setBounds(89, 54, 103, 23);
 		panelCTPX.add(btnVatTuOption);
 
 		JLabel lblSoLuong = new JLabel("Số Lượng");
-		lblSoLuong.setBounds(20, 50, 59, 14);
+		lblSoLuong.setBounds(20, 91, 59, 14);
 		panelCTPX.add(lblSoLuong);
 
 		spinnerSoLuong = new JSpinner();
 		spinnerSoLuong
 				.setModel(new SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
 		spinnerSoLuong.setEnabled(false);
-		spinnerSoLuong.setBounds(101, 47, 86, 20);
+		spinnerSoLuong.setBounds(89, 88, 86, 20);
 		panelCTPX.add(spinnerSoLuong);
 
 		JLabel lblDonGia = new JLabel("Đơn Giá");
-		lblDonGia.setBounds(20, 73, 46, 14);
+		lblDonGia.setBounds(197, 91, 46, 14);
 		panelCTPX.add(lblDonGia);
 
 		spinnerDonGia = new JSpinner();
 		spinnerDonGia.setModel(new SpinnerNumberModel(Float.valueOf(0), Float.valueOf(0), null, Float.valueOf(1)));
 		spinnerDonGia.setEnabled(false);
-		spinnerDonGia.setBounds(101, 70, 86, 20);
+		spinnerDonGia.setBounds(253, 88, 86, 20);
 		panelCTPX.add(spinnerDonGia);
 
 		btnKhoOption = new JButton("Chọn Kho Hàng");
 		btnKhoOption.setEnabled(false);
 		btnKhoOption.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		btnKhoOption.setBounds(212, 96, 107, 23);
+		btnKhoOption.setBounds(234, 96, 105, 23);
 		panelDatHang.add(btnKhoOption);
 		panelInfo.setLayout(gl_panelInfo);
 		panel_2.setLayout(gl_panel_2);
@@ -235,7 +250,7 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 		JMenuBar menuBar = new JMenuBar();
 		panel_4.add(menuBar);
 
-		JMenu mnOption = new JMenu("Chọn chế độ");
+		mnOption = new JMenu("Chọn chế độ");
 		mnOption.setBackground(Color.LIGHT_GRAY);
 		mnOption.setFont(new Font("Segoe UI", Font.PLAIN, 13));
 		menuBar.add(mnOption);
@@ -245,6 +260,19 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 
 		mntmCTPX = new JMenuItem("Chi tiết phiếu xuất");
 		mnOption.add(mntmCTPX);
+		
+
+		lblHoTenNV = new JLabel("");
+		lblHoTenNV.setBounds(214, 78, 125, 20);
+		panelDatHang.add(lblHoTenNV);
+		
+		lblTenKho = new JLabel("");
+		lblTenKho.setBounds(133, 97, 103, 20);
+		panelDatHang.add(lblTenKho);
+		
+		lblTenVT = new JLabel("");
+		lblTenVT.setBounds(197, 22, 142, 20);
+		panelCTPX.add(lblTenVT);
 
 //      load chi nhánh lên combobox
 		loadChiNhanh();
@@ -276,23 +304,42 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 			ngay.setDate((Date) table.getValueAt(table.getSelectedRow(), 1));
 			textFieldTenKH.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
 			textFieldMaNV.setText(table.getValueAt(table.getSelectedRow(), 3).toString());
+			String sql = "SELECT Ho + ' ' + Ten FROM NhanVien WHERE MANV = ?";
+			Program.myReader = Program.ExecSqlDataReader(sql, textFieldMaNV.getText());
+			try {
+				Program.myReader.next();
+				getLblHoTenNV().setText(Program.myReader.getString(1));
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			textFieldMaKho.setText(table.getValueAt(table.getSelectedRow(), 4).toString());
+			sql = "SELECT TENKHO FROM KHO WHERE MAKHO = ?";
+			Program.myReader = Program.ExecSqlDataReader(sql, getTextFieldMaKho().getText());
+			try {
+				Program.myReader.next();
+				getLblTenKho().setText(Program.myReader.getString(1));
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		};
 		table.setEnabled(false);
 		table.getSelectionModel().addListSelectionListener(selectionListener);
 
 //		lắng nghe sự kiện chọn row đồng thời in dữ liệu ra textfield cho bảng ctpx
 
-		selectionListener = e -> {
-			textFieldMaVT.setText(tableCTPX.getValueAt(tableCTPX.getSelectedRow(), 1).toString()); //
-			
-			
-			spinnerSoLuong.setValue(tableCTPX.getValueAt(tableCTPX.getSelectedRow(), 2));
-			spinnerDonGia.setValue(tableCTPX.getValueAt(tableCTPX.getSelectedRow(), 3));
-		};
-		tableCTPX.setEnabled(false);
-		tableCTPX.getSelectionModel().addListSelectionListener(selectionListener);
-
+//		selectionListener = e -> {
+//			textFieldMaVT.setText(tableCTPX.getValueAt(tableCTPX.getSelectedRow(), 1).toString()); 
+//			
+//			
+//			spinnerSoLuong.setValue(tableCTPX.getValueAt(tableCTPX.getSelectedRow(), 2));
+//			spinnerDonGia.setValue(tableCTPX.getValueAt(tableCTPX.getSelectedRow(), 3));
+//						
+//		};
+//		tableCTPX.setEnabled(false);
+//		tableCTPX.getSelectionModel().addListSelectionListener(selectionListener);
+//
 		PhieuXuatController ac = new PhieuXuatController(this);
 		ac.initController();
 	}
@@ -353,6 +400,24 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 		return ctpxModel;
 	}
 
+	public JLabel getLblHoTenNV() {
+		return lblHoTenNV;
+	}
+
+	public JLabel getLblTenKho() {
+		return lblTenKho;
+	}
+
+	public JLabel getLblTenVT() {
+		return lblTenVT;
+	}
+
+	public JMenu getMnOption() {
+		return mnOption;
+	}
+
+	
+
 	public void loadDataIntoTable() {
 		loadData();
 		for (PhieuXuatModel px : list) {
@@ -392,5 +457,4 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 			table.getSelectionModel().addListSelectionListener(selectionListener);
 		}
 	}
-
 }
