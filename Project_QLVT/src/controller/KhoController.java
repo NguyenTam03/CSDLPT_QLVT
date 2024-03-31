@@ -105,9 +105,13 @@ public class KhoController {
 
 			return;
 		}
+		
+		if (undoList.empty()) {
+			khoView.getBtnHoanTac().setEnabled(false);
+			return;
+		}
 
 		String sqlUndo = undoList.pop();
-		
 		try {
 			Program.ExecSqlDML(sqlUndo);
 		}catch (SQLException e) {
@@ -115,7 +119,6 @@ public class KhoController {
 			return;
 		}
 		
-
 		reFreshData();
 		if (row <= khoView.getTable().getRowCount() - 1) {
 			khoView.getTable().getSelectionModel().setSelectionInterval(row, row);
@@ -149,7 +152,6 @@ public class KhoController {
 				}
 			}
 		}
-
 	}
 
 	private boolean regexMatch(String text) {
@@ -304,7 +306,6 @@ public class KhoController {
 			if (Program.myReader.getRow() > 0)
 				return true;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

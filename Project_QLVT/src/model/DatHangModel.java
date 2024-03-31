@@ -1,13 +1,25 @@
 package model;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import javax.swing.JOptionPane;
+import common.method.IValidation;
 
-public class DatHangModel {
+public class DatHangModel implements IValidation {
 	private String maSoDDH;
 	private Date ngay;
 	private String nhaCC;
 	private Integer manv;
 	private String makho;
+	public static enum ValidateError {
+		ERROR_MASODDH,
+		ERROR_NGAY,
+		ERROR_NHACC,
+		ERROR_MANV,
+		ERROR_MAKHO,
+		NO_ERROR
+	}
+	public static ValidateError validateError;
 	
 	public DatHangModel() {
 		
@@ -60,6 +72,46 @@ public class DatHangModel {
 
 	public void setMakho(String makho) {
 		this.makho = makho;
+	}
+	
+	@Override
+	public boolean validate() {
+		if (maSoDDH.equals("")) {
+			JOptionPane.showMessageDialog(null, "Mã đơn đặt hàng không được bỏ trống.", "Thông báo",
+					JOptionPane.WARNING_MESSAGE);
+			validateError = ValidateError.ERROR_MASODDH;
+			return false;
+		}
+
+		if (!maSoDDH.matches("^[a-zA-Z0-9\\s]+$")) {
+			JOptionPane.showMessageDialog(null, "Mã đơn đặt hàng chỉ chứa chữ, số và khoảng trắng.", "Thông báo",
+					JOptionPane.WARNING_MESSAGE);
+			validateError = ValidateError.ERROR_MASODDH;
+			return false;
+		}
+
+		if (ngay.toLocalDate().isBefore(LocalDate.now())) {
+			JOptionPane.showMessageDialog(null, "Ngày lập đơn không được trước ngày hiện tại.", "Thông báo",
+					JOptionPane.WARNING_MESSAGE);
+			validateError = ValidateError.ERROR_NGAY;
+			return false;
+		}
+
+		if (nhaCC.equals("")) {
+			JOptionPane.showMessageDialog(null, "Nhà cung cấp không được bỏ trống.", "Thông báo",
+					JOptionPane.WARNING_MESSAGE);
+			validateError = ValidateError.ERROR_NHACC;
+			return false;
+		}
+
+		if (makho.equals("")) {
+			JOptionPane.showMessageDialog(null, "Mã kho không được bỏ trống.", "Thông báo",
+					JOptionPane.WARNING_MESSAGE);
+			validateError = ValidateError.ERROR_MAKHO;
+			return false;
+		}
+		validateError = ValidateError.NO_ERROR;
+		return true;
 	}
 	
 	

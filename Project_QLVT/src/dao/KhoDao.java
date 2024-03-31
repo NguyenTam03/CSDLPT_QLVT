@@ -7,25 +7,16 @@ import main.Program;
 import model.KhoModel;
 
 public class KhoDao extends IAbstractDao<KhoModel> {
-	
+
 	public KhoDao() {
 		init();
 	}
-	
+
 	private void init() {
-		String sql = "SELECT * FROM Kho";
+		String sql = "SELECT MAKHO, TENKHO, DIACHI FROM Kho";
 		Program.myReader = Program.ExecSqlDataReader(sql);
-		
-		try {
-			 setColCount(Program.myReader.getMetaData().getColumnCount() - 1);;
-			 String[] colName = new String[getColCount()];
-			for (int i = 0; i < getColCount(); i++) {
-				colName[i] = Program.myReader.getMetaData().getColumnName(i + 1);
-			}
-			setColName(colName);
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
+
+		initModel();
 	}
 
 	public static KhoDao getInstance() {
@@ -53,16 +44,15 @@ public class KhoDao extends IAbstractDao<KhoModel> {
 	@Override
 	public ArrayList<KhoModel> selectAll() {
 		ArrayList<KhoModel> dsKho = new ArrayList<KhoModel>();
-		String sql = "SELECT * FROM dbo.Kho";
+		String sql = "SELECT MAKHO, TENKHO, DIACHI FROM dbo.Kho";
 		Program.myReader = Program.ExecSqlDataReader(sql);
-		
+		initModel();
 		try {
 			while (Program.myReader.next()) {
-				KhoModel kho = new KhoModel(
-						Program.myReader.getString(1),
-						Program.myReader.getString(2),
-						Program.myReader.getString(3),
-						Program.myReader.getString(4));
+				KhoModel kho = new KhoModel();
+				kho.setMaKho(Program.myReader.getString(1));
+				kho.setTenKho(Program.myReader.getString(2));
+				kho.setDiaChi(Program.myReader.getString(3));
 				dsKho.add(kho);
 			}
 			return dsKho;
@@ -73,15 +63,24 @@ public class KhoDao extends IAbstractDao<KhoModel> {
 		return null;
 	}
 	
-	@Override
-	public KhoModel selectById(KhoModel t) {
-		// TODO Auto-generated method stub
+	public ArrayList<KhoModel> selectByCondition(String sql, Object...objects) {
 		return null;
+		
 	}
-	
+
 	@Override
-	public ArrayList<KhoModel> selectByCondition(String condition) {
-		// TODO Auto-generated method stub
+	public <E> KhoModel selectById(E t) {
+		String sql = "SELECT * FROM dbo.Kho WHERE MAKHO = ?";
+		Program.myReader = Program.ExecSqlDataReader(sql,t);
+
+		try {
+			Program.myReader.next();
+			KhoModel kho = new KhoModel(Program.myReader.getString(1), Program.myReader.getString(2),
+					Program.myReader.getString(3), Program.myReader.getString(4));
+			return kho;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 }

@@ -1,5 +1,6 @@
 package model;
 
+
 public class CTDDHModel extends CTAbstractModel {
 	private String maSoDDH;
 	
@@ -7,7 +8,7 @@ public class CTDDHModel extends CTAbstractModel {
 		super();
 	}
 	
-	public CTDDHModel(String maSoDDH, String mavt, Integer soLuong, Double donGia) {
+	public CTDDHModel(String maSoDDH, String mavt, Integer soLuong, Float donGia) {
 		super(mavt, soLuong, donGia);
 		this.maSoDDH = maSoDDH;
 	}
@@ -19,6 +20,5 @@ public class CTDDHModel extends CTAbstractModel {
 	public void setMaSoDDH(String maSoDDH) {
 		this.maSoDDH = maSoDDH;
 	}
-	
 	
 }

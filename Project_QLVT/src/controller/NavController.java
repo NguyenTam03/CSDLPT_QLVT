@@ -59,15 +59,15 @@ public class NavController {
 			});
 		}
 
-		clickedComponentShowTab("Nhân viên", "Tab nhân viên", frmMain.getMnNhanVien(), frmMain.getPanel_NV(),
+		clickedComponentShowTab("Nhân viên", frmMain.getMnNhanVien(), frmMain.getPanel_NV(),
 				NhanVienForm.class);
 		// --------
 		// mouse listener vat tu
-		clickedComponentShowTab("Vật tư", "Tab vật tư", frmMain.getMnVatTu(), frmMain.getPanel_VT(), VatTuForm.class);
+		clickedComponentShowTab("Vật tư", frmMain.getMnVatTu(), frmMain.getPanel_VT(), VatTuForm.class);
 
 		// ---------------
 		// mouse listener kho hang
-		clickedComponentShowTab("Kho", "Tab kho", frmMain.getMnKho(), frmMain.getPanel_Kho(), KhoForm.class);
+		clickedComponentShowTab("Kho", frmMain.getMnKho(), frmMain.getPanel_Kho(), KhoForm.class);
 
 		// ---------------------
 		clickedMenuItem("Đặt hàng", frmMain.getMntmDatHang(), frmMain.getPanel_dathang(), DatHangForm.class);
@@ -103,7 +103,7 @@ public class NavController {
 		form.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 
-	private void clickedComponentShowTab(String label, String tip, JMenu t, JPanel t1, Class<?> formClass) {
+	private void clickedComponentShowTab(String label, JMenu t, JPanel t1, Class<?> formClass) {
 		t.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -118,14 +118,13 @@ public class NavController {
 						t1.add(form, BorderLayout.CENTER);
 					}
 					
-					frmMain.getTabbedPane_Main().addTab(label, null, t1, tip);
+					frmMain.getTabbedPane_Main().addTab(label, null, t1);
 					frmMain.getTabbedPane_Main().setSelectedComponent(t1);
 				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
 						| InvocationTargetException | NoSuchMethodException | SecurityException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-
 			}
 		});
 	}
@@ -134,9 +133,16 @@ public class NavController {
 		item.addActionListener(l -> {
 			Component form;
 			try {
-				form = (Component) formClass.getDeclaredConstructor().newInstance();
-				t1.add(form, BorderLayout.CENTER);
-				frmMain.getTabbedPane_Main().addTab(label, t1);
+				if (t1.getComponents().length == 0) {
+					form = (Component) formClass.getDeclaredConstructor().newInstance();
+					t1.add(form, BorderLayout.CENTER);
+				}else if (t1.getComponents().length > 0 && Program.mGroup.equals("CONGTY")) {
+					t1.removeAll();
+					form = (Component) formClass.getDeclaredConstructor().newInstance();
+					t1.add(form, BorderLayout.CENTER);
+				}
+				 
+				frmMain.getTabbedPane_Main().addTab(label, null, t1);
 				frmMain.getTabbedPane_Main().setSelectedComponent(t1);
 			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
 					| InvocationTargetException | NoSuchMethodException | SecurityException e) {

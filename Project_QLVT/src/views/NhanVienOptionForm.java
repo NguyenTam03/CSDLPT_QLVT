@@ -7,6 +7,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import common.method.ISearcher;
+import common.method.Searcher;
 import dao.NhanVienDao;
 import main.Program;
 import model.NhanVienModel;
@@ -37,7 +39,7 @@ import javax.swing.JButton;
 import java.awt.SystemColor;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-public class NhanVienOptionForm extends JFrame {
+public class NhanVienOptionForm extends JFrame implements ISearcher {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTable table;
@@ -53,7 +55,7 @@ public class NhanVienOptionForm extends JFrame {
 	public NhanVienOptionForm(boolean hasAccount) {
 		super("Chọn Nhân Viên");
 		this.hasAccount = hasAccount;
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 814, 409);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -103,37 +105,16 @@ public class NhanVienOptionForm extends JFrame {
 		panel_1.setLayout(new BorderLayout(0, 0));
 
 		textFieldSearch = new JTextField();
-		textFieldSearch.setForeground(Color.LIGHT_GRAY);
-		textFieldSearch.setText("Search");
 		textFieldSearch.setHorizontalAlignment(SwingConstants.LEFT);
 		textFieldSearch.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				searchNhanVien();
+				search();
 			}
 		});
 
-		textFieldSearch.addFocusListener(new FocusListener() {
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				// TODO Auto-generated method stub
-				if (textFieldSearch.getText().isEmpty()) {
-					textFieldSearch.setText("Search");
-					textFieldSearch.setForeground(Color.LIGHT_GRAY);
-				}
-			}
-
-			@Override
-			public void focusGained(FocusEvent e) {
-				// TODO Auto-generated method stub
-				if (textFieldSearch.getText().equals("Search")) {
-					textFieldSearch.setText("");
-					textFieldSearch.setForeground(Color.BLACK);
-				}
-			}
-		});
-
+		Searcher.focusInput(textFieldSearch);
+		
 		panel_1.add(textFieldSearch);
 		textFieldSearch.setColumns(10);
 
@@ -280,7 +261,8 @@ public class NhanVienOptionForm extends JFrame {
 		this.dispose();
 	}
 
-	private void searchNhanVien() {
+	@Override
+	public void search() {
 		String input = textFieldSearch.getText().trim().toLowerCase();
 		model.setRowCount(0);
 
