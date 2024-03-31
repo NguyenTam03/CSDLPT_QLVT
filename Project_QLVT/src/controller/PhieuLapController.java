@@ -18,11 +18,13 @@ import dao.CTDDHDao;
 import dao.CTPLDao;
 import dao.DatHangDao;
 import dao.IAbstractDao;
+import dao.KhoDao;
 import dao.PhieuLapDao;
 import main.Program;
 import model.CTDDHModel;
 import model.CTPLModel;
 import model.DatHangModel;
+import model.KhoModel;
 import model.NhanVienModel;
 import model.PhieuLapModel;
 import views.DatHangForm;
@@ -36,6 +38,7 @@ public class PhieuLapController {
 	private ArrayList<DatHangModel> dhList;
 	private ArrayList<CTDDHModel> ctddhList;
 	private ArrayList<CTPLModel> ctplList;
+	private ArrayList<KhoModel> khoList;
 	private DefaultTableModel dhModel;
 	private DonHangOptionForm DHOptionView;
 	private PhieuLapModel plModel;
@@ -57,6 +60,7 @@ public class PhieuLapController {
 		PLForm.getBtnThoat().addActionListener(l -> exitPhieuLap());
 		PLForm.getBtnDHOption().addActionListener(l -> ChonDonHang());
 		PLForm.getBtnCTDHOption().addActionListener(l -> ChonCTDonHang());
+		PLForm.getBtnKho().addActionListener(l -> ChonKho());
 		PLForm.getBtnThem().addActionListener(l -> themPhieuNhap());
 		PLForm.getBtnGhi().addActionListener(l -> ghiPhieuNhap());
 		PLForm.getBtnXoa().addActionListener(l -> deletePhieuNhap());
@@ -150,26 +154,29 @@ public class PhieuLapController {
 		PLForm.getTable().setEnabled(true);
 		PLForm.getTable().getSelectionModel().addListSelectionListener(selectionListener);
 		PLForm.getTableCTPN().getSelectionModel().removeListSelectionListener(selectionListener_CTPN);
-		PLForm.getMnOption().setText("Phiếu Nhập");
-		PLForm.getBtnThem().setEnabled(true);
-		PLForm.getBtnXoa().setEnabled(true);
-		PLForm.getBtnGhi().setEnabled(true);
-		PLForm.getBtnHoanTac().setEnabled(false);
-		PLForm.getBtnLamMoi().setEnabled(true);
-		PLForm.getBtnDHOption().setEnabled(false);
-		PLForm.getBtnCTDHOption().setEnabled(false);
-
-		PLForm.getNgay().setEnabled(true);
-		PLForm.getTFMaKho().setEditable(true);
-		
-		PLForm.getTFMaVT().setText("");
-		PLForm.getLbTenVatTu().setText("");
-		PLForm.getSoLuong().setValue(0);
-		PLForm.getDonGia().setValue(0);
-		PLForm.getSoLuong().setEnabled(false);
-		PLForm.getDonGia().setEnabled(false);
 		if (Program.mGroup.equals("CONGTY")) {
 			PLForm.getComboBox().setEnabled(true);
+		} else {
+			PLForm.getComboBox().setEnabled(false);
+			
+			PLForm.getMnOption().setText("Phiếu Nhập");
+			PLForm.getBtnThem().setEnabled(true);
+			PLForm.getBtnXoa().setEnabled(true);
+			PLForm.getBtnGhi().setEnabled(true);
+			PLForm.getBtnHoanTac().setEnabled(false);
+			PLForm.getBtnLamMoi().setEnabled(true);
+			PLForm.getBtnDHOption().setEnabled(false);
+			PLForm.getBtnCTDHOption().setEnabled(false);
+
+			PLForm.getNgay().setEnabled(true);
+			PLForm.getBtnKho().setEnabled(true);
+
+			PLForm.getTFMaVT().setText("");
+			PLForm.getLbTenVatTu().setText("");
+			PLForm.getSoLuong().setValue(0);
+			PLForm.getDonGia().setValue(0);
+			PLForm.getSoLuong().setEnabled(false);
+			PLForm.getDonGia().setEnabled(false);
 		}
 	}
 
@@ -225,8 +232,7 @@ public class PhieuLapController {
 
 	private void searchDonHang() {
 		String input = DHOptionView.getTFTim().getText().trim().toLowerCase();
-		DHOptionView.getTableDH().getSelectionModel().removeListSelectionListener(selectionListener);
-
+//		DHOptionView.getTableDH().getSelectionModel().removeListSelectionListener(selectionListener);
 		dhModel.setRowCount(0);
 
 		for (DatHangModel dh : dhList) {
@@ -235,7 +241,7 @@ public class PhieuLapController {
 				dhModel.addRow(rowData);
 			}
 		}
-		DHOptionView.getTableDH().getSelectionModel().addListSelectionListener(selectionListener);
+//		DHOptionView.getTableDH().getSelectionModel().addListSelectionListener(selectionListener);
 		if (DHOptionView.getTableDH().getRowCount() > 0) {
 			DHOptionView.getTableDH().getSelectionModel().setSelectionInterval(0, 0);
 		}
@@ -255,6 +261,93 @@ public class PhieuLapController {
 				datHangList.add(datHang);
 			}
 			return datHangList;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	// ------------------------------------ Chọn Button Kho
+	// ------------------------------------
+	private void ChonKho() {
+		DHOptionView = new DonHangOptionForm();
+		KhoDao khoDao;
+		dhModel = new DefaultTableModel() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+		khoDao = KhoDao.getInstance();
+		try {
+			dhModel.setColumnIdentifiers(khoDao.getColName());
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		khoDao = KhoDao.getInstance();
+		dhModel = (DefaultTableModel) DHOptionView.getTableDH().getModel();
+		String[] ColName = Arrays.copyOfRange(khoDao.getColName(), 0, 2);
+		dhModel.setColumnIdentifiers(ColName);
+		khoList = loadKhoList();
+
+		for (KhoModel kho : khoList) {
+			Object[] rowData = { kho.getMaKho(), kho.getTenKho() };
+			dhModel.addRow(rowData);
+		}
+		DHOptionView.getTableDH().setModel(dhModel);
+		dhModel = (DefaultTableModel) DHOptionView.getTableDH().getModel();
+		DHOptionView.setVisible(true);
+		DHOptionView.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		DHOptionView.getBtnChon().addActionListener(e -> clickBtnChonKho());
+		DHOptionView.getBtnThoat().addActionListener(e -> DHOptionView.dispose());
+		autoSearchKho();
+	}
+
+	private void clickBtnChonKho() {
+		PLForm.getTFMaKho().setText(dhModel.getValueAt(DHOptionView.getTableDH().getSelectedRow(), 0).toString());
+		DHOptionView.dispose();
+	}
+
+	private void autoSearchKho() {
+		DHOptionView.getTFTim().addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				searchKho();
+			}
+		});
+	}
+
+	private void searchKho() {
+		String input = DHOptionView.getTFTim().getText().trim().toLowerCase();
+		dhModel.setRowCount(0);
+		for (KhoModel kho : khoList) {
+			if (kho.getMaKho().toLowerCase().contains(input) || kho.getTenKho().toLowerCase().contains(input)) {
+				Object[] rowData = { kho.getMaKho(), kho.getTenKho() };
+				dhModel.addRow(rowData);
+			}
+		}
+		if (DHOptionView.getTableDH().getRowCount() > 0) {
+			DHOptionView.getTableDH().getSelectionModel().setSelectionInterval(0, 0);
+		}
+
+	}
+
+	private ArrayList<KhoModel> loadKhoList() {
+		ArrayList<KhoModel> khoList = new ArrayList<KhoModel>();
+		String sql = "select * from Link2.QLVT_DATHANG.dbo.Kho";
+		Program.myReader = Program.ExecSqlDataReader(sql);
+
+		try {
+			while (Program.myReader.next()) {
+				KhoModel kho = new KhoModel(Program.myReader.getString(1), Program.myReader.getString(2),
+						Program.myReader.getString(3), Program.myReader.getString(4));
+
+				khoList.add(kho);
+			}
+			return khoList;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -292,22 +385,24 @@ public class PhieuLapController {
 		PLForm.getTableCTPN().setEnabled(true);
 		PLForm.getTableCTPN().getSelectionModel().addListSelectionListener(selectionListener_CTPN);
 		PLForm.getTableCTPN().getSelectionModel().removeListSelectionListener(selectionListener);
-		PLForm.getMnOption().setText("Chi Tiết Phiếu Nhập");
-		PLForm.getBtnThem().setEnabled(true);
-		PLForm.getBtnXoa().setEnabled(true);
-		PLForm.getBtnGhi().setEnabled(true);
-		PLForm.getBtnHoanTac().setEnabled(false);
-		PLForm.getBtnLamMoi().setEnabled(true);
-		PLForm.getBtnDHOption().setEnabled(false);
-		PLForm.getBtnCTDHOption().setEnabled(false);
-		
-		PLForm.getNgay().setEnabled(false);
-		PLForm.getTFMaKho().setEditable(false);
-		
-		PLForm.getSoLuong().setEnabled(true);
-		PLForm.getDonGia().setEnabled(true);
 		if (Program.mGroup.equals("CONGTY")) {
 			PLForm.getComboBox().setEnabled(true);
+		} else {
+			PLForm.getComboBox().setEnabled(false);
+			PLForm.getMnOption().setText("Chi Tiết Phiếu Nhập");
+			PLForm.getBtnThem().setEnabled(true);
+			PLForm.getBtnXoa().setEnabled(true);
+			PLForm.getBtnGhi().setEnabled(true);
+			PLForm.getBtnHoanTac().setEnabled(false);
+			PLForm.getBtnLamMoi().setEnabled(true);
+			PLForm.getBtnDHOption().setEnabled(false);
+			PLForm.getBtnCTDHOption().setEnabled(false);
+
+			PLForm.getNgay().setEnabled(false);
+			PLForm.getBtnKho().setEnabled(false);
+
+			PLForm.getSoLuong().setEnabled(true);
+			PLForm.getDonGia().setEnabled(true);
 		}
 
 	}
@@ -457,7 +552,7 @@ public class PhieuLapController {
 			PLForm.getBtnDHOption().setEnabled(true);
 			PLForm.getTFMaPN().setEditable(true);
 			PLForm.getNgay().setEnabled(true);
-			PLForm.getTFMaKho().setEditable(true);
+			PLForm.getBtnKho().setEnabled(true);
 
 			PLForm.getTable().getSelectionModel().removeListSelectionListener(selectionListener);
 			PLForm.getTable().getSelectionModel().clearSelection();
@@ -472,7 +567,7 @@ public class PhieuLapController {
 			PLForm.getBtnDHOption().setEnabled(false);
 			PLForm.getTFMaPN().setEditable(false);
 			PLForm.getNgay().setEnabled(false);
-			PLForm.getTFMaKho().setEditable(false);
+			PLForm.getBtnKho().setEnabled(false);
 			PLForm.getTableCTPN().getSelectionModel().removeListSelectionListener(selectionListener_CTPN);
 			PLForm.getTableCTPN().getSelectionModel().clearSelection();
 		}
@@ -527,7 +622,7 @@ public class PhieuLapController {
 				MaPN = PLForm.getTFMaPN().getText().trim();
 				MaVT = PLForm.getTFMaVT().getText().trim();
 				SoLuong = (int) PLForm.getSoLuong().getValue();
-				DonGia = (int)PLForm.getDonGia().getValue();
+				DonGia = (int) PLForm.getDonGia().getValue();
 				if (MaPN.isEmpty() || MaVT.isEmpty() || SoLuong == 0 || DonGia == 0) {
 					JOptionPane.showMessageDialog(null, "Chưa nhập đủ thông tin");
 					return;
@@ -535,7 +630,7 @@ public class PhieuLapController {
 				int reply = JOptionPane.showConfirmDialog(null, "Bạn có muốn ghi dữ liệu vào bảng không?", "Confirm",
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (reply == JOptionPane.YES_NO_OPTION) {
-					CTPLModel ctplModel = new CTPLModel(MaPN, MaVT, SoLuong,(double) DonGia);
+					CTPLModel ctplModel = new CTPLModel(MaPN, MaVT, SoLuong, (double) DonGia);
 					if (isThem) {
 						addDataCTPNToDB(ctplModel);
 						isThem = false;
@@ -605,7 +700,7 @@ public class PhieuLapController {
 		PLForm.getBtnDHOption().setEnabled(false);
 		PLForm.getTFMaPN().setEditable(false);
 		PLForm.getNgay().setEnabled(false);
-		PLForm.getTFMaKho().setEditable(false);
+		PLForm.getBtnKho().setEnabled(false);
 
 		PLForm.getTable().getSelectionModel().addListSelectionListener(selectionListener);
 		// .getSelectionModel().setSelectionInterval() : chọn dòng cuối cùng trong table
@@ -671,7 +766,7 @@ public class PhieuLapController {
 		PLForm.getBtnCTDHOption().setEnabled(false);
 		PLForm.getTFMaPN().setEditable(false);
 		PLForm.getNgay().setEnabled(false);
-		PLForm.getTFMaKho().setEditable(false);
+		PLForm.getBtnKho().setEnabled(false);
 
 		PLForm.getTableCTPN().getSelectionModel().addListSelectionListener(selectionListener_CTPN);
 		PLForm.getTableCTPN().getSelectionModel().setSelectionInterval(PLForm.getTableCTPN().getRowCount() - 1,
@@ -773,8 +868,7 @@ public class PhieuLapController {
 				}
 			} else
 				return;
-		}
-		else {
+		} else {
 			if (PLForm.getTableCTPN().getRowCount() == 0)
 				PLForm.getBtnXoa().setEnabled(false);
 			rowSelectedCTPN = PLForm.getTableCTPN().getSelectedRow();
@@ -786,7 +880,8 @@ public class PhieuLapController {
 			ctplModel.setMaPN(PLForm.getTableCTPN().getValueAt(rowSelectedCTPN, 0).toString());
 			ctplModel.setMavt(PLForm.getTableCTPN().getValueAt(rowSelectedCTPN, 1).toString());
 			ctplModel.setSoLuong((int) PLForm.getTableCTPN().getValueAt(rowSelectedCTPN, 2));
-			ctplModel.setDonGia((double)NhanVienController.formatMoneyToInteger(PLForm.getTableCTPN().getValueAt(rowSelectedCTPN, 3)));
+			ctplModel.setDonGia((double) NhanVienController
+					.formatMoneyToInteger(PLForm.getTableCTPN().getValueAt(rowSelectedCTPN, 3)));
 			int reply = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa chi tiết phiếu nhập này không?", "Confirm",
 					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 			if (reply == JOptionPane.YES_OPTION) {
@@ -852,12 +947,12 @@ public class PhieuLapController {
 			PLForm.getBtnDHOption().setEnabled(false);
 			PLForm.getTFMaPN().setEditable(false);
 			PLForm.getNgay().setEnabled(false);
-			PLForm.getTFMaKho().setEditable(false);
+			PLForm.getBtnKho().setEnabled(false);
 			isThem = false;
 			if (undoList.isEmpty()) {
 				PLForm.getBtnHoanTac().setEnabled(false);
 			}
-			
+
 			return;
 		}
 		if (undoList.isEmpty()) {
