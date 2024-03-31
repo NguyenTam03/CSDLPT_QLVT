@@ -27,6 +27,8 @@ public class Program {
 
 	public static ResultSet myReader;
 	public static String servername = "";
+	public static String servernameLeft = "";
+
 
 	public static String username = "";
 	public static String mlogin = "";
@@ -35,6 +37,7 @@ public class Program {
 	public static String database = "";
 	public static String remotelogin = "";
 	public static String remotepassword = "";
+
 
 	public static String mloginDN = "";
 	public static String passwordDN = "";

@@ -61,7 +61,6 @@ public class NhanVienDao extends IAbstractDao<NhanVienModel> {
 		ArrayList<NhanVienModel> dsNhanVien = new ArrayList<NhanVienModel>();
 		String sql = "SELECT * FROM NhanVien";
 		Program.myReader = Program.ExecSqlDataReader(sql);
-		
 		try {
 			while (Program.myReader.next()) {
 				Date resultDate = null;
