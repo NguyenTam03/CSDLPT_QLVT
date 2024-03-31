@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
+import common.method.Formatter;
 import dao.CTDDHDao;
 import dao.CTPLDao;
 import dao.DatHangDao;
@@ -145,7 +146,7 @@ public class PhieuLapController {
 				ctplList = ctplDao.selectAllCTPN(PLForm.getTFMaPN().getText());
 				for (CTPLModel pl : ctplList) {
 					Object[] rowData = { pl.getMaPN(), pl.getMavt(), pl.getSoLuong(),
-							NhanVienController.formatObjecttoMoney(pl.getDonGia()) };
+							Formatter.formatObjecttoMoney(pl.getDonGia()) };
 					PLForm.getCtplModel().addRow(rowData);
 				}
 			}
@@ -377,7 +378,7 @@ public class PhieuLapController {
 				}
 				PLForm.getSoLuong()
 						.setValue(PLForm.getTableCTPN().getValueAt(PLForm.getTableCTPN().getSelectedRow(), 2));
-				PLForm.getDonGia().setValue(NhanVienController.formatMoneyToInteger(
+				PLForm.getDonGia().setValue(Formatter.formatMoneyToInteger(
 						PLForm.getTableCTPN().getValueAt(PLForm.getTableCTPN().getSelectedRow(), 3)));
 			}
 		};
@@ -437,7 +438,7 @@ public class PhieuLapController {
 
 		for (CTDDHModel ctddh : ctddhList) {
 			Object[] rowData = { ctddh.getMaSoDDH(), ctddh.getMavt(), ctddh.getSoLuong(),
-					NhanVienController.formatObjecttoMoney(ctddh.getDonGia()) };
+					Formatter.formatObjecttoMoney(ctddh.getDonGia()) };
 			dhModel.addRow(rowData);
 		}
 		DHOptionView.getTableDH().setModel(dhModel);
@@ -457,7 +458,7 @@ public class PhieuLapController {
 		try {
 			while (Program.myReader.next()) {
 				CTDDHModel ctdh = new CTDDHModel(Program.myReader.getString(1), Program.myReader.getString(2),
-						Program.myReader.getInt(3), Program.myReader.getDouble(4));
+						Program.myReader.getInt(3), Program.myReader.getFloat(4));
 
 				CTDHList.add(ctdh);
 			}
@@ -478,7 +479,7 @@ public class PhieuLapController {
 				DHOptionView.getTableDH().getValueAt(DHOptionView.getTableDH().getSelectedRow(), 1).toString());
 		PLForm.getSoLuong()
 				.setValue(DHOptionView.getTableDH().getValueAt(DHOptionView.getTableDH().getSelectedRow(), 2));
-		PLForm.getDonGia().setValue(NhanVienController.formatMoneyToInteger(
+		PLForm.getDonGia().setValue(Formatter.formatMoneyToInteger(
 				DHOptionView.getTableDH().getValueAt(DHOptionView.getTableDH().getSelectedRow(), 3)));
 		String sql = "SELECT TENVT FROM VATTU WHERE MAVT = ?";
 		Program.myReader = Program.ExecSqlDataReader(sql, PLForm.getTFMaVT().getText());
@@ -630,7 +631,7 @@ public class PhieuLapController {
 				int reply = JOptionPane.showConfirmDialog(null, "Bạn có muốn ghi dữ liệu vào bảng không?", "Confirm",
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (reply == JOptionPane.YES_NO_OPTION) {
-					CTPLModel ctplModel = new CTPLModel(MaPN, MaVT, SoLuong, (double) DonGia);
+					CTPLModel ctplModel = new CTPLModel(MaPN, MaVT, SoLuong, (float) DonGia);
 					if (isThem) {
 						addDataCTPNToDB(ctplModel);
 						isThem = false;
@@ -739,7 +740,7 @@ public class PhieuLapController {
 	private void addDataCTPNToDB(CTPLModel ctplModel) {
 		try {
 			Object[] newRow = { ctplModel.getMaPN(), ctplModel.getMavt(), ctplModel.getSoLuong(),
-					NhanVienController.formatObjecttoMoney(ctplModel.getDonGia()) };
+					Formatter.formatObjecttoMoney(ctplModel.getDonGia()) };
 			PLForm.getCtplModel().addRow(newRow);
 			ctplDao.insert(ctplModel);
 		} catch (SQLException e) {
@@ -779,12 +780,12 @@ public class PhieuLapController {
 	private void updateDataCTPNToDB(CTPLModel ctplmodel) {
 		String MaVT = PLForm.getTableCTPN().getValueAt(rowSelectedCTPN, 1).toString();
 		int SoLuong = (int) PLForm.getTableCTPN().getValueAt(rowSelectedCTPN, 2);
-		int DonGia = NhanVienController.formatMoneyToInteger(PLForm.getTableCTPN().getValueAt(rowSelectedCTPN, 3));
+		int DonGia = Formatter.formatMoneyToInteger(PLForm.getTableCTPN().getValueAt(rowSelectedCTPN, 3));
 
 		try {
 			PLForm.getTableCTPN().setValueAt(ctplmodel.getMavt(), rowSelectedCTPN, 1);
 			PLForm.getTableCTPN().setValueAt(ctplmodel.getSoLuong(), rowSelectedCTPN, 2);
-			PLForm.getTableCTPN().setValueAt(NhanVienController.formatObjecttoMoney(ctplmodel.getDonGia()),
+			PLForm.getTableCTPN().setValueAt(Formatter.formatObjecttoMoney(ctplmodel.getDonGia()),
 					rowSelectedCTPN, 3);
 			ctplDao.update(ctplmodel);
 		} catch (Exception e) {
@@ -880,8 +881,7 @@ public class PhieuLapController {
 			ctplModel.setMaPN(PLForm.getTableCTPN().getValueAt(rowSelectedCTPN, 0).toString());
 			ctplModel.setMavt(PLForm.getTableCTPN().getValueAt(rowSelectedCTPN, 1).toString());
 			ctplModel.setSoLuong((int) PLForm.getTableCTPN().getValueAt(rowSelectedCTPN, 2));
-			ctplModel.setDonGia((double) NhanVienController
-					.formatMoneyToInteger(PLForm.getTableCTPN().getValueAt(rowSelectedCTPN, 3)));
+			ctplModel.setDonGia((float) Formatter.formatMoneyToInteger(PLForm.getTableCTPN().getValueAt(rowSelectedCTPN, 3)));
 			int reply = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa chi tiết phiếu nhập này không?", "Confirm",
 					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 			if (reply == JOptionPane.YES_OPTION) {

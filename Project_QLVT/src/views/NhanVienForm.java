@@ -21,11 +21,10 @@ import javax.swing.SpinnerNumberModel;
 
 import com.toedter.calendar.JDateChooser;
 
+import common.method.Formatter;
+
 import java.awt.event.ItemEvent;
 import java.sql.SQLException;
-import java.text.NumberFormat;
-import java.util.Locale;
-import com.toedter.calendar.JDateChooser;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -305,7 +304,7 @@ public class NhanVienForm extends CommonView<NhanVienModel, NhanVienDao> {
 			TFDiaChi.setText(table.getValueAt(table.getSelectedRow(), 4).toString());
 			NgaySinh.setDate((java.util.Date) table.getValueAt(table.getSelectedRow(), 5));
 			// format money => integer
-			Luong.setValue(NhanVienController.formatMoneyToInteger(table.getValueAt(table.getSelectedRow(), 6)));
+			Luong.setValue(Formatter.formatMoneyToInteger(table.getValueAt(table.getSelectedRow(), 6)));
 			TFMaCN.setText(table.getValueAt(table.getSelectedRow(), 7).toString());
 			CheckBoxTrangThaiXoa.setSelected((boolean) table.getValueAt(table.getSelectedRow(), 8));
 		};
@@ -367,7 +366,7 @@ public class NhanVienForm extends CommonView<NhanVienModel, NhanVienDao> {
 		for (NhanVienModel NhanVien : list) {
 			Object[] rowData = { NhanVien.getManv(), NhanVien.getHo(), NhanVien.getTen(), NhanVien.getSoCMND(),
 					NhanVien.getDiaChi(), NhanVien.getNgaySinh(),
-					NhanVienController.formatObjecttoMoney(NhanVien.getLuong()), NhanVien.getMacn(),
+					Formatter.formatObjecttoMoney(NhanVien.getLuong()), NhanVien.getMacn(),
 					NhanVien.getTrangThaiXoa() };
 			model.addRow(rowData);
 		}

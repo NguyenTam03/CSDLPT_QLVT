@@ -73,4 +73,16 @@ public class PhieuXuatDao extends IAbstractDao<PhieuXuatModel>{
 		return null;
 	}
 
+	@Override
+	public <E> PhieuXuatModel selectById(E t) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<PhieuXuatModel> selectByCondition(String sql, Object... objects) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

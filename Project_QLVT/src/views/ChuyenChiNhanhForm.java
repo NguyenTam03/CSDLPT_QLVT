@@ -15,7 +15,7 @@ public class ChuyenChiNhanhForm extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JComboBox CBBoxChuyenChiNhanh;
+	private JComboBox<String> CBBoxChuyenChiNhanh;
 	private JButton btnXacNhan;
 	private JButton btnThoat;
 
@@ -38,7 +38,7 @@ public class ChuyenChiNhanhForm extends JFrame {
 		lbChuyenChiNhanh.setBounds(107, 40, 238, 53);
 		contentPane.add(lbChuyenChiNhanh);
 		
-		CBBoxChuyenChiNhanh = new JComboBox();
+		CBBoxChuyenChiNhanh = new JComboBox<>();
 		CBBoxChuyenChiNhanh.setBounds(117, 103, 180, 21);
 		contentPane.add(CBBoxChuyenChiNhanh);
 		
@@ -57,7 +57,7 @@ public class ChuyenChiNhanhForm extends JFrame {
 		setLocationRelativeTo(null);
 	}
 
-	public JComboBox getCBBoxChuyenChiNhanh() {
+	public JComboBox<String> getCBBoxChuyenChiNhanh() {
 		return CBBoxChuyenChiNhanh;
 	}
 
