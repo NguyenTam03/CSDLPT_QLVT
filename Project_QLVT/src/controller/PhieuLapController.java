@@ -159,6 +159,15 @@ public class PhieuLapController {
 		PLForm.getBtnDHOption().setEnabled(false);
 		PLForm.getBtnCTDHOption().setEnabled(false);
 
+		PLForm.getNgay().setEnabled(true);
+		PLForm.getTFMaKho().setEditable(true);
+		
+		PLForm.getTFMaVT().setText("");
+		PLForm.getLbTenVatTu().setText("");
+		PLForm.getSoLuong().setValue(0);
+		PLForm.getDonGia().setValue(0);
+		PLForm.getSoLuong().setEnabled(false);
+		PLForm.getDonGia().setEnabled(false);
 		if (Program.mGroup.equals("CONGTY")) {
 			PLForm.getComboBox().setEnabled(true);
 		}
@@ -216,7 +225,7 @@ public class PhieuLapController {
 
 	private void searchDonHang() {
 		String input = DHOptionView.getTFTim().getText().trim().toLowerCase();
-//		DHOptionView.getTableDH().getSelectionModel().removeListSelectionListener(selectionListener);
+		DHOptionView.getTableDH().getSelectionModel().removeListSelectionListener(selectionListener);
 
 		dhModel.setRowCount(0);
 
@@ -226,7 +235,7 @@ public class PhieuLapController {
 				dhModel.addRow(rowData);
 			}
 		}
-//		DHOptionView.getTableDH().getSelectionModel().addListSelectionListener(selectionListener);
+		DHOptionView.getTableDH().getSelectionModel().addListSelectionListener(selectionListener);
 		if (DHOptionView.getTableDH().getRowCount() > 0) {
 			DHOptionView.getTableDH().getSelectionModel().setSelectionInterval(0, 0);
 		}
@@ -291,6 +300,12 @@ public class PhieuLapController {
 		PLForm.getBtnLamMoi().setEnabled(true);
 		PLForm.getBtnDHOption().setEnabled(false);
 		PLForm.getBtnCTDHOption().setEnabled(false);
+		
+		PLForm.getNgay().setEnabled(false);
+		PLForm.getTFMaKho().setEditable(false);
+		
+		PLForm.getSoLuong().setEnabled(true);
+		PLForm.getDonGia().setEnabled(true);
 		if (Program.mGroup.equals("CONGTY")) {
 			PLForm.getComboBox().setEnabled(true);
 		}
@@ -567,6 +582,7 @@ public class PhieuLapController {
 					plModel.getMaKho() };
 			PLForm.getModel().addRow(newRow);
 			PLForm.getDao().insert(plModel);
+			PLForm.getList().add(plModel);
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Lỗi thêm phiếu nhập!! \n " + e.getMessage(), "THông Báo",
 					JOptionPane.WARNING_MESSAGE);
@@ -812,7 +828,8 @@ public class PhieuLapController {
 	private void UndoData() {
 		if (isThem) {
 			if (isPhieuNhap) {
-				PLForm.getTable().getSelectionModel().removeListSelectionListener(selectionListener);
+				PLForm.getTable().getSelectionModel().addListSelectionListener(selectionListener);
+				PLForm.getTable().getSelectionModel().setSelectionInterval(rowSelectedPN, rowSelectedPN);
 				PLForm.getTable().setEnabled(true);
 				PLForm.getBtnDHOption().setEnabled(false);
 			} else {
@@ -821,6 +838,7 @@ public class PhieuLapController {
 				PLForm.getSoLuong().setValue(0);
 				PLForm.getDonGia().setValue(0);
 				PLForm.getTableCTPN().getSelectionModel().addListSelectionListener(selectionListener_CTPN);
+				PLForm.getTableCTPN().getSelectionModel().setSelectionInterval(rowSelectedCTPN, rowSelectedCTPN);
 				PLForm.getTableCTPN().setEnabled(true);
 				PLForm.getBtnCTDHOption().setEnabled(false);
 			}
@@ -839,8 +857,7 @@ public class PhieuLapController {
 			if (undoList.isEmpty()) {
 				PLForm.getBtnHoanTac().setEnabled(false);
 			}
-			PLForm.getTable().getSelectionModel().addListSelectionListener(selectionListener);
-			PLForm.getTable().getSelectionModel().setSelectionInterval(rowSelectedPN, rowSelectedPN);
+			
 			return;
 		}
 		if (undoList.isEmpty()) {
@@ -859,6 +876,12 @@ public class PhieuLapController {
 		} else {
 			PLForm.getTable().getSelectionModel().setSelectionInterval(0, 0);
 			rowSelectedPN = 0;
+		}
+		if (rowSelectedCTPN <= PLForm.getTableCTPN().getRowCount() - 1) {
+			PLForm.getTableCTPN().getSelectionModel().setSelectionInterval(rowSelectedCTPN, rowSelectedCTPN);
+		} else {
+			PLForm.getTableCTPN().getSelectionModel().setSelectionInterval(-1, -1);
+			rowSelectedCTPN = 0;
 		}
 	}
 }
