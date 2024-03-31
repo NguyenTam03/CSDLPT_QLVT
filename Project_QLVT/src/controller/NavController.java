@@ -20,6 +20,7 @@ import views.KhoForm;
 import views.LoginForm;
 import views.NhanVienForm;
 import views.NhanVienOptionForm;
+import views.PhieuXuatForm;
 import views.PhieuLapForm;
 import views.VatTuForm;
 
@@ -73,6 +74,7 @@ public class NavController {
 		// ---------------------
 		clickedMenuItem("Đặt hàng", frmMain.getMntmDatHang(), frmMain.getPanel_dathang(), DatHangForm.class);
 		
+		clickedMenuItem("Phiếu xuất", frmMain.getMntmPhieuXuat(), frmMain.getPanel_phieuxuat(), PhieuXuatForm.class);
 		clickedMenuItem("Phiếu Lập", frmMain.getMntmPhieuLap(), frmMain.getPanel_phieulap(), PhieuLapForm.class);
 		
 		

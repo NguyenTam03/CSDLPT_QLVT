@@ -16,6 +16,9 @@ public class PhieuXuatModel {
 		this.manv = manv;
 		this.maKho = maKho;
 	}
+	public PhieuXuatModel() {
+		// TODO Auto-generated constructor stub
+	}
 	public String getMapx() {
 		return mapx;
 	}
