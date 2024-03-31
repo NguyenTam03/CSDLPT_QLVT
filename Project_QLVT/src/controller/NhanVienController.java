@@ -202,6 +202,7 @@ public class NhanVienController {
 					nhanVienModel.getTrangThaiXoa() };
 			NhanVienFrm.getModel().addRow(newRow);
 			NhanVienFrm.getDao().insert(nhanVienModel);
+			NhanVienFrm.getList().add(nhanVienModel);
 		}
 		catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Lỗi thêm nhân viên!! \n "+e.getMessage(), "THông Báo", JOptionPane.WARNING_MESSAGE);
