@@ -48,10 +48,10 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 	private JTextField textFieldMaPX;
 	private JTextField textFieldTenKH;
 	private JTextField textFieldMaNV;
-	private JTextField textFieldMaKho;
-	private JTextField textFieldMaVT;
+	private static JTextField textFieldMaKho;
+	private static JTextField textFieldMaVT;
 	private JTable tableCTPX;
-	private JSpinner spinnerSoLuong, spinnerDonGia;
+	private static JSpinner spinnerSoLuong, spinnerDonGia;
 //	private JComboBox<String> comboBoxNgay;
 	private JDateChooser ngay;
 	public DefaultTableModel ctpxModel;
@@ -59,10 +59,12 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 	private ArrayList<CTPXModel> ctpxList;
 	private JMenuItem mntmPhieuXuat, mntmCTPX;
 	private JLabel lblHoTenNV;
-	private JLabel lblTenKho;
-	private JLabel lblTenVT;
+	private static JLabel lblTenKho;
+	private static JLabel lblTenVT;
 	private JMenu mnOption;
 	private ListSelectionListener selectionListenerCTPX;
+	private KhoOptionFormForPX khoOptionFormPx;
+	private VatTuOptionFormForPX vatTuOptionFormPx;
 
 	public PhieuXuatForm() {
 		table.setEnabled(false);
@@ -394,11 +396,12 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 		return textFieldMaNV;
 	}
 
-	public JTextField getTextFieldMaKho() {
+
+	public static JTextField getTextFieldMaKho() {
 		return textFieldMaKho;
 	}
 
-	public JTextField getTextFieldMaVT() {
+	public static JTextField getTextFieldMaVT() {
 		return textFieldMaVT;
 	}
 
@@ -418,11 +421,11 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 		return mntmCTPX;
 	}
 
-	public JSpinner getSpinnerSoLuong() {
+	public static JSpinner getSpinnerSoLuong() {
 		return spinnerSoLuong;
 	}
 
-	public JSpinner getSpinnerDonGia() {
+	public static JSpinner getSpinnerDonGia() {
 		return spinnerDonGia;
 	}
 
@@ -434,17 +437,43 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 		return lblHoTenNV;
 	}
 
-	public JLabel getLblTenKho() {
+	public static JLabel getLblTenKho() {
 		return lblTenKho;
 	}
 
-	public JLabel getLblTenVT() {
+	public static JLabel getLblTenVT() {
 		return lblTenVT;
 	}
 
 	public JMenu getMnOption() {
 		return mnOption;
 	}
+
+	public CTPXDao getCtpxDao() {
+		return ctpxDao;
+	}
+
+	public ListSelectionListener getSelectionListenerCTPX() {
+		return selectionListenerCTPX;
+	}
+
+	public KhoOptionFormForPX getKhoOptionFormPx() {
+		khoOptionFormPx = new KhoOptionFormForPX();
+		return khoOptionFormPx;
+	}
+	
+	
+
+
+	
+
+	public VatTuOptionFormForPX getVatTuOptionFormPx() {
+		String mapx = textFieldMaPX.getText();
+		vatTuOptionFormPx = new VatTuOptionFormForPX(mapx);
+		return vatTuOptionFormPx;
+	}
+
+
 
 	public void loadDataIntoTable() {
 		SimpleDateFormat sdf = null;
