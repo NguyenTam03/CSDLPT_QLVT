@@ -20,7 +20,14 @@ public class PhieuXuatDao extends IAbstractDao<PhieuXuatModel>{
 			setColCount(Program.myReader.getMetaData().getColumnCount() - 1);
 			String[] colName = new String[getColCount()];
 			for (int i = 0; i < getColCount(); i++) {
-				colName[i] = Program.myReader.getMetaData().getColumnName(i + 1);
+				if (Program.myReader.getMetaData().getColumnName(i + 1).equals("MANV")) {
+					colName[i] = "TENNV";
+				}
+				else if (Program.myReader.getMetaData().getColumnName(i + 1).equals("MAKHO")) {
+					colName[i] = "TENKHO";
+				}
+				else
+					colName[i] = Program.myReader.getMetaData().getColumnName(i + 1);
 			}
 			setColName(colName);
 		} catch (SQLException e) {
@@ -54,7 +61,6 @@ public class PhieuXuatDao extends IAbstractDao<PhieuXuatModel>{
 		ArrayList<PhieuXuatModel> phieuXuatList = new ArrayList<PhieuXuatModel>();
 		String sql = "SELECT * FROM PhieuXuat";
 		Program.myReader = Program.ExecSqlDataReader(sql);
-		
 		try {
 			while (Program.myReader.next()) {
 				PhieuXuatModel phieuXuatModel = new PhieuXuatModel(
