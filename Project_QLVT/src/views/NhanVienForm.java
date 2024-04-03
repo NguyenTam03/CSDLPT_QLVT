@@ -65,8 +65,7 @@ public class NhanVienForm extends CommonView<NhanVienModel, NhanVienDao> {
 
 		Luong = new JSpinner();
 		Luong.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		Luong.setModel(new SpinnerNumberModel(Integer.valueOf(4000000), Integer.valueOf(4000000), null,
-				Integer.valueOf(100000)));
+		Luong.setModel(new SpinnerNumberModel(Float.valueOf(4000000), Float.valueOf(4000000), null, Float.valueOf(100000)));
 
 		TFDiaChi = new JTextField();
 		TFDiaChi.setColumns(10);

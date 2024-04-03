@@ -15,6 +15,7 @@ public class PhieuXuatDao extends IAbstractDao<PhieuXuatModel>{
 	private void init() {
 		String sql = "SELECT * FROM PhieuXuat";
 		Program.myReader = Program.ExecSqlDataReader(sql);
+
 		initModel();
 		getColName().remove(getColCount() - 1);
 	}
@@ -46,7 +47,6 @@ public class PhieuXuatDao extends IAbstractDao<PhieuXuatModel>{
 		ArrayList<PhieuXuatModel> phieuXuatList = new ArrayList<PhieuXuatModel>();
 		String sql = "SELECT * FROM PhieuXuat";
 		Program.myReader = Program.ExecSqlDataReader(sql);
-		
 		try {
 			while (Program.myReader.next()) {
 				PhieuXuatModel phieuXuatModel = new PhieuXuatModel(

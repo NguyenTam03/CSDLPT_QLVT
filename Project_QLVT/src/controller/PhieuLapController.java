@@ -1,6 +1,5 @@
 package controller;
 
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.Date;
@@ -780,7 +779,7 @@ public class PhieuLapController {
 	private void updateDataCTPNToDB(CTPLModel ctplmodel) {
 		String MaVT = PLForm.getTableCTPN().getValueAt(rowSelectedCTPN, 1).toString();
 		int SoLuong = (int) PLForm.getTableCTPN().getValueAt(rowSelectedCTPN, 2);
-		Float DonGia = Formatter.formatMoneyToFloat(PLForm.getTableCTPN().getValueAt(rowSelectedCTPN, 3));
+		float DonGia = Formatter.formatMoneyToFloat(PLForm.getTableCTPN().getValueAt(rowSelectedCTPN, 3));
 
 		try {
 			PLForm.getTableCTPN().setValueAt(ctplmodel.getMavt(), rowSelectedCTPN, 1);
