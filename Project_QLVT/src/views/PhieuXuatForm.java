@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -51,7 +50,7 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 	private static JTextField textFieldMaKho;
 	private static JTextField textFieldMaVT;
 	private JTable tableCTPX;
-	private static JSpinner spinnerSoLuong, spinnerDonGia;
+	private JSpinner spinnerSoLuong, spinnerDonGia;
 //	private JComboBox<String> comboBoxNgay;
 	private JDateChooser ngay;
 	public DefaultTableModel ctpxModel;
@@ -295,7 +294,7 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 
 //		CONGTY có thể chọn chi nhánh để xem dữ liệu
 		comboBox.addItemListener(l -> loadDataOtherServer(l));
-//		lắng nghe sự kiện chọn row đồng thời in dữ liệu ra textfield cho bảng phiếu xuất
+//		lắng nghe sự kiện chọn row đồng thời in dữ liệu ra textfield cho bảng ctpx
 		selectionListenerCTPX = e -> {
 			String sql = "SELECT MAVT FROM Vattu WHERE TENVT = ?";
 			Program.myReader = Program.ExecSqlDataReader(sql, tableCTPX.getValueAt(tableCTPX.getSelectedRow(), 1).toString());
@@ -312,6 +311,8 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 			spinnerDonGia.setValue(tableCTPX.getValueAt(tableCTPX.getSelectedRow(), 3));
 						
 		};
+//		lắng nghe sự kiện chọn row đồng thời in dữ liệu ra textfield cho bảng phiếu xuất
+
 		selectionListener = e -> {
 			textFieldMaPX.setText(table.getValueAt(table.getSelectedRow(), 0).toString());
 			try {
@@ -421,11 +422,11 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 		return mntmCTPX;
 	}
 
-	public static JSpinner getSpinnerSoLuong() {
+	public JSpinner getSpinnerSoLuong() {
 		return spinnerSoLuong;
 	}
 
-	public static JSpinner getSpinnerDonGia() {
+	public JSpinner getSpinnerDonGia() {
 		return spinnerDonGia;
 	}
 
@@ -461,11 +462,7 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 		khoOptionFormPx = new KhoOptionFormForPX();
 		return khoOptionFormPx;
 	}
-	
-	
-
-
-	
+		
 
 	public VatTuOptionFormForPX getVatTuOptionFormPx() {
 		String mapx = textFieldMaPX.getText();
@@ -473,6 +470,9 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 		return vatTuOptionFormPx;
 	}
 
+	public ArrayList<CTPXModel> getCtpxList() {
+		return ctpxList;
+	}
 
 
 	public void loadDataIntoTable() {
@@ -516,10 +516,11 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 		tableCTPX.getSelectionModel().removeListSelectionListener(selectionListenerCTPX);
 		ctpxModel.setColumnIdentifiers(ctpxDao.getColName());
 		ctpxModel.setRowCount(0);
-		ctpxList = ctpxDao.selectAllByMaPX(textFieldMaPX.getText());
+		String sql = "SELECT * FROM CTPX WHERE MAPX = ?";
+		ctpxList = ctpxDao.selectByCondition(sql, textFieldMaPX.getText());
 		String tenVT = "";
 		for (CTPXModel px : ctpxList) {
-			String sql = "SELECT TENVT FROM VATTU WHERE MAVT = ?";
+			sql = "SELECT TENVT FROM VATTU WHERE MAVT = ?";
 			Program.myReader = Program.ExecSqlDataReader(sql, px.getMavt());
 			try {
 				Program.myReader.next();

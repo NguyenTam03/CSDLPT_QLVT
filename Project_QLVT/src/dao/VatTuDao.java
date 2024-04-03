@@ -74,6 +74,26 @@ public class VatTuDao extends IAbstractDao<VattuModel> {
 		}
 		return null;
 	}
+	
+	public ArrayList<VattuModel> selectByConditionForPX(String sql, Object... objects) {
+		ArrayList<VattuModel> list = new ArrayList<VattuModel>();
+		Program.myReader = Program.ExecSqlDataReader(sql, objects);
+		initModel();
+		try {
+			while (Program.myReader.next()) {
+				VattuModel vt = new VattuModel();
+				vt.setMavt(Program.myReader.getString(1));
+				vt.setTenVT(Program.myReader.getString(2));
+				vt.setDvt(Program.myReader.getString(3));
+				vt.setSoLuongTon(Program.myReader.getInt(4));
+				list.add(vt);
+			}
+			return list;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	@Override
 	public <E> VattuModel selectById(E t) {

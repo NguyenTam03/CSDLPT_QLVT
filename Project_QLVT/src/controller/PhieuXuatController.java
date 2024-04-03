@@ -22,15 +22,22 @@ public class PhieuXuatController implements ISearcher {
 	private CTPXModel ctpxModel;
 	private Stack<String> undoList;
 	private int row;
-	private boolean isCTPX, isPhieuXuat;
+//	private boolean isCTPX, isPhieuXuat;
 //	private ListSelectionListener selectionListener_CTPX;
+
+	private enum Mode {
+		PHIEUXUAT, CTPX;
+	}
+
+	private Mode mode;
 
 	public PhieuXuatController(PhieuXuatForm px) {
 		this.px = px;
 		phieuXuatModel = new PhieuXuatModel();
+		ctpxModel = new CTPXModel();
 		undoList = new Stack<String>();
 		row = 0;
-		isCTPX = isPhieuXuat = false;
+//		isCTPX = isPhieuXuat = false;
 
 	}
 
@@ -39,13 +46,13 @@ public class PhieuXuatController implements ISearcher {
 		px.getBtnThoat().addActionListener(l -> exitPhieuXuat());
 //		px.getMntmPhieuXuat().addActionListener(l -> btnCheDoPhieuXuatClicked());
 		px.getMntmCTPX().addActionListener(l -> initCTPX());
-		
+
 		px.getBtnThem().addActionListener(l -> addPhieuXuatCTPX());
 		px.getBtnLamMoi().addActionListener(l -> reFreshData());
 		px.getBtnHoanTac().addActionListener(l -> btnUndo());
 		px.getBtnGhi().addActionListener(l -> btnGhi());
 		px.getBtnXoa().addActionListener(l -> deleteData());
-		
+
 		px.getBtnKhoOption().addActionListener(l -> openKhoForm());
 		px.getBtnVatTuOption().addActionListener(l -> openVatTuForm());
 
@@ -58,7 +65,8 @@ public class PhieuXuatController implements ISearcher {
 	}
 
 	private void initPhieuXuat() {
-		isPhieuXuat = true;
+//		isPhieuXuat = true;
+		mode = Mode.PHIEUXUAT;
 		px.getTable().setEnabled(true);
 		px.getTableCTPX().setEnabled(true);
 		px.getSpinnerSoLuong().setEnabled(false);
@@ -95,7 +103,8 @@ public class PhieuXuatController implements ISearcher {
 	}
 
 	private void initCTPX() {
-		isCTPX = true;
+//		isCTPX = true;
+		mode = Mode.CTPX;
 		if (px.getTable().getSelectedRow() == -1) {
 			JOptionPane.showMessageDialog(null, "Chưa chọn phiếu xuất");
 			return;
@@ -117,7 +126,7 @@ public class PhieuXuatController implements ISearcher {
 			px.getBtnLamMoi().setEnabled(true);
 			px.getMnOption().setText("Chi Tiết Phiếu Xuất");
 			px.getSpinnerSoLuong().setEnabled(true);
-			px.getSpinnerSoLuong().setEnabled(true);
+			px.getSpinnerDonGia().setEnabled(true);
 		} else {
 			px.getComboBox().setEnabled(true);
 		}
@@ -128,49 +137,49 @@ public class PhieuXuatController implements ISearcher {
 		Program.frmMain.getPanel_phieuxuat().remove(px);
 	}
 
-	private void btnCheDoPhieuXuatClicked() {
-		/* Bật chức năng của phiếu xuất */
-		px.getTextFieldMaPX().setEnabled(false);
-		px.getNgay().setEnabled(false);
+//	private void btnCheDoPhieuXuatClicked() {
+//		/* Bật chức năng của phiếu xuất */
+//		px.getTextFieldMaPX().setEnabled(false);
+//		px.getNgay().setEnabled(false);
+//
+//		px.getTextFieldTenKH().setEnabled(false);
+//		px.getTextFieldMaNV().setEnabled(false);
+//
+//		px.getBtnKhoOption().setEnabled(true);
+//		px.getTextFieldMaKho().setEnabled(false);
+//
+//		/* Tắt chức năng của chi tiết phiếu xuất */
+//		px.getTextFieldMaVT().setEnabled(false);
+//		px.getBtnVatTuOption().setEnabled(false);
+//		px.getSpinnerSoLuong().setEnabled(false);
+//		px.getSpinnerDonGia().setEnabled(false);
+//
+//		/* Bật bảng px và ctpx */
+//		px.getTable().setEnabled(true);
+//		px.getTableCTPX().setEnabled(true);
+//	}
 
-		px.getTextFieldTenKH().setEnabled(false);
-		px.getTextFieldMaNV().setEnabled(false);
-
-		px.getBtnKhoOption().setEnabled(true);
-		px.getTextFieldMaKho().setEnabled(false);
-
-		/* Tắt chức năng của chi tiết phiếu xuất */
-		px.getTextFieldMaVT().setEnabled(false);
-		px.getBtnVatTuOption().setEnabled(false);
-		px.getSpinnerSoLuong().setEnabled(false);
-		px.getSpinnerDonGia().setEnabled(false);
-
-		/* Bật bảng px và ctpx */
-		px.getTable().setEnabled(true);
-		px.getTableCTPX().setEnabled(true);
-	}
-
-	private void btnCheDoChiTietPhieuXuatClicked() {
-		/* Tắt chức năng của phiếu xuất */
-		px.getTextFieldMaPX().setEnabled(false);
-		px.getNgay().setEnabled(false);
-
-		px.getTextFieldTenKH().setEnabled(false);
-		px.getTextFieldMaNV().setEnabled(false);
-
-		px.getBtnKhoOption().setEnabled(false);
-		px.getTextFieldMaKho().setEnabled(false);
-
-		/* Bật chức năng của chi tiết phiếu xuất */
-		px.getTextFieldMaVT().setEnabled(false);
-		px.getBtnVatTuOption().setEnabled(true);
-		px.getSpinnerSoLuong().setEnabled(false);
-		px.getSpinnerDonGia().setEnabled(false);
-
-		/* Bật bảng px và ctpx */
-		px.getTable().setEnabled(true);
-		px.getTableCTPX().setEnabled(true);
-	}
+//	private void btnCheDoChiTietPhieuXuatClicked() {
+//		/* Tắt chức năng của phiếu xuất */
+//		px.getTextFieldMaPX().setEnabled(false);
+//		px.getNgay().setEnabled(false);
+//
+//		px.getTextFieldTenKH().setEnabled(false);
+//		px.getTextFieldMaNV().setEnabled(false);
+//
+//		px.getBtnKhoOption().setEnabled(false);
+//		px.getTextFieldMaKho().setEnabled(false);
+//
+//		/* Bật chức năng của chi tiết phiếu xuất */
+//		px.getTextFieldMaVT().setEnabled(false);
+//		px.getBtnVatTuOption().setEnabled(true);
+//		px.getSpinnerSoLuong().setEnabled(false);
+//		px.getSpinnerDonGia().setEnabled(false);
+//
+//		/* Bật bảng px và ctpx */
+//		px.getTable().setEnabled(true);
+//		px.getTableCTPX().setEnabled(true);
+//	}
 
 	private void addPhieuXuatCTPX() {
 		px.getTextFieldTim().setEnabled(false);
@@ -181,7 +190,7 @@ public class PhieuXuatController implements ISearcher {
 		px.getBtnThoat().setEnabled(false);
 		px.getBtnXoa().setEnabled(false);
 		px.getMnOption().setEnabled(false);
-		if (isPhieuXuat) {
+		if (mode == Mode.PHIEUXUAT) {
 			row = px.getTable().getSelectedRow();
 			px.getTextFieldMaPX().setEditable(true);
 			px.getTextFieldMaPX().setText("");
@@ -192,12 +201,11 @@ public class PhieuXuatController implements ISearcher {
 			px.getTextFieldTenKH().setEditable(true);
 			px.getTextFieldTenKH().setText("");
 			px.getTextFieldMaNV().setText(Program.username);
-			
+
 			px.getBtnKhoOption().setEnabled(true);
 			PhieuXuatForm.getTextFieldMaKho().setText("");
 			PhieuXuatForm.getLblTenKho().setText("");
-			
-			
+
 			px.getTable().getSelectionModel().removeListSelectionListener(px.getSelectionListener());
 			px.getTable().getSelectionModel().clearSelection();
 //			px.getTextFieldMaVT().setEnabled(false);
@@ -207,7 +215,7 @@ public class PhieuXuatController implements ISearcher {
 
 		}
 
-		if (isCTPX) {
+		if (mode == Mode.CTPX) {
 
 			if (!Program.username.equals(px.getTextFieldMaNV().getText())) {
 				JOptionPane.showMessageDialog(null,
@@ -233,13 +241,16 @@ public class PhieuXuatController implements ISearcher {
 //
 //			px.getSpinnerDonGia().setEnabled(true);
 //			px.getSpinnerDonGia().setValue(1);
-			
+
 			row = px.getTableCTPX().getSelectedRow();
 			px.getBtnVatTuOption().setEnabled(true);
-			PhieuXuatForm.getSpinnerDonGia().setEnabled(true);
-			px.getSpinnerSoLuong().setValue(0);
+
+			px.getSpinnerDonGia().setEnabled(true);
 			px.getSpinnerDonGia().setValue(0);
-			
+
+			px.getSpinnerSoLuong().setEnabled(true);
+			px.getSpinnerSoLuong().setValue(1);
+
 			px.getTableCTPX().getSelectionModel().removeListSelectionListener(px.getSelectionListenerCTPX());
 			px.getTableCTPX().getSelectionModel().clearSelection();
 			px.getTableCTPX().setEnabled(false);
@@ -249,7 +260,7 @@ public class PhieuXuatController implements ISearcher {
 		px.getTable().setEnabled(false);
 
 	}
-	
+
 	private void btnUndo() {
 		/* hoàn tác sự kiện click btnthem */
 		if (!px.getBtnThem().isEnabled()) {
@@ -268,12 +279,14 @@ public class PhieuXuatController implements ISearcher {
 			px.getTable().getSelectionModel().addListSelectionListener(px.getSelectionListener());
 			px.getTable().getSelectionModel().setSelectionInterval(row, row);
 
+			if (mode == Mode.CTPX)
+				px.getTable().setEnabled(false);
 			if (undoList.empty()) {
 				px.getBtnHoanTac().setEnabled(false);
 			}
 			return;
 		}
-		
+
 		String sqlUndo = "";
 		sqlUndo = undoList.pop();
 		try {
@@ -292,72 +305,72 @@ public class PhieuXuatController implements ISearcher {
 			return;
 		}
 	}
-	
+
 	private boolean checkInputData() {
-		if (isPhieuXuat) {
+		if (mode == Mode.PHIEUXUAT) {
 			if (px.getTextFieldMaPX().equals("")) {
 				JOptionPane.showMessageDialog(null, "Mã phiếu xuất không được bỏ trống.", "Thông báo",
 						JOptionPane.WARNING_MESSAGE);
 				return false;
 			}
-			
+
 			if (px.getTextFieldMaPX().getText().length() > 8) {
 				JOptionPane.showMessageDialog(null, "Mã phiếu xuất không thể quá 8 kí tự.", "Thông báo",
 						JOptionPane.WARNING_MESSAGE);
 				return false;
 			}
-			
+
 			if (px.getTextFieldTenKH().getText().equals("")) {
 				JOptionPane.showMessageDialog(null, "Tên khách hàng không được bỏ trống.", "Thông báo",
 						JOptionPane.WARNING_MESSAGE);
 				return false;
 			}
-			
+
 			if (px.getTextFieldTenKH().getText().length() > 100) {
 				JOptionPane.showMessageDialog(null, "Tên khách hàng không quá 100 kí tự.", "Thông báo",
 						JOptionPane.WARNING_MESSAGE);
 				return false;
 			}
-			
-			if (px.getTextFieldMaKho().getText().equals("")) {
-				JOptionPane.showMessageDialog(null, "Không bỏ trống mã kho.", "Thông báo",
-						JOptionPane.WARNING_MESSAGE);
+
+			if (PhieuXuatForm.getTextFieldMaKho().getText().equals("")) {
+				JOptionPane.showMessageDialog(null, "Không bỏ trống mã kho.", "Thông báo", JOptionPane.WARNING_MESSAGE);
 				return false;
 			}
 		}
-		
-		if (isCTPX) {
+
+		if (mode == Mode.CTPX) {
 			if (!Program.username.equals(px.getTextFieldMaNV().getText())) {
-				JOptionPane.showMessageDialog(null, "Không thể thêm chi tiết phiếu xuất với phiếu xuất do người khác tạo.", "Thông báo",
+				JOptionPane.showMessageDialog(null,
+						"Không thể thêm chi tiết phiếu xuất với phiếu xuất do người khác tạo.", "Thông báo",
 						JOptionPane.WARNING_MESSAGE);
 				return false;
 			}
-			
+
 			if (px.getTextFieldMaPX().equals("")) {
 				JOptionPane.showMessageDialog(null, "Mã phiếu xuất không được bỏ trống.", "Thông báo",
 						JOptionPane.WARNING_MESSAGE);
 				return false;
 			}
-			
+
 			if (px.getTextFieldMaPX().getText().length() > 8) {
 				JOptionPane.showMessageDialog(null, "Mã phiếu xuất không thể quá 8 kí tự.", "Thông báo",
 						JOptionPane.WARNING_MESSAGE);
 				return false;
 			}
-			
-			if (px.getTextFieldMaVT().getText().equals("")) {
+
+			if (PhieuXuatForm.getTextFieldMaVT().getText().equals("")) {
 				JOptionPane.showMessageDialog(null, "Mã vật tư không được bỏ trống.", "Thông báo",
 						JOptionPane.WARNING_MESSAGE);
 				return false;
 			}
-			
-			if (px.getTextFieldMaVT().getText().length() > 4) {
+
+			if (PhieuXuatForm.getTextFieldMaVT().getText().length() > 4) {
 				JOptionPane.showMessageDialog(null, "Mã vật tư không thể quá 4 kí tự.", "Thông báo",
 						JOptionPane.WARNING_MESSAGE);
 				return false;
 			}
-			String sql = "SELECT SOLUONGTON FROM VATTU WHERE = ?";
-			Program.myReader = Program.ExecSqlDataReader(sql, px.getTextFieldMaVT().getText());
+			String sql = "SELECT SOLUONGTON FROM VATTU WHERE MAVT = ?";
+			Program.myReader = Program.ExecSqlDataReader(sql, PhieuXuatForm.getTextFieldMaVT().getText());
 			int soLuongTon = 0;
 			try {
 				Program.myReader.next();
@@ -366,19 +379,20 @@ public class PhieuXuatController implements ISearcher {
 				e.printStackTrace();
 			}
 			if (Integer.valueOf(px.getSpinnerSoLuong().getValue().toString()) > soLuongTon) {
-				JOptionPane.showMessageDialog(null, "Số lượng vật tư không thể lớn hơn số lượng vật tư đang có trong kho hàng.", "Thông báo",
+				JOptionPane.showMessageDialog(null,
+						"Số lượng vật tư không thể lớn hơn số lượng vật tư đang có trong kho hàng.", "Thông báo",
 						JOptionPane.WARNING_MESSAGE);
 				return false;
 			}
 		}
 		return true;
 	}
-	
+
 	private void btnGhi() {
 		int reply = JOptionPane.showConfirmDialog(null, "Bạn có muốn ghi dữ liệu vào bảng không?", "Confirm",
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 		if (reply == JOptionPane.YES_OPTION) {
-			if (isPhieuXuat) {
+			if (mode == Mode.PHIEUXUAT) {
 				row = px.getTable().getSelectedRow();
 				String mapx = px.getTextFieldMaPX().getText().trim();
 				Integer manv = Integer.parseInt(px.getTextFieldMaNV().getText());
@@ -398,8 +412,8 @@ public class PhieuXuatController implements ISearcher {
 					}
 				}
 			}
-			
-			if (isCTPX) {
+
+			if (mode == Mode.CTPX) {
 				row = px.getTableCTPX().getSelectedRow();
 				String mapx = px.getTextFieldMaPX().getText();
 				String mavt = PhieuXuatForm.getTextFieldMaVT().getText();
@@ -419,11 +433,11 @@ public class PhieuXuatController implements ISearcher {
 			}
 		}
 	}
-		
+
 	private void addDataToDB() {
 		String sql = "";
 		int res = 0;
-		if (isPhieuXuat) {
+		if (mode == Mode.PHIEUXUAT) {
 			// Execute query
 			sql = "{? = call dbo.sp_KiemTraMaPhieuXuat(?)}";
 			res = 0;
@@ -454,7 +468,7 @@ public class PhieuXuatController implements ISearcher {
 					return;
 				}
 			}
-		
+
 			JOptionPane.showMessageDialog(null, "Ghi thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 
 			px.getTable().setEnabled(true);
@@ -464,6 +478,7 @@ public class PhieuXuatController implements ISearcher {
 			px.getBtnThoat().setEnabled(true);
 			px.getBtnHoanTac().setEnabled(true);
 			px.getTextFieldTim().setEnabled(true);
+			px.getMnOption().setEnabled(true);
 			px.getTable().getSelectionModel().addListSelectionListener(px.getSelectionListener());
 			px.getTable().getSelectionModel().setSelectionInterval(px.getTable().getRowCount() - 1,
 					px.getTable().getRowCount() - 1);
@@ -474,41 +489,105 @@ public class PhieuXuatController implements ISearcher {
 			sqlUndo = "DELETE FROM PhieuXuat WHERE MAPX = '" + phieuXuatModel.getMapx() + "'";
 			undoList.push(sqlUndo);
 		}
-		
-		if (isCTPX) {
+
+		if (mode == Mode.CTPX) {
+			try {
+				Object[] newRow = { ctpxModel.getMapx(), ctpxModel.getMavt(), ctpxModel.getSoLuong(),
+						ctpxModel.getDonGia() };
+				px.getCtpxModel().addRow(newRow);
+				px.getCtpxDao().insert(ctpxModel);
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(null, "Lỗi thêm kho!\n" + e.getMessage(), "Error",
+						JOptionPane.ERROR_MESSAGE);
+				reFreshData();
+				px.getTableCTPX().getSelectionModel().setSelectionInterval(row, row);
+				return;
+			}
+			JOptionPane.showMessageDialog(null, "Ghi thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+
+			px.getTable().setEnabled(true);
+			px.getBtnThem().setEnabled(true);
+			px.getBtnXoa().setEnabled(true);
+			px.getBtnLamMoi().setEnabled(true);
+			px.getBtnThoat().setEnabled(true);
+			px.getBtnHoanTac().setEnabled(true);
+			px.getTextFieldTim().setEnabled(true);
+			px.getMnOption().setEnabled(true);
+			px.getTableCTPX().getSelectionModel().addListSelectionListener(px.getSelectionListenerCTPX());
+			px.getTableCTPX().getSelectionModel().setSelectionInterval(px.getTableCTPX().getRowCount() - 1,
+					px.getTableCTPX().getRowCount() - 1);
+			px.getCtpxList().add(ctpxModel);
+			row = px.getTableCTPX().getRowCount() - 1;
+			// Luu truy van de hoan tac yeu cau them
+			String sqlUndo;
+			sqlUndo = "DELETE FROM CTPX WHERE MAPX = '" + ctpxModel.getMapx() + "' AND MAVT = '" + ctpxModel.getMavt() + "'";
 			
+			sql = "EXEC sp_CapNhatSoLuongVatTu 'EXPORT','" + ctpxModel.getMavt() + "', " + ctpxModel.getSoLuong();
+			Program.ExecSqlNonQuery(sql);
+			undoList.push(sqlUndo);
+
 		}
 	}
+
 	private void upDateDataToDB() {
-		String tenKH = px.getTable().getValueAt(px.getTable().getSelectedRow(), 2).toString();
-		String maKho = px.getTable().getValueAt(px.getTable().getSelectedRow(), 3).toString();
+		if (mode == Mode.PHIEUXUAT) {
+			String tenKH = px.getTable().getValueAt(px.getTable().getSelectedRow(), 2).toString();
+			String maKho = px.getTable().getValueAt(px.getTable().getSelectedRow(), 4).toString();
 
-		try {
-			px.getTable().setValueAt(phieuXuatModel.getHoTenKH(), px.getTable().getSelectedRow(), 2);
-			px.getTable().setValueAt(phieuXuatModel.getMaKho(), px.getTable().getSelectedRow(), 3);
-			px.getDao().update(phieuXuatModel);
-		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null, "Lỗi update kho!\n" + e.getMessage(), "Error",
-					JOptionPane.ERROR_MESSAGE);
-			reFreshData();
+			try {
+				px.getTable().setValueAt(phieuXuatModel.getHoTenKH(), px.getTable().getSelectedRow(), 2);
+				px.getTable().setValueAt(phieuXuatModel.getMaKho(), px.getTable().getSelectedRow(), 3);
+				px.getDao().update(phieuXuatModel);
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(null, "Lỗi update kho!\n" + e.getMessage(), "Error",
+						JOptionPane.ERROR_MESSAGE);
+				reFreshData();
+				px.getTable().getSelectionModel().setSelectionInterval(row, row);
+				return;
+			}
+
+			JOptionPane.showMessageDialog(null, "Ghi thành công!", "Thông báo", JOptionPane.OK_OPTION);
+			px.getBtnHoanTac().setEnabled(true);
 			px.getTable().getSelectionModel().setSelectionInterval(row, row);
-			return;
+			px.getList().set(row, phieuXuatModel);
+			// Luu truy van de hoan tac yeu cau update
+			String sqlUndo;
+			sqlUndo = "UPDATE PhieuXuat SET HOTENKH = '" + tenKH + "'," + "MAKHO = '" + maKho + "' " + "WHERE MAPX = '"
+					+ phieuXuatModel.getMapx() + "'";
+			undoList.push(sqlUndo);
 		}
+		
+		else if (mode == Mode.CTPX) {
+			Integer soLuong = (Integer) px.getTableCTPX().getValueAt(px.getTableCTPX().getSelectedRow(), 2);
+			Float donGia = (Float) px.getTableCTPX().getValueAt(px.getTableCTPX().getSelectedRow(), 3);
 
-		JOptionPane.showMessageDialog(null, "Ghi thành công!", "Thông báo", JOptionPane.OK_OPTION);
-		px.getBtnHoanTac().setEnabled(true);
-		px.getTable().getSelectionModel().setSelectionInterval(row, row);
-		px.getList().set(row, phieuXuatModel);
-		// Luu truy van de hoan tac yeu cau update
-		String sqlUndo;
-		sqlUndo = "UPDATE PhieuXuat SET HOTENKH = '" + tenKH + "'," + "MAKHO = '" + maKho + "' " + "WHERE MAPX = '"
-				+ phieuXuatModel.getMapx() + "'";
-		undoList.push(sqlUndo);
+			try {
+				px.getTableCTPX().setValueAt(ctpxModel.getSoLuong(), px.getTableCTPX().getSelectedRow(), 2);
+				px.getTableCTPX().setValueAt(phieuXuatModel.getMaKho(), px.getTableCTPX().getSelectedRow(), 3);
+				px.getCtpxDao().update(ctpxModel);
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(null, "Lỗi update kho!\n" + e.getMessage(), "Error",
+						JOptionPane.ERROR_MESSAGE);
+				reFreshData();
+				px.getTable().getSelectionModel().setSelectionInterval(row, row);
+				return;
+			}
+
+			JOptionPane.showMessageDialog(null, "Ghi thành công!", "Thông báo", JOptionPane.OK_OPTION);
+			px.getBtnHoanTac().setEnabled(true);
+			px.getTable().getSelectionModel().setSelectionInterval(row, row);
+			px.getList().set(row, phieuXuatModel);
+			// Luu truy van de hoan tac yeu cau update
+			String sqlUndo;
+			sqlUndo = "UPDATE PhieuXuat SET HOTENKH = '" + tenKH + "'," + "MAKHO = '" + maKho + "' " + "WHERE MAPX = '"
+					+ phieuXuatModel.getMapx() + "'";
+			undoList.push(sqlUndo);
+		}
 	}
-	
+
 	private void deleteData() {
 		/* chưa chọn hàng thì không được xóa */
-		if (isPhieuXuat) {
+		if (mode == Mode.PHIEUXUAT) {
 			if (px.getTable().getSelectedRow() == -1) {
 				return;
 			}
@@ -528,12 +607,12 @@ public class PhieuXuatController implements ISearcher {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 //			set dữ liệu của row đó
 			String mapx = px.getTextFieldMaPX().getText().trim();
 			Integer manv = Integer.parseInt(px.getTextFieldMaNV().getText());
 			String tenKH = px.getTextFieldTenKH().getText();
-			String makho = px.getTextFieldMaKho().getText();
+			String makho = PhieuXuatForm.getTextFieldMaKho().getText();
 			java.sql.Date ngay = new java.sql.Date(px.getNgay().getDate().getTime());
 			phieuXuatModel.setMapx(mapx);
 			phieuXuatModel.setNgay(ngay);
@@ -566,18 +645,19 @@ public class PhieuXuatController implements ISearcher {
 			px.getBtnHoanTac().setEnabled(true);
 			px.getList().remove(row);
 
-			String sqlUndo = "INSERT INTO PHIEUXUAT (MAPX, NGAY, HOTENKH, MANV, MAKHO) VALUES ('" + phieuXuatModel.getMapx()
-					+ "', '" + phieuXuatModel.getNgay() + "', '" + phieuXuatModel.getHoTenKH() + "', '" + phieuXuatModel.getManv() + "', '"
+			String sqlUndo = "INSERT INTO PHIEUXUAT (MAPX, NGAY, HOTENKH, MANV, MAKHO) VALUES ('"
+					+ phieuXuatModel.getMapx() + "', '" + phieuXuatModel.getNgay() + "', '"
+					+ phieuXuatModel.getHoTenKH() + "', '" + phieuXuatModel.getManv() + "', '"
 					+ phieuXuatModel.getMaKho() + "')";
 			undoList.push(sqlUndo);
 
 			if (px.getTable().getRowCount() == 0) {
 				px.getBtnXoa().setEnabled(false);
 			}
-			
+
 		}
-		
-		if (isCTPX) {
+
+		if (mode == Mode.CTPX) {
 			if (px.getTable().getSelectedRow() == -1) {
 				return;
 			}
@@ -588,8 +668,8 @@ public class PhieuXuatController implements ISearcher {
 
 //			set dữ liệu của row đó
 			String mapx = px.getTextFieldMaPX().getText().trim();
-			String mavt = px.getTextFieldMaVT().getText();
-			Integer soLuong =  (Integer) px.getSpinnerSoLuong().getValue();
+			String mavt = PhieuXuatForm.getTextFieldMaVT().getText();
+			Integer soLuong = (Integer) px.getSpinnerSoLuong().getValue();
 			Float dongia = (Float) px.getSpinnerDonGia().getValue();
 			java.sql.Date ngay = new java.sql.Date(px.getNgay().getDate().getTime());
 			ctpxModel.setMapx(mapx);
@@ -622,42 +702,48 @@ public class PhieuXuatController implements ISearcher {
 			px.getBtnHoanTac().setEnabled(true);
 			px.getList().remove(row);
 
-			String sqlUndo = "INSERT INTO CTPX (MAPX, MAVT, SOLUONG, DONGIA) VALUES ('" + ctpxModel.getMapx()
-					+ "', '" + ctpxModel.getMavt() + "', '" + ctpxModel.getSoLuong() + "', '" + ctpxModel.getDonGia() + "')";
+			String sqlUndo = "INSERT INTO CTPX (MAPX, MAVT, SOLUONG, DONGIA) VALUES ('" + ctpxModel.getMapx() + "', '"
+					+ ctpxModel.getMavt() + "', '" + ctpxModel.getSoLuong() + "', '" + ctpxModel.getDonGia() + "')";
 			undoList.push(sqlUndo);
 
 			if (px.getTable().getRowCount() == 0) {
 				px.getBtnXoa().setEnabled(false);
 			}
 		}
-		
-		
+
 	}
 
 	private void reFreshData() {
 		/* Refresh bảng phiếu xuất */
-		px.getTable().getSelectionModel().removeListSelectionListener(px.getSelectionListener());
-		px.getModel().setRowCount(0);
-		px.loadDataIntoTable();
-		px.getTable().getSelectionModel().addListSelectionListener(px.getSelectionListener());
-		px.getTable().getSelectionModel().setSelectionInterval(0, 0);
+		if (mode == Mode.PHIEUXUAT) {
+			px.getTable().getSelectionModel().removeListSelectionListener(px.getSelectionListener());
+			px.getModel().setRowCount(0);
+			px.loadDataIntoTable();
+			px.getTable().getSelectionModel().addListSelectionListener(px.getSelectionListener());
+			px.getTable().getSelectionModel().setSelectionInterval(0, 0);
+			
+		}
 
-//		/* Refresh bảng ctpx */
-//		px.getTableCTPX().getSelectionModel().removeListSelectionListener(px.getSelectionListener());
-//		px.getCtphieuXuatModel().setRowCount(0);
-//		px.loadDataIntoTableCTPX();
-//		px.getTableCTPX().getSelectionModel().addListSelectionListener(px.getSelectionListener());
-//		px.getTableCTPX().getSelectionModel().setSelectionInterval(0, 0);
+		/* Refresh bảng ctpx */
+		if (mode == Mode.CTPX) {
+			px.getTableCTPX().getSelectionModel().removeListSelectionListener(px.getSelectionListener());
+			px.getCtpxModel().setRowCount(0);
+			px.loadDataIntoTableCTPX();
+			px.getTableCTPX().getSelectionModel().addListSelectionListener(px.getSelectionListener());
+			px.getTableCTPX().getSelectionModel().setSelectionInterval(0, 0);
+			
+		}
 
 	}
-	
-	
+
 	private void openKhoForm() {
 		px.getKhoOptionFormPx().setVisible(true);
 	}
+
 	private void openVatTuForm() {
 		px.getVatTuOptionFormPx().setVisible(true);
 	}
+
 	@Override
 	public void search() {
 		String input = px.getTextFieldTim().getText().trim().toLowerCase();
