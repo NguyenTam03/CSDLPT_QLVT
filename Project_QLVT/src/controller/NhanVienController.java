@@ -3,9 +3,10 @@ package controller;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.Date;
-
+import java.sql.Time;
 import java.text.NumberFormat;
-
+import java.text.SimpleDateFormat;
+import java.time.Year;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
@@ -115,7 +116,7 @@ public class NhanVienController {
 	// push or update info into Data
 	public void pushDataToDB() {
 		String MaNV, Ho, Ten, CMND, DiaChi, MaCN;
-		Float Luong;
+		float Luong;
 		java.util.Date NgaySinh = null;
 		boolean TrangThaiXoa = false;
 		try {
@@ -125,7 +126,18 @@ public class NhanVienController {
 			CMND = NhanVienFrm.getTFCMND().getText().trim();
 			DiaChi = NhanVienFrm.getTFDiaChi().getText().trim();
 			NgaySinh = NhanVienFrm.getNgaySinh().getDate();
-			Luong = ((Integer) NhanVienFrm.getLuong().getValue()).floatValue();
+
+			Object luongObject = NhanVienFrm.getLuong().getValue();
+			if (luongObject instanceof Integer) {
+			    Integer intValue = (Integer) luongObject;
+			    Luong= intValue.floatValue();
+			} else if (luongObject instanceof Float) {
+				Luong = (Float) luongObject;
+			} else {
+				JOptionPane.showMessageDialog(null, "Lỗi Lương", "Thông Báo",
+						JOptionPane.WARNING_MESSAGE);
+				return;
+			}
 			MaCN = NhanVienFrm.getTFMaCN().getText().trim();
 			TrangThaiXoa = NhanVienFrm.getTrangThaiXoa().isSelected();
 
@@ -166,6 +178,10 @@ public class NhanVienController {
 						JOptionPane.WARNING_MESSAGE);
 				return;
 			}
+			if (checkCMND(CMND)) {
+				JOptionPane.showMessageDialog(null, "Số CMND đã tồn tại", "Thông Báo", JOptionPane.WARNING_MESSAGE);
+				return;
+			}
 			int reply = JOptionPane.showConfirmDialog(null, "Bạn có muốn ghi dữ liệu vào bảng không?", "Confirm",
 					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 			if (reply == JOptionPane.YES_NO_OPTION) {
@@ -190,9 +206,33 @@ public class NhanVienController {
 			}
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "THông Báo", JOptionPane.WARNING_MESSAGE);
+			NhanVienFrm.getBtnThem().setEnabled(true);
+			NhanVienFrm.getBtnXoa().setEnabled(true);
+			NhanVienFrm.getBtnLamMoi().setEnabled(true);
+			NhanVienFrm.getBtnChuyenChiNhanh().setEnabled(true);
+			NhanVienFrm.getBtnThoat().setEnabled(true);
+			NhanVienFrm.getTable().setEnabled(true);	
+			refreshData();
+			NhanVienFrm.getTable().getSelectionModel().setSelectionInterval(rowSelected, rowSelected);
+			if (undoList.isEmpty()) {
+				NhanVienFrm.getBtnHoanTac().setEnabled(false);
+			}
+			e.printStackTrace();
 			return;
 		}
 
+	}
+	// Check CMND
+	public boolean checkCMND(String CMND) {
+		String sql = "SELECT CASE WHEN ? IN (SELECT SoCMND FROM NhanVien) THEN 'true' ELSE 'false' END";
+		Program.myReader = Program.ExecSqlDataReader(sql, CMND);
+		try {
+			Program.myReader.next();
+			return Program.myReader.getBoolean(1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	// push info into Data
@@ -200,7 +240,7 @@ public class NhanVienController {
 		
 		try {
 			Object[] newRow = { nhanVienModel.getManv(), nhanVienModel.getHo(), nhanVienModel.getTen(),
-					nhanVienModel.getSoCMND(), nhanVienModel.getDiaChi(), nhanVienModel.getNgaySinh(),
+					nhanVienModel.getSoCMND(), nhanVienModel.getDiaChi(), Formatter.formatterDate(nhanVienModel.getNgaySinh()),
 					Formatter.formatObjecttoMoney(nhanVienModel.getLuong()), nhanVienModel.getMacn(),
 					nhanVienModel.getTrangThaiXoa() };
 			NhanVienFrm.getModel().addRow(newRow);
@@ -209,8 +249,17 @@ public class NhanVienController {
 		}
 		catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Lỗi thêm nhân viên!! \n "+e.getMessage(), "THông Báo", JOptionPane.WARNING_MESSAGE);
+			NhanVienFrm.getBtnThem().setEnabled(true);
+			NhanVienFrm.getBtnXoa().setEnabled(true);
+			NhanVienFrm.getBtnLamMoi().setEnabled(true);
+			NhanVienFrm.getBtnChuyenChiNhanh().setEnabled(true);
+			NhanVienFrm.getBtnThoat().setEnabled(true);
+			NhanVienFrm.getTable().setEnabled(true);	
 			refreshData();
 			NhanVienFrm.getTable().getSelectionModel().setSelectionInterval(rowSelected, rowSelected);
+			if (undoList.isEmpty()) {
+				NhanVienFrm.getBtnHoanTac().setEnabled(false);
+			}
 			return;
 		}
 		
@@ -343,6 +392,10 @@ public class NhanVienController {
 			NhanVienFrm.getTable().getSelectionModel().setSelectionInterval(0, 0);
 			rowSelected = 0;
 		}
+		if (undoList.isEmpty()) {
+			NhanVienFrm.getBtnHoanTac().setEnabled(false);
+			return;
+		}
 	}
 
 	private boolean checkDatHang(String MaNV) {
@@ -408,7 +461,12 @@ public class NhanVienController {
 		NhanVienModel.setTen(NhanVienFrm.getTable().getValueAt(rowSelected, 2).toString());
 		NhanVienModel.setSoCMND(NhanVienFrm.getTable().getValueAt(rowSelected, 3).toString());
 		NhanVienModel.setDiaChi(NhanVienFrm.getTable().getValueAt(rowSelected, 4).toString());
-		NhanVienModel.setNgaySinh((Date) NhanVienFrm.getTable().getValueAt(rowSelected, 5));
+		try {
+			NhanVienModel.setNgaySinh(new java.sql.Date(new SimpleDateFormat("dd-MM-yyyy").parse((String) NhanVienFrm.getTable().getValueAt(NhanVienFrm.getTable().getSelectedRow(), 5)).getTime()));
+		}
+		catch (Exception e) {
+            e.printStackTrace();
+        }
 		NhanVienModel.setLuong(Float.valueOf(Formatter.formatMoneyToFloat(NhanVienFrm.getTable().getValueAt(rowSelected, 6))));
 		NhanVienModel.setMacn(NhanVienFrm.getTable().getValueAt(rowSelected, 7).toString());
 		NhanVienModel.setTrangThaiXoa((Boolean) NhanVienFrm.getTable().getValueAt(rowSelected, 8));
@@ -483,7 +541,12 @@ public class NhanVienController {
 		NhanVienModel.setTen(NhanVienFrm.getTable().getValueAt(rowSelected, 2).toString());
 		NhanVienModel.setSoCMND(NhanVienFrm.getTable().getValueAt(rowSelected, 3).toString());
 		NhanVienModel.setDiaChi(NhanVienFrm.getTable().getValueAt(rowSelected, 4).toString());
-		NhanVienModel.setNgaySinh((Date) NhanVienFrm.getTable().getValueAt(rowSelected, 5));
+		try {
+			NhanVienModel.setNgaySinh(new java.sql.Date(new SimpleDateFormat("dd-MM-yyyy").parse((String) NhanVienFrm.getTable().getValueAt(NhanVienFrm.getTable().getSelectedRow(), 5)).getTime()));
+		}
+		catch (Exception e) {
+            e.printStackTrace();
+        }
 		NhanVienModel.setLuong(Float.valueOf(Formatter.formatMoneyToFloat(NhanVienFrm.getTable().getValueAt(rowSelected, 6))));
 		NhanVienModel.setMacn(NhanVienFrm.getTable().getValueAt(rowSelected, 7).toString());
 		NhanVienModel.setTrangThaiXoa((Boolean) NhanVienFrm.getTable().getValueAt(rowSelected, 8));

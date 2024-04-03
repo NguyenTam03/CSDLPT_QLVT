@@ -18,15 +18,16 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
-
 import com.toedter.calendar.JDateChooser;
 
 import common.method.Formatter;
 
 import java.awt.event.ItemEvent;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Component;
 
 public class NhanVienForm extends CommonView<NhanVienModel, NhanVienDao> {
 
@@ -48,6 +49,7 @@ public class NhanVienForm extends CommonView<NhanVienModel, NhanVienDao> {
 		super();
 
 		JPanel panel_2 = new JPanel();
+		panel_2.setOpaque(false);
 		panel_2.setForeground(new Color(207, 207, 207));
 		add(panel_2, BorderLayout.SOUTH);
 
@@ -64,6 +66,7 @@ public class NhanVienForm extends CommonView<NhanVienModel, NhanVienDao> {
 		lbLuong.setFont(new Font("Tahoma", Font.PLAIN, 14));
 
 		Luong = new JSpinner();
+		Luong.setInheritsPopupMenu(true);
 		Luong.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		Luong.setModel(new SpinnerNumberModel(Float.valueOf(4000000), Float.valueOf(4000000), null, Float.valueOf(100000)));
 
@@ -301,7 +304,11 @@ public class NhanVienForm extends CommonView<NhanVienModel, NhanVienDao> {
 			TFTen.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
 			TFCMND.setText(table.getValueAt(table.getSelectedRow(), 3).toString());
 			TFDiaChi.setText(table.getValueAt(table.getSelectedRow(), 4).toString());
-			NgaySinh.setDate((java.util.Date) table.getValueAt(table.getSelectedRow(), 5));
+			try {
+				NgaySinh.setDate(new SimpleDateFormat("dd-MM-yyyy").parse((String) table.getValueAt(table.getSelectedRow(), 5)));
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
 			// format money => integer
 			Luong.setValue(Formatter.formatMoneyToFloat(table.getValueAt(table.getSelectedRow(), 6)));
 			TFMaCN.setText(table.getValueAt(table.getSelectedRow(), 7).toString());
@@ -364,7 +371,7 @@ public class NhanVienForm extends CommonView<NhanVienModel, NhanVienDao> {
 		loadData();
 		for (NhanVienModel NhanVien : list) {
 			Object[] rowData = { NhanVien.getManv(), NhanVien.getHo(), NhanVien.getTen(), NhanVien.getSoCMND(),
-					NhanVien.getDiaChi(), NhanVien.getNgaySinh(),
+					NhanVien.getDiaChi(), Formatter.formatterDate(NhanVien.getNgaySinh()) ,
 					Formatter.formatObjecttoMoney(NhanVien.getLuong()), NhanVien.getMacn(),
 					NhanVien.getTrangThaiXoa() };
 			model.addRow(rowData);

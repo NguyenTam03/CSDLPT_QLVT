@@ -114,30 +114,17 @@ public class PhieuLapController {
 						.setDate((java.util.Date) PLForm.getTable().getValueAt(PLForm.getTable().getSelectedRow(), 1));
 				PLForm.getTFMaDDH()
 						.setText(PLForm.getTable().getValueAt(PLForm.getTable().getSelectedRow(), 2).toString());
-				PLForm.getTFMaNV()
-						.setText(PLForm.getTable().getValueAt(PLForm.getTable().getSelectedRow(), 3).toString());
-				String sql = "SELECT Ho +' '+Ten FROM NHANVIEN WHERE MANV = ?";
-				Program.myReader = Program.ExecSqlDataReader(sql, PLForm.getTFMaNV().getText());
-				try {
-					Program.myReader.next();
-					PLForm.getLbHoTenNV().setText(Program.myReader.getString(1));
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
-				PLForm.getTFMaKho()
-						.setText(PLForm.getTable().getValueAt(PLForm.getTable().getSelectedRow(), 4).toString());
-				sql = "SELECT TENKHO FROM KHO WHERE MAKHO = ?";
-				Program.myReader = Program.ExecSqlDataReader(sql, PLForm.getTFMaKho().getText());
-				try {
-					Program.myReader.next();
-					PLForm.getLbTenKho().setText(Program.myReader.getString(1));
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
+				PLForm.getTFMaNV().
+				setText(String.valueOf(PhieuLapForm.maHoTenNV.get(PLForm.getTable().getValueAt(PLForm.getTable().getSelectedRow(), 0))));
+				PLForm.getLbHoTenNV().setText(PLForm.getTable().getValueAt(PLForm.getTable().getSelectedRow(), 3).toString());
+				PLForm.getTFMaKho().setText(PhieuLapForm.maTenKho.get(PLForm.getTable().getValueAt(PLForm.getTable().getSelectedRow(), 0)));
+				PLForm.getLbTenKho().setText(PLForm.getTable().getValueAt(PLForm.getTable().getSelectedRow(), 4).toString());				
+
 				ctplDao = CTPLDao.getInstance();
 				// .setColumnIdentifiers to set column name
 				try {
 					PLForm.getCtplModel().setColumnIdentifiers(ctplDao.getColName());
+					PLForm.getCtplModel().addColumn("TRIGIA");
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
@@ -146,7 +133,7 @@ public class PhieuLapController {
 				ctplList = ctplDao.selectAllCTPN(PLForm.getTFMaPN().getText());
 				for (CTPLModel pl : ctplList) {
 					Object[] rowData = { pl.getMaPN(), pl.getMavt(), pl.getSoLuong(),
-							Formatter.formatObjecttoMoney(pl.getDonGia()) };
+							Formatter.formatObjecttoMoney(pl.getDonGia()), Formatter.formatObjecttoMoney(pl.getSoLuong() * pl.getDonGia()) };
 					PLForm.getCtplModel().addRow(rowData);
 				}
 			}
@@ -164,7 +151,11 @@ public class PhieuLapController {
 			PLForm.getBtnThem().setEnabled(true);
 			PLForm.getBtnXoa().setEnabled(true);
 			PLForm.getBtnGhi().setEnabled(true);
-			PLForm.getBtnHoanTac().setEnabled(false);
+			if (undoList.isEmpty()) {
+				PLForm.getBtnHoanTac().setEnabled(false);
+			} else {
+				PLForm.getBtnHoanTac().setEnabled(true);
+			}
 			PLForm.getBtnLamMoi().setEnabled(true);
 			PLForm.getBtnDHOption().setEnabled(false);
 			PLForm.getBtnCTDHOption().setEnabled(false);
@@ -338,7 +329,7 @@ public class PhieuLapController {
 
 	private ArrayList<KhoModel> loadKhoList() {
 		ArrayList<KhoModel> khoList = new ArrayList<KhoModel>();
-		String sql = "select * from Link2.QLVT_DATHANG.dbo.Kho";
+		String sql = "select * from Kho";
 		Program.myReader = Program.ExecSqlDataReader(sql);
 
 		try {
@@ -394,7 +385,11 @@ public class PhieuLapController {
 			PLForm.getBtnThem().setEnabled(true);
 			PLForm.getBtnXoa().setEnabled(true);
 			PLForm.getBtnGhi().setEnabled(true);
-			PLForm.getBtnHoanTac().setEnabled(false);
+			if (undoList.isEmpty()) {
+				PLForm.getBtnHoanTac().setEnabled(false);
+			} else {
+				PLForm.getBtnHoanTac().setEnabled(true);
+			}
 			PLForm.getBtnLamMoi().setEnabled(true);
 			PLForm.getBtnDHOption().setEnabled(false);
 			PLForm.getBtnCTDHOption().setEnabled(false);
@@ -618,12 +613,19 @@ public class PhieuLapController {
 		} else {
 			rowSelectedCTPN = PLForm.getTableCTPN().getSelectedRow();
 			String MaPN, MaVT;
-			int SoLuong, DonGia;
+			int SoLuong;
+			float DonGia = 0;
 			try {
 				MaPN = PLForm.getTFMaPN().getText().trim();
 				MaVT = PLForm.getTFMaVT().getText().trim();
 				SoLuong = (int) PLForm.getSoLuong().getValue();
-				DonGia = (int) PLForm.getDonGia().getValue();
+				Object donGiaObject = PLForm.getDonGia().getValue();
+				if (donGiaObject instanceof Integer) {
+				    Integer intValue = (Integer) donGiaObject;
+				    DonGia = intValue.floatValue();
+				} else if (donGiaObject instanceof Float) {
+					DonGia = (Float) donGiaObject;
+				}
 				if (MaPN.isEmpty() || MaVT.isEmpty() || SoLuong == 0 || DonGia == 0) {
 					JOptionPane.showMessageDialog(null, "Chưa nhập đủ thông tin");
 					return;
@@ -977,6 +979,10 @@ public class PhieuLapController {
 		} else {
 			PLForm.getTableCTPN().getSelectionModel().setSelectionInterval(-1, -1);
 			rowSelectedCTPN = 0;
+		}
+		if (undoList.isEmpty()) {
+			PLForm.getBtnHoanTac().setEnabled(false);
+			return;
 		}
 	}
 }

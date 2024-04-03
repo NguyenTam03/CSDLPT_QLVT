@@ -21,7 +21,7 @@ public class Formatter {
 	
 	public static String formatterDate(Date date) {
 		LocalDate localDate = date.toLocalDate();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyy");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 		String formatterDate = localDate.format(formatter);
 		return formatterDate;
 	}
