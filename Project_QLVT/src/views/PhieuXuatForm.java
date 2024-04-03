@@ -8,8 +8,6 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 //import javax.swing.JComboBox;
@@ -513,14 +511,10 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 	}
 
 	public void loadDataIntoTableCTPX() {
-<<<<<<< HEAD
-		ctpxModel = (DefaultTableModel) tableCTPX.getModel();
-		ctpxModel.setColumnIdentifiers(ctpxDao.getColName().toArray());
-=======
 		tableCTPX.getSelectionModel().removeListSelectionListener(selectionListenerCTPX);
-		ctpxModel.setColumnIdentifiers(ctpxDao.getColName());
+		ctpxModel.setColumnIdentifiers(ctpxDao.getColName().toArray());
 		ctpxModel.setRowCount(0);
->>>>>>> 31be388b8ad6ce4387361db65ea1f50b6b7054e5
+
 		ctpxList = ctpxDao.selectAllByMaPX(textFieldMaPX.getText());
 		String tenVT = "";
 		for (CTPXModel px : ctpxList) {
