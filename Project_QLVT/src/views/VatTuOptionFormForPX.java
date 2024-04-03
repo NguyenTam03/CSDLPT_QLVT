@@ -110,7 +110,7 @@ public class VatTuOptionFormForPX extends JFrame implements ISearcher {
 	private void loadData() {
 		String sql = "SELECT MAVT, TENVT, DVT FROM Vattu WHERE MAVT NOT IN (SELECT MAVT FROM CTPX WHERE MAPX = ?)";
 		vatTuList = vtDao.selectByCondition(sql, mapx);
-		model.setColumnIdentifiers(vtDao.getColName());
+		model.setColumnIdentifiers(vtDao.getColName().toArray());
 		for (VattuModel vt : vatTuList) {
 			Object[] rowData = { vt.getMavt(), vt.getTenVT(), vt.getDvt() };
 			model.addRow(rowData);

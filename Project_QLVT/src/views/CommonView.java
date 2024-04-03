@@ -152,7 +152,7 @@ public class CommonView<E, T> extends JPanel {
 	@SuppressWarnings({ "unchecked" })
 	protected void loadData() {
 		list = ((IAbstractDao<E>) dao).selectAll();
-		model.setColumnIdentifiers(((IAbstractDao<E>) dao).getColName());
+		model.setColumnIdentifiers(((IAbstractDao<E>) dao).getColName().toArray());
 	}
 
 	protected void loadChiNhanh() {

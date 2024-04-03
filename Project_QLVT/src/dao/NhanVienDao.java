@@ -8,26 +8,16 @@ import main.Program;
 import model.NhanVienModel;
 
 public class NhanVienDao extends IAbstractDao<NhanVienModel> {
-	
+
 	public NhanVienDao() {
 		init();
 	}
 	
-	
 	private void init() {
 		String sql = "SELECT * FROM NhanVien";
 		Program.myReader = Program.ExecSqlDataReader(sql);
-		
-		try {
-			 setColCount(Program.myReader.getMetaData().getColumnCount() - 1);;
-			 String[] colName = new String[getColCount()];
-			for (int i = 0; i < getColCount(); i++) {
-				colName[i] = Program.myReader.getMetaData().getColumnName(i + 1);
-			}
-			setColName(colName);
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
+		initModel();
+		getColName().remove(getColCount() - 1);
 	}
 
 	public static NhanVienDao getInstance() {
@@ -47,7 +37,8 @@ public class NhanVienDao extends IAbstractDao<NhanVienModel> {
 	public void update(NhanVienModel t) throws SQLException {
 		// TODO Auto-generated method stub
 		String sql = "Update NhanVien set Ho = ?, Ten = ?, SoCMND = ?, DiaChi = ?, NgaySinh = ?, Luong = ? where MaNV = ?";
-		Program.ExecSqlDML(sql, t.getHo(), t.getTen(), t.getSoCMND(), t.getDiaChi(), t.getNgaySinh(), t.getLuong(), t.getManv());
+		Program.ExecSqlDML(sql, t.getHo(), t.getTen(), t.getSoCMND(), t.getDiaChi(), t.getNgaySinh(), t.getLuong(),
+				t.getManv());
 	}
 
 	@Override
@@ -64,22 +55,14 @@ public class NhanVienDao extends IAbstractDao<NhanVienModel> {
 		try {
 			while (Program.myReader.next()) {
 				Date resultDate = null;
-				if(Program.myReader.getDate(6) != null) 
-				    resultDate = Program.myReader.getDate(6);
+				if (Program.myReader.getDate(6) != null)
+					resultDate = Program.myReader.getDate(6);
 				Float luong = Program.myReader.getFloat(7);
 				if (luong == null)
-				    luong = (float)0;
-				NhanVienModel NhanVien = new NhanVienModel(
-						Program.myReader.getInt(1),
-						Program.myReader.getString(2),
-						Program.myReader.getString(3),
-						Program.myReader.getString(4),
-						Program.myReader.getString(5),
-						resultDate,
-						luong,
-						Program.myReader.getString(8),
-						Program.myReader.getBoolean(9)
-						);
+					luong = (float) 0;
+				NhanVienModel NhanVien = new NhanVienModel(Program.myReader.getInt(1), Program.myReader.getString(2),
+						Program.myReader.getString(3), Program.myReader.getString(4), Program.myReader.getString(5),
+						resultDate, luong, Program.myReader.getString(8), Program.myReader.getBoolean(9));
 				dsNhanVien.add(NhanVien);
 			}
 			return dsNhanVien;
@@ -89,13 +72,12 @@ public class NhanVienDao extends IAbstractDao<NhanVienModel> {
 		}
 		return null;
 	}
-	
+
 	@Override
-	public ArrayList<NhanVienModel> selectByCondition(String sql, Object...objects) {
+	public ArrayList<NhanVienModel> selectByCondition(String sql, Object... objects) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 
 	@Override
 	public <E> NhanVienModel selectById(E t) {

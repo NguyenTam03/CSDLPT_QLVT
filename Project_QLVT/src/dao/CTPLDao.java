@@ -10,22 +10,14 @@ public class CTPLDao extends IAbstractDao<CTPLModel> {
 	public CTPLDao() {
 		init();
 	}
-
-	public void init() {
+	
+	private void init() {
 		String sql = "SELECT * FROM CTPN";
 		Program.myReader = Program.ExecSqlDataReader(sql);
-
-		try {
-			setColCount(Program.myReader.getMetaData().getColumnCount() - 1);
-			String[] colName = new String[getColCount()];
-			for (int i = 0; i < getColCount(); i++) {
-				colName[i] = Program.myReader.getMetaData().getColumnName(i + 1);
-			}
-			setColName(colName);
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
+		initModel();
+		getColName().remove(getColCount() - 1);
 	}
+
 	
 	public static CTPLDao getInstance() {
 		return new CTPLDao();

@@ -13,17 +13,10 @@ public class CTDDHDao extends IAbstractDao<CTDDHModel> {
 	public void init() {
 		String sql = "SELECT * FROM CTDDH";
 		Program.myReader = Program.ExecSqlDataReader(sql);
-
-		try {
-			setColCount(Program.myReader.getMetaData().getColumnCount() - 1);
-			String[] colName = new String[getColCount()];
-			for (int i = 0; i < getColCount(); i++) {
-				colName[i] = Program.myReader.getMetaData().getColumnName(i + 1);
-			}
-			setColName(colName);
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
+		initModel();
+		getColName().remove(getColCount() - 1);
+		getColName().set(1, "TENVT");
+		getColName().add("THANHTIEN");
 	}
 
 	public static CTDDHDao getInstance() {
@@ -33,7 +26,7 @@ public class CTDDHDao extends IAbstractDao<CTDDHModel> {
 	@Override
 	public ArrayList<CTDDHModel> selectAll() {
 		ArrayList<CTDDHModel> ctdhList = new ArrayList<>();
-		String sql = "SELECT * FROM CTDDH";
+		String sql = "SELECT MasoDDH, MAVT, SOLUONG, DONGIA FROM CTDDH";
 		Program.myReader = Program.ExecSqlDataReader(sql);
 
 		try {
@@ -52,27 +45,31 @@ public class CTDDHDao extends IAbstractDao<CTDDHModel> {
 	}
 
 	@Override
-	public void insert(CTDDHModel t) {
+	public void insert(CTDDHModel t) throws SQLException {
 		// TODO Auto-generated method stub
-
+		String sql = "INSERT INTO CTDDH (MASODDH, MAVT, SOLUONG, DONGIA) VALUES (?, ?, ?, ?)";
+		Program.ExecSqlDML(sql, t.getMaSoDDH(), t.getMavt(), t.getSoLuong(), t.getDonGia());
 	}
 
 	@Override
-	public void update(CTDDHModel t) {
+	public void update(CTDDHModel t) throws SQLException {
 		// TODO Auto-generated method stub
-
+		String sql = "UPDATE CTDDH SET MAVT = ?, SOlUONG = ?, DONGIA = ?";
+		Program.ExecSqlDML(sql, t.getMavt(), t.getSoLuong(), t.getDonGia());
 	}
 
 	@Override
-	public void delete(CTDDHModel t) {
+	public void delete(CTDDHModel t) throws SQLException {
 		// TODO Auto-generated method stub
-
+		String sql = "DELETE FROM CTDDH WHERE MASODDH = ? AND MAVT = ?";
+		Program.ExecSqlDML(sql, t.getMaSoDDH(), t.getMavt());
 	}
 
 	@Override
 	public ArrayList<CTDDHModel> selectByCondition(String sql, Object... condition) {
 		ArrayList<CTDDHModel> list = new ArrayList<CTDDHModel>();
 		Program.myReader = Program.ExecSqlDataReader(sql, condition);
+
 		try {
 			while (Program.myReader.next()) {
 				CTDDHModel ctdh = new CTDDHModel(Program.myReader.getString(1), Program.myReader.getString(2),
