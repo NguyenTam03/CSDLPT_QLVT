@@ -197,7 +197,7 @@ public class NhanVienOptionForm extends JFrame implements ISearcher {
 		}
 		list = loadNhanVienAccount(sql);
 		model = (DefaultTableModel) table.getModel();
-		model.setColumnIdentifiers(dao.getColName());
+		model.setColumnIdentifiers(dao.getColName().toArray());
 
 		for (NhanVienModel NhanVien : list) {
 			Object[] rowData = { NhanVien.getManv(), NhanVien.getHo(), NhanVien.getTen(), NhanVien.getSoCMND(),

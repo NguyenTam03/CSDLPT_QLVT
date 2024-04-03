@@ -3,9 +3,6 @@ package controller;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.Date;
-
-import java.text.NumberFormat;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
@@ -264,7 +261,7 @@ public class NhanVienController {
 		NhanVienFrm.getTable().getSelectionModel().setSelectionInterval(rowSelected, rowSelected);
 		String sqlUndo = "Update NhanVien set Ho = N'" + Ho + "', Ten = N'" + Ten + "', SoCMND = '" + CMND
 				+ "', DiaChi = N'" + DiaChi + "', NgaySinh = '" + NgaySinh + "', Luong = '"
-				+ Formatter.formatMoneyToInteger(Luong) + "' where MaNV = '" + nhanVienModel.getManv().toString() + "'";
+				+ Formatter.formatMoneyToFloat(Luong) + "' where MaNV = '" + nhanVienModel.getManv().toString() + "'";
 		undoList.push(sqlUndo);
 		NhanVienFrm.getBtnHoanTac().setEnabled(true);
 		JOptionPane.showConfirmDialog(null, "Ghi Thành Công", "Thông Báo", JOptionPane.CLOSED_OPTION);
@@ -409,7 +406,7 @@ public class NhanVienController {
 		NhanVienModel.setSoCMND(NhanVienFrm.getTable().getValueAt(rowSelected, 3).toString());
 		NhanVienModel.setDiaChi(NhanVienFrm.getTable().getValueAt(rowSelected, 4).toString());
 		NhanVienModel.setNgaySinh((Date) NhanVienFrm.getTable().getValueAt(rowSelected, 5));
-		NhanVienModel.setLuong(Float.valueOf(Formatter.formatMoneyToInteger(NhanVienFrm.getTable().getValueAt(rowSelected, 6))));
+		NhanVienModel.setLuong(Float.valueOf(Formatter.formatMoneyToFloat(NhanVienFrm.getTable().getValueAt(rowSelected, 6))));
 		NhanVienModel.setMacn(NhanVienFrm.getTable().getValueAt(rowSelected, 7).toString());
 		NhanVienModel.setTrangThaiXoa((Boolean) NhanVienFrm.getTable().getValueAt(rowSelected, 8));
 		if (NhanVienModel.getTrangThaiXoa() == true) {
@@ -484,7 +481,7 @@ public class NhanVienController {
 		NhanVienModel.setSoCMND(NhanVienFrm.getTable().getValueAt(rowSelected, 3).toString());
 		NhanVienModel.setDiaChi(NhanVienFrm.getTable().getValueAt(rowSelected, 4).toString());
 		NhanVienModel.setNgaySinh((Date) NhanVienFrm.getTable().getValueAt(rowSelected, 5));
-		NhanVienModel.setLuong(Float.valueOf(Formatter.formatMoneyToInteger(NhanVienFrm.getTable().getValueAt(rowSelected, 6))));
+		NhanVienModel.setLuong(Float.valueOf(Formatter.formatMoneyToFloat(NhanVienFrm.getTable().getValueAt(rowSelected, 6))));
 		NhanVienModel.setMacn(NhanVienFrm.getTable().getValueAt(rowSelected, 7).toString());
 		NhanVienModel.setTrangThaiXoa((Boolean) NhanVienFrm.getTable().getValueAt(rowSelected, 8));
 		

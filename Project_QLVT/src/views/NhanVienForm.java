@@ -304,7 +304,7 @@ public class NhanVienForm extends CommonView<NhanVienModel, NhanVienDao> {
 			TFDiaChi.setText(table.getValueAt(table.getSelectedRow(), 4).toString());
 			NgaySinh.setDate((java.util.Date) table.getValueAt(table.getSelectedRow(), 5));
 			// format money => integer
-			Luong.setValue(Formatter.formatMoneyToInteger(table.getValueAt(table.getSelectedRow(), 6)));
+			Luong.setValue(Formatter.formatMoneyToFloat(table.getValueAt(table.getSelectedRow(), 6)));
 			TFMaCN.setText(table.getValueAt(table.getSelectedRow(), 7).toString());
 			CheckBoxTrangThaiXoa.setSelected((boolean) table.getValueAt(table.getSelectedRow(), 8));
 		};

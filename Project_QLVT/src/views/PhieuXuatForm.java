@@ -428,7 +428,7 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 
 	public void loadDataIntoTableCTPX() {
 		ctpxModel = (DefaultTableModel) tableCTPX.getModel();
-		ctpxModel.setColumnIdentifiers(ctpxDao.getColName());
+		ctpxModel.setColumnIdentifiers(ctpxDao.getColName().toArray());
 		ctpxList = ctpxDao.selectAllByMaPX(textFieldMaPX.getText());
 		for (CTPXModel px : ctpxList) {
 			Object[] rowData = { px.getMapx(), px.getMavt(), px.getSoLuong(), px.getDonGia() };

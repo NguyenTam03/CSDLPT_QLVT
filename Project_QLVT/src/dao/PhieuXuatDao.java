@@ -12,21 +12,13 @@ public class PhieuXuatDao extends IAbstractDao<PhieuXuatModel>{
 		init();
 	}
 	
-	public void init() {
+	private void init() {
 		String sql = "SELECT * FROM PhieuXuat";
 		Program.myReader = Program.ExecSqlDataReader(sql);
-		
-		try {
-			setColCount(Program.myReader.getMetaData().getColumnCount() - 1);
-			String[] colName = new String[getColCount()];
-			for (int i = 0; i < getColCount(); i++) {
-				colName[i] = Program.myReader.getMetaData().getColumnName(i + 1);
-			}
-			setColName(colName);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		initModel();
+		getColName().remove(getColCount() - 1);
 	}
+	
 	public static PhieuXuatDao getInstance() {
 		return new PhieuXuatDao();
 	}
