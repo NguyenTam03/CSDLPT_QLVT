@@ -8,23 +8,7 @@ import model.DatHangModel;
 
 public class DatHangDao extends IAbstractDao<DatHangModel> {
 	public DatHangDao() {
-		init();
-	}
-
-	private void init() {
-		String sql = "SELECT * FROM DatHang";
-		Program.myReader = Program.ExecSqlDataReader(sql);
-
-		try {
-			setColCount(Program.myReader.getMetaData().getColumnCount() - 1);
-			String[] colName = new String[getColCount()];
-			for (int i = 0; i < getColCount(); i++) {
-				colName[i] = Program.myReader.getMetaData().getColumnName(i + 1);
-			}
-			setColName(colName);
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
+		
 	}
 
 	public static DatHangDao getInstance() {
@@ -40,9 +24,11 @@ public class DatHangDao extends IAbstractDao<DatHangModel> {
 	@Override
 	public ArrayList<DatHangModel> selectAll() {
 		ArrayList<DatHangModel> datHangList = new ArrayList<DatHangModel>();
-		String sql = "SELECT * FROM DatHang";
+		String sql = "SELECT MasoDDH, NGAY, NhaCC, MANV, MAKHO FROM DatHang";
 		Program.myReader = Program.ExecSqlDataReader(sql);
-
+		initModel();
+		getColName().set(3, "TENNV");
+		getColName().set(4, "TENKHO");
 		try {
 			while (Program.myReader.next()) {
 				DatHangModel datHang = new DatHangModel(Program.myReader.getString(1), Program.myReader.getDate(2),

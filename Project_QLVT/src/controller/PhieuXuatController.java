@@ -110,6 +110,26 @@ public class PhieuXuatController implements ISearcher {
 			return;
 		}
 
+		rowSelectedPX = px.getTable().getSelectedRow();
+		isPhieuXuat = false;
+		selectionListener_CTPX = e -> {
+			if (px.getTableCTPX().getSelectedRow() != -1) {
+				px.getTextFieldMaVT().setText(
+						px.getTableCTPX().getValueAt(px.getTableCTPX().getSelectedRow(), 1).toString());
+				String sql = "SELECT TENVT FROM VATTU WHERE MAVT = ?";
+				Program.myReader = Program.ExecSqlDataReader(sql, px.getTextFieldMaVT().getText());
+				try {
+					Program.myReader.next();
+					px.getLblTenVT().setText(Program.myReader.getString(1));
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+				px.getSpinnerSoLuong()
+						.setValue(px.getTableCTPX().getValueAt(px.getTableCTPX().getSelectedRow(), 2));
+				px.getSpinnerDonGia().setValue(Formatter.formatMoneyToFloat(
+						px.getTableCTPX().getValueAt(px.getTableCTPX().getSelectedRow(), 3)));
+			}
+		};
 		px.getTable().setEnabled(false);
 		px.getTableCTPX().setEnabled(true);
 		px.getBtnKhoOption().setEnabled(false);

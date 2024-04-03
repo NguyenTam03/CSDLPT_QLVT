@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 //import javax.swing.JComboBox;
@@ -514,7 +513,7 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 
 	public void loadDataIntoTableCTPX() {
 		tableCTPX.getSelectionModel().removeListSelectionListener(selectionListenerCTPX);
-		ctpxModel.setColumnIdentifiers(ctpxDao.getColName());
+		ctpxModel.setColumnIdentifiers(ctpxDao.getColName().toArray());
 		ctpxModel.setRowCount(0);
 		String sql = "SELECT * FROM CTPX WHERE MAPX = ?";
 		ctpxList = ctpxDao.selectByCondition(sql, textFieldMaPX.getText());

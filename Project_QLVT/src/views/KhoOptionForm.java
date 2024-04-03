@@ -117,7 +117,7 @@ public class KhoOptionForm extends JFrame implements ISearcher {
 	
 	private void loadData() {
 		khoList = khoDao.selectAll();
-		model.setColumnIdentifiers(khoDao.getColName());
+		model.setColumnIdentifiers(khoDao.getColName().toArray());
 		
 		for (KhoModel kho : khoList) {
 			Object[] rowData = { kho.getMaKho(), kho.getTenKho(), kho.getDiaChi() };

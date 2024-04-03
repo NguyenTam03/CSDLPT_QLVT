@@ -11,25 +11,11 @@ public class CTPXDao extends IAbstractDao<CTPXModel> {
 		init();
 	}
 
-	public void init() {
+	private void init() {
 		String sql = "SELECT * FROM CTPX";
 		Program.myReader = Program.ExecSqlDataReader(sql);
-
-		try {
-			setColCount(Program.myReader.getMetaData().getColumnCount() - 1);
-			String[] colName = new String[getColCount()];
-			for (int i = 0; i < getColCount(); i++) {
-				if (Program.myReader.getMetaData().getColumnName(i + 1).equals("MAVT")) {
-					colName[i] = "TENVT";
-				} else
-					colName[i] = Program.myReader.getMetaData().getColumnName(i + 1);
-			}
-			setColName(colName);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+		initModel();
+		getColName().remove(getColCount() - 1);
 	}
 
 	public static CTPXDao getInstace() {

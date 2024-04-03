@@ -11,10 +11,10 @@ public class VatTuDao extends IAbstractDao<VattuModel> {
 	}
 
 	private void init() {
-		String sql = "SELECT MAVT, TENVT, DVT, SOLUONGTON FROM Vattu";
+		String sql = "SELECT * FROM Vattu";
 		Program.myReader = Program.ExecSqlDataReader(sql);
-
 		initModel();
+		getColName().remove(getColCount() - 1);
 	}
 
 	public static VatTuDao getInstance() {
