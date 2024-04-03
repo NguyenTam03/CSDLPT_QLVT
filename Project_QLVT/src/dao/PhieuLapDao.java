@@ -14,24 +14,8 @@ public class PhieuLapDao extends IAbstractDao<PhieuLapModel> {
 	private void init() {
 		String sql = "SELECT * FROM PhieuNhap";
 		Program.myReader = Program.ExecSqlDataReader(sql);
-		
-		
-		try {
-			 setColCount(Program.myReader.getMetaData().getColumnCount() - 1);
-			 String[] colName = new String[getColCount()];
-			for (int i = 0; i < getColCount(); i++) {
-				colName[i] = Program.myReader.getMetaData().getColumnName(i + 1);
-				if(colName[i].equals("MANV")) {
-					colName[i] = "HOTENNV";
-				}
-				else if (colName[i].equals("MAKHO")) {
-					colName[i] = "TENKHO";
-				}
-			}
-			setColName(colName);
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
+		initModel();
+		getColName().remove(getColCount() - 1);
 	}
 	
 	public static PhieuLapDao getInstance() {

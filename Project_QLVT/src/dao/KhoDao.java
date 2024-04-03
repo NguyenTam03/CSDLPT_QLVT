@@ -46,7 +46,7 @@ public class KhoDao extends IAbstractDao<KhoModel> {
 		ArrayList<KhoModel> dsKho = new ArrayList<KhoModel>();
 		String sql = "SELECT MAKHO, TENKHO, DIACHI FROM dbo.Kho";
 		Program.myReader = Program.ExecSqlDataReader(sql);
-		initModel();
+		
 		try {
 			while (Program.myReader.next()) {
 				KhoModel kho = new KhoModel();

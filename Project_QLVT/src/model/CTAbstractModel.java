@@ -11,7 +11,8 @@ public class CTAbstractModel implements IValidation {
 	public static enum ValidateError {
 		ERROR_MAVT,
 		ERROR_SOLUONG,
-		ERROR_DONGIA
+		ERROR_DONGIA,
+		NO_ERROR;
 	}
 	public static ValidateError validateError;
 	
@@ -72,6 +73,7 @@ public class CTAbstractModel implements IValidation {
 			validateError = ValidateError.ERROR_DONGIA;
 			return false;
 		}
+		validateError = ValidateError.NO_ERROR;
 		return true;
 	}
 }

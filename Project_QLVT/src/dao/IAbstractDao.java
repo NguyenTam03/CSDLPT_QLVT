@@ -2,12 +2,14 @@ package dao;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+
 import main.Program;
 
 
 public abstract class IAbstractDao<T> {
 	private int colCount;
-	private String[] colName;
+	private List<String> colName;
 
 	public void setColCount(int colCount) {
 		this.colCount = colCount;
@@ -17,11 +19,11 @@ public abstract class IAbstractDao<T> {
 		return colCount;
 	}
 
-	public String[] getColName() {
+	public List<String> getColName() {
 		return colName;
 	}
 
-	public void setColName(String[] colName) {
+	public void setColName(List<String> colName) {
 		this.colName = colName;
 	}
 
@@ -39,13 +41,13 @@ public abstract class IAbstractDao<T> {
 	public abstract ArrayList<T> selectByCondition(String sql, Object...objects);
 	
 	public void initModel() {
+		colName = new ArrayList<String>();
 		try {
 			colCount = Program.myReader.getMetaData().getColumnCount();
-			String[] colName = new String[colCount];
 			for (int i = 0; i < colCount; i++) {
-				colName[i] = Program.myReader.getMetaData().getColumnName(i + 1);
+				String temp = Program.myReader.getMetaData().getColumnName(i + 1);
+				colName.add(temp);
 			}
-			this.colName = colName;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

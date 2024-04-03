@@ -1,6 +1,5 @@
 package controller;
 
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.Date;
@@ -123,7 +122,7 @@ public class PhieuLapController {
 				ctplDao = CTPLDao.getInstance();
 				// .setColumnIdentifiers to set column name
 				try {
-					PLForm.getCtplModel().setColumnIdentifiers(ctplDao.getColName());
+					PLForm.getCtplModel().setColumnIdentifiers(ctplDao.getColName().toArray());
 					PLForm.getCtplModel().addColumn("TRIGIA");
 				} catch (Exception e1) {
 					e1.printStackTrace();
@@ -186,13 +185,13 @@ public class PhieuLapController {
 		};
 		dhDao = DatHangDao.getInstance();
 		try {
-			dhModel.setColumnIdentifiers(dhDao.getColName());
+			dhModel.setColumnIdentifiers(dhDao.getColName().toArray());
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
 		dhDao = DatHangDao.getInstance();
 		dhModel = (DefaultTableModel) DHOptionView.getTableDH().getModel();
-		dhModel.setColumnIdentifiers(dhDao.getColName());
+		dhModel.setColumnIdentifiers(dhDao.getColName().toArray());
 		dhList = loadDHList();
 
 		for (DatHangModel dh : dhList) {
@@ -275,13 +274,13 @@ public class PhieuLapController {
 		};
 		khoDao = KhoDao.getInstance();
 		try {
-			dhModel.setColumnIdentifiers(khoDao.getColName());
+			dhModel.setColumnIdentifiers(khoDao.getColName().toArray());
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
 		khoDao = KhoDao.getInstance();
 		dhModel = (DefaultTableModel) DHOptionView.getTableDH().getModel();
-		String[] ColName = Arrays.copyOfRange(khoDao.getColName(), 0, 2);
+		String[] ColName = (String[]) Arrays.copyOfRange(khoDao.getColName().toArray(), 0, 2);
 		dhModel.setColumnIdentifiers(ColName);
 		khoList = loadKhoList();
 
@@ -422,13 +421,13 @@ public class PhieuLapController {
 
 		ctddhDao = CTDDHDao.getInstance();
 		try {
-			dhModel.setColumnIdentifiers(ctddhDao.getColName());
+			dhModel.setColumnIdentifiers(ctddhDao.getColName().toArray());
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
 		ctddhDao = CTDDHDao.getInstance();
 		dhModel = (DefaultTableModel) DHOptionView.getTableDH().getModel();
-		dhModel.setColumnIdentifiers(ctddhDao.getColName());
+		dhModel.setColumnIdentifiers(ctddhDao.getColName().toArray());
 		ctddhList = loadCTDHList();
 
 		for (CTDDHModel ctddh : ctddhList) {
