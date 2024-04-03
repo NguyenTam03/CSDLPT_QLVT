@@ -28,6 +28,7 @@ public class FrameMain extends JFrame {
 	private JMenu mnNhanVien, mnVatTu, mnKho, mnLapPhieu, mnLogout, mnExit, mnCreateTK;
 	private JMenuItem mntmDatHang, mntmPhieuLap, mntmPhieuXuat;
 	private JMenu mnDeleteUser;
+	private JMenu mnChangePassword;
 
 	public FrameMain() {
 		setTitle("Quản Lý Vật Tư");
@@ -114,11 +115,15 @@ public class FrameMain extends JFrame {
 		mnCreateTK.setFont(new Font("Segoe UI", Font.PLAIN, 13));
 		mnCreateTK.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/plus.png")));
 		menuBarHeThong.add(mnCreateTK);
-		
+
 		mnDeleteUser = new JMenu("Xóa tài khoản");
 		mnDeleteUser.setFont(new Font("Segoe UI", Font.PLAIN, 13));
 		mnDeleteUser.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/delete_user.png")));
 		menuBarHeThong.add(mnDeleteUser);
+
+		mnChangePassword = new JMenu("Đổi mật khẩu");
+		mnChangePassword.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/reset-password-menu.png")));
+		menuBarHeThong.add(mnChangePassword);
 
 		if (Program.mGroup.equals("USER")) {
 			mnCreateTK.setEnabled(false);
@@ -147,7 +152,7 @@ public class FrameMain extends JFrame {
 
 		panel_dathang = new JPanel();
 		panel_dathang.setLayout(new BorderLayout(0, 0));
-		
+
 		panel_phieuxuat = new JPanel();
 		panel_phieuxuat.setLayout(new BorderLayout(0, 0));
 		panel_phieulap = new JPanel();
@@ -189,6 +194,10 @@ public class FrameMain extends JFrame {
 		return mnCreateTK;
 	}
 
+	public JMenu getMnChangePassword() {
+		return mnChangePassword;
+	}
+
 	public JMenuItem getMntmDatHang() {
 		return mntmDatHang;
 	}
@@ -220,7 +229,7 @@ public class FrameMain extends JFrame {
 	public JPanel getPanel_dathang() {
 		return panel_dathang;
 	}
-	
+
 	public JPanel getPanel_phieuxuat() {
 		return panel_phieuxuat;
 	}

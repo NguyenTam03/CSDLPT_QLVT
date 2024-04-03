@@ -13,6 +13,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 import main.Program;
+import views.ChangePasswordForm;
 import views.CreateLoginForm;
 import views.DatHangForm;
 import views.FrameMain;
@@ -43,6 +44,14 @@ public class NavController {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				exitFrameMain();
+			}
+		});
+		
+		frmMain.getMnChangePassword().addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				ChangePasswordForm changePasswordForm = new ChangePasswordForm();
+				changePasswordForm.setVisible(true);
 			}
 		});
 
