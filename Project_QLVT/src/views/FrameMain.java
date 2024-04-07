@@ -24,11 +24,17 @@ public class FrameMain extends JFrame {
 	private JLabel lblInfoNV;
 	private JPanel panel_Main;
 	private JTabbedPane tabbedPane_Main;
-	private JPanel panel_VT, panel_NV, panel_Kho, panel_dathang, panel_phieulap, panel_phieudat, panel_phieuxuat;
+	private JPanel panel_VT, panel_NV, panel_Kho, panel_dathang, panel_phieulap, panel_phieuxuat;
 	private JMenu mnNhanVien, mnVatTu, mnKho, mnLapPhieu, mnLogout, mnExit, mnCreateTK;
 	private JMenuItem mntmDatHang, mntmPhieuLap, mntmPhieuXuat;
 	private JMenu mnDeleteUser;
 	private JMenu mnChangePassword;
+	private JMenu mnNhanVienList;
+	private JMenu mnVatTuList;
+	private JMenu mnCTNX;
+	private JMenu mnDHKhongPN;
+	private JMenu mnHdNV;
+	private JMenu mnTongHopNX;
 
 	public FrameMain() {
 		setTitle("Quản Lý Vật Tư");
@@ -133,6 +139,30 @@ public class FrameMain extends JFrame {
 //		------------Bao Cao---------------
 		JMenuBar menuBarReport = new JMenuBar();
 		tabbedPane.addTab("Báo Cáo", null, menuBarReport, null);
+
+		mnNhanVienList = new JMenu("Danh sách nhân viên");
+		mnNhanVienList.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/staff.png")));
+		menuBarReport.add(mnNhanVienList);
+
+		mnVatTuList = new JMenu("Chi tiết nhập xuất");
+		mnVatTuList.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/material.png")));
+		menuBarReport.add(mnVatTuList);
+
+		mnCTNX = new JMenu("CHI TIẾT NHẬP XUẤT");
+		mnCTNX.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/activity.png")));
+		menuBarReport.add(mnCTNX);
+
+		mnDHKhongPN = new JMenu("Đơn hàng không phiếu nhập");
+		mnDHKhongPN.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/carts.png")));
+		menuBarReport.add(mnDHKhongPN);
+
+		mnHdNV = new JMenu("Hoạt động nhân viên");
+		mnHdNV.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/bar-chart.png")));
+		menuBarReport.add(mnHdNV);
+
+		mnTongHopNX = new JMenu("Tổng hợp nhập xuất");
+		mnTongHopNX.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/report.png")));
+		menuBarReport.add(mnTongHopNX);
 
 		panel_Main = new JPanel();
 		contentPane.add(panel_Main, BorderLayout.CENTER);
@@ -240,6 +270,30 @@ public class FrameMain extends JFrame {
 
 	public JMenu getMnDeleteUser() {
 		return mnDeleteUser;
+	}
+
+	public JMenu getMnNhanVienList() {
+		return mnNhanVienList;
+	}
+
+	public JMenu getMnVatTuList() {
+		return mnVatTuList;
+	}
+
+	public JMenu getMnCTNX() {
+		return mnCTNX;
+	}
+
+	public JMenu getMnDHKhongPN() {
+		return mnDHKhongPN;
+	}
+
+	public JMenu getMnHdNV() {
+		return mnHdNV;
+	}
+
+	public JMenu getMnTongHopNX() {
+		return mnTongHopNX;
 	}
 
 }
