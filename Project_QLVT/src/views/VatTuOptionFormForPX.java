@@ -110,7 +110,7 @@ public class VatTuOptionFormForPX extends JFrame implements ISearcher {
 	private void loadData() {
 		String sql = "SELECT MAVT, TENVT, DVT, SOLUONGTON FROM Vattu WHERE MAVT NOT IN (SELECT MAVT FROM CTPX WHERE MAPX = ?)";
 		vatTuList = vtDao.selectByConditionForPX(sql, mapx);
-		model.setColumnIdentifiers(vtDao.getColName());
+		model.setColumnIdentifiers(vtDao.getColName().toArray());
 		for (VattuModel vt : vatTuList) {
 			Object[] rowData = { vt.getMavt(), vt.getTenVT(), vt.getDvt(), vt.getSoLuongTon() };
 			model.addRow(rowData);
@@ -120,7 +120,7 @@ public class VatTuOptionFormForPX extends JFrame implements ISearcher {
 	private void btnAcceptListener() {
 		if (table.getSelectedRow() != -1) {
 			PhieuXuatForm.getTextFieldMaVT().setText(table.getValueAt(table.getSelectedRow(), 0).toString());
-			PhieuXuatForm.getLblTenVT().setText(table.getValueAt(table.getSelectedRow(), 1).toString());
+			PhieuXuatForm.getTextFieldTenVT().setText(table.getValueAt(table.getSelectedRow(), 1).toString());
 			this.dispose();
 		} else {
 			JOptionPane.showMessageDialog(null, "Hãy chọn vật tư!", "Thông báo", JOptionPane.WARNING_MESSAGE);

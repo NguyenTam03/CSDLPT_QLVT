@@ -130,7 +130,7 @@ public class KhoOptionFormForPX extends JFrame implements ISearcher {
 			String makho = tableKho.getValueAt(tableKho.getSelectedRow(), 0).toString();
 			String tenKho = tableKho.getValueAt(tableKho.getSelectedRow(), 1).toString();
 			PhieuXuatForm.getTextFieldMaKho().setText(makho);
-			PhieuXuatForm.getLblTenKho().setText(tenKho);
+			PhieuXuatForm.getTextFieldTenKho().setText(tenKho);
 			this.dispose();
 		} else {
 			JOptionPane.showMessageDialog(null, "Hãy chọn kho!", "Thông bán", JOptionPane.WARNING_MESSAGE);

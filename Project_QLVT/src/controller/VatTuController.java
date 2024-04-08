@@ -118,8 +118,9 @@ public class VatTuController {
 		String sqlUndo = undoList.pop();
 		try {
 			Program.ExecSqlDML(sqlUndo);
-		}catch (SQLException e) {
-			JOptionPane.showMessageDialog(null, "Đã xảy ra lỗi, undo không thành công!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Đã xảy ra lỗi, undo không thành công!", "Cảnh báo",
+					JOptionPane.WARNING_MESSAGE);
 			return;
 		}
 
@@ -403,8 +404,23 @@ public class VatTuController {
 			return;
 		}
 
-		row = vatTuForm.getTable().getSelectedRow();
+		int res = 0;
+		String sql = "{? call dbo.sp_KiemTraMaVatTuDungOChiNhanhKhac(?)}";
 
+		try {
+			res = Program.ExecSqlNoQuery(sql, vattuModel.getMavt());
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Lỗi kiểm tra vật tư!", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+
+		if (res == 1) {
+			JOptionPane.showMessageDialog(null, "Không thể xóa vật tư này vì đang được sử dụng ở chi nhánh khác!",
+					"Warning", JOptionPane.WARNING_MESSAGE);
+			return;
+		}
+
+		row = vatTuForm.getTable().getSelectedRow();
 
 		// delete selected row in table
 		try {

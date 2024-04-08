@@ -16,6 +16,8 @@ public class CTPXDao extends IAbstractDao<CTPXModel> {
 		Program.myReader = Program.ExecSqlDataReader(sql);
 		initModel();
 		getColName().remove(getColCount() - 1);
+		getColName().set(1, "TENVT");
+		getColName().add("THANHTIEN");
 	}
 
 	public static CTPXDao getInstace() {
@@ -44,7 +46,7 @@ public class CTPXDao extends IAbstractDao<CTPXModel> {
 	@Override
 	public ArrayList<CTPXModel> selectAll() {
 		ArrayList<CTPXModel> ctpxList = new ArrayList<CTPXModel>();
-		String sql = "SELECT * FROM CTPX";
+		String sql = "SELECT MAPX, MAVT, SOLUONG, DONGIA FROM CTPX";
 		Program.myReader = Program.ExecSqlDataReader(sql);
 
 		try {
@@ -55,7 +57,6 @@ public class CTPXDao extends IAbstractDao<CTPXModel> {
 			}
 			return ctpxList;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
