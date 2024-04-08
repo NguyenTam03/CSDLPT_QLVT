@@ -42,6 +42,9 @@ import javax.swing.JMenuBar;
 import javax.swing.border.EtchedBorder;
 import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
+
+import common.method.Formatter;
+
 import javax.swing.SpinnerNumberModel;
 
 public class PhieuLapForm extends CommonView<PhieuLapModel, PhieuLapDao> {
@@ -411,7 +414,7 @@ public class PhieuLapForm extends CommonView<PhieuLapModel, PhieuLapDao> {
 				e1.printStackTrace();
 			}
 			maTenKho.put(pl.getMapn(), pl.getMaKho());
-			Object[] rowData = { pl.getMapn(), pl.getNgay(), pl.getMaSoDDH(),hoTenNV ,tenKho };
+			Object[] rowData = { pl.getMapn(),Formatter.formatterDate(pl.getNgay()) , pl.getMaSoDDH(),hoTenNV ,tenKho };
 			model.addRow(rowData);
 		}
 	}

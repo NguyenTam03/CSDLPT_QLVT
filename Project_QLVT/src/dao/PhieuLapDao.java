@@ -14,7 +14,10 @@ public class PhieuLapDao extends IAbstractDao<PhieuLapModel> {
 	private void init() {
 		String sql = "SELECT * FROM PhieuNhap";
 		Program.myReader = Program.ExecSqlDataReader(sql);
+
 		initModel();
+		getColName().set(3, "TENNV");
+		getColName().set(4, "TENKHO");
 		getColName().remove(getColCount() - 1);
 	}
 	

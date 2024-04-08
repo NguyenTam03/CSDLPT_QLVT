@@ -4,6 +4,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Stack;
@@ -64,7 +65,7 @@ public class PhieuLapController {
 		PLForm.getBtnThem().addActionListener(l -> themPhieuNhap());
 		PLForm.getBtnGhi().addActionListener(l -> ghiPhieuNhap());
 		PLForm.getBtnXoa().addActionListener(l -> deletePhieuNhap());
-		PLForm.getBtnHoanTac().addActionListener(l -> UndoData());
+		PLForm.getBtnHoanTac().addActionListener(l -> undoData());
 		PLForm.getBtnLamMoi().addActionListener(l -> refreshData());
 		autoSearchPhieuNhap();
 	}
@@ -86,8 +87,8 @@ public class PhieuLapController {
 		for (PhieuLapModel pl : PLForm.getList()) {
 			if (pl.getMapn().toLowerCase().contains(input) || pl.getMaSoDDH().toLowerCase().contains(input)
 					|| pl.getMaKho().toLowerCase().contains(input) || pl.getManv().toString().contains(input)
-					|| pl.getNgay().toString().contains(input)) {
-				Object[] rowData = { pl.getMapn(), pl.getNgay(), pl.getMaSoDDH(), pl.getManv(), pl.getMaKho() };
+					|| Formatter.formatterDate(pl.getNgay()).toString().contains(input)) {
+				Object[] rowData = { pl.getMapn(),Formatter.formatterDate(pl.getNgay()), pl.getMaSoDDH(), pl.getManv(), pl.getMaKho() };
 				PLForm.getModel().addRow(rowData);
 			}
 		}
@@ -109,8 +110,11 @@ public class PhieuLapController {
 			if (PLForm.getTable().getSelectedRow() != -1) {
 				PLForm.getTFMaPN()
 						.setText(PLForm.getTable().getValueAt(PLForm.getTable().getSelectedRow(), 0).toString());
-				PLForm.getNgay()
-						.setDate((java.util.Date) PLForm.getTable().getValueAt(PLForm.getTable().getSelectedRow(), 1));
+				try {
+					PLForm.getNgay().setDate(new SimpleDateFormat("dd-MM-yyyy").parse((String) PLForm.getTable().getValueAt(PLForm.getTable().getSelectedRow(), 1)));
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
 				PLForm.getTFMaDDH()
 						.setText(PLForm.getTable().getValueAt(PLForm.getTable().getSelectedRow(), 2).toString());
 				PLForm.getTFMaNV().
@@ -160,7 +164,7 @@ public class PhieuLapController {
 			PLForm.getBtnCTDHOption().setEnabled(false);
 
 			PLForm.getNgay().setEnabled(true);
-			PLForm.getBtnKho().setEnabled(true);
+			PLForm.getBtnKho().setEnabled(false);
 
 			PLForm.getTFMaVT().setText("");
 			PLForm.getLbTenVatTu().setText("");
@@ -184,13 +188,8 @@ public class PhieuLapController {
 			}
 		};
 		dhDao = DatHangDao.getInstance();
-		try {
-			dhModel.setColumnIdentifiers(dhDao.getColName().toArray());
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
-		dhDao = DatHangDao.getInstance();
 		dhModel = (DefaultTableModel) DHOptionView.getTableDH().getModel();
+		dhDao.selectAll();
 		dhModel.setColumnIdentifiers(dhDao.getColName().toArray());
 		dhList = loadDHList();
 
@@ -280,8 +279,15 @@ public class PhieuLapController {
 		}
 		khoDao = KhoDao.getInstance();
 		dhModel = (DefaultTableModel) DHOptionView.getTableDH().getModel();
-		String[] ColName = (String[]) Arrays.copyOfRange(khoDao.getColName().toArray(), 0, 2);
-		dhModel.setColumnIdentifiers(ColName);
+		Object[] objects = khoDao.getColName().toArray();
+		if (objects.length >= 2) {
+		    String[] ColName = new String[2];
+		    ColName[0] = String.valueOf(objects[0]);
+		    ColName[1] = String.valueOf(objects[1]);
+		    dhModel.setColumnIdentifiers(ColName);
+		} else {
+		    JOptionPane.showMessageDialog(null, "Không có dữ liệu kho");
+		}
 		khoList = loadKhoList();
 
 		for (KhoModel kho : khoList) {
@@ -299,6 +305,7 @@ public class PhieuLapController {
 
 	private void clickBtnChonKho() {
 		PLForm.getTFMaKho().setText(dhModel.getValueAt(DHOptionView.getTableDH().getSelectedRow(), 0).toString());
+		PLForm.getLbTenKho().setText(dhModel.getValueAt(DHOptionView.getTableDH().getSelectedRow(), 1).toString());
 		DHOptionView.dispose();
 	}
 
@@ -599,7 +606,35 @@ public class PhieuLapController {
 					rowSelectedPN = PLForm.getTable().getSelectedRow();
 					if (isThem) {
 						addDataPNToDB(plModel);
+						String sql = "autoAddCTPN ?, ?";
+						try {
+							Program.ExecSqlDML(sql, MaDDH, MaPN);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						
+						String sqlUndo = "delete from CTPN where MaPN = '"+MaPN +"'";
+						undoList.push(sqlUndo);
 						isThem = false;
+						PLForm.getTable().setEnabled(true);
+						PLForm.getTableCTPN().setEnabled(false);
+						PLForm.getBtnThem().setEnabled(true);
+						PLForm.getBtnXoa().setEnabled(true);
+						PLForm.getBtnHoanTac().setEnabled(true);
+						PLForm.getBtnLamMoi().setEnabled(true);
+						PLForm.getMnOption().setEnabled(true);
+
+						PLForm.getBtnDHOption().setEnabled(false);
+						PLForm.getTFMaPN().setEditable(false);
+						PLForm.getNgay().setEnabled(false);
+						PLForm.getBtnKho().setEnabled(false);
+						
+						PLForm.getTable().getSelectionModel().addListSelectionListener(selectionListener);
+						// .getSelectionModel().setSelectionInterval() : chọn dòng cuối cùng trong table
+						PLForm.getTable().getSelectionModel().setSelectionInterval(PLForm.getTable().getRowCount() - 1,
+								PLForm.getTable().getRowCount() - 1);
+
+						rowSelectedPN = PLForm.getTable().getRowCount() - 1;
 					} else {
 						updateDataPNToDB(plModel);
 					}
@@ -675,8 +710,8 @@ public class PhieuLapController {
 
 	private void addDataPNToDB(PhieuLapModel plModel) {
 		try {
-			Object[] newRow = { plModel.getMapn(), plModel.getNgay(), plModel.getMaSoDDH(), plModel.getManv(),
-					plModel.getMaKho() };
+			Object[] newRow = { plModel.getMapn(),Formatter.formatterDate(plModel.getNgay()) , plModel.getMaSoDDH(), PLForm.getLbHoTenNV().getText(),
+					PLForm.getLbTenKho().getText() };
 			PLForm.getModel().addRow(newRow);
 			PLForm.getDao().insert(plModel);
 			PLForm.getList().add(plModel);
@@ -690,26 +725,6 @@ public class PhieuLapController {
 		}
 		String sqlUndo = "DELETE FROM PhieuNhap WHERE MAPN = '" + plModel.getMapn() + "'";
 		undoList.push(sqlUndo);
-
-		PLForm.getTable().setEnabled(true);
-		PLForm.getTableCTPN().setEnabled(true);
-		PLForm.getBtnThem().setEnabled(true);
-		PLForm.getBtnXoa().setEnabled(true);
-		PLForm.getBtnHoanTac().setEnabled(true);
-		PLForm.getBtnLamMoi().setEnabled(true);
-		PLForm.getMnOption().setEnabled(true);
-
-		PLForm.getBtnDHOption().setEnabled(false);
-		PLForm.getTFMaPN().setEditable(false);
-		PLForm.getNgay().setEnabled(false);
-		PLForm.getBtnKho().setEnabled(false);
-
-		PLForm.getTable().getSelectionModel().addListSelectionListener(selectionListener);
-		// .getSelectionModel().setSelectionInterval() : chọn dòng cuối cùng trong table
-		PLForm.getTable().getSelectionModel().setSelectionInterval(PLForm.getTable().getRowCount() - 1,
-				PLForm.getTable().getRowCount() - 1);
-
-		rowSelectedPN = PLForm.getTable().getRowCount() - 1;
 		JOptionPane.showConfirmDialog(null, "Ghi Thành Công", "Thông Báo", JOptionPane.CLOSED_OPTION);
 	}
 
@@ -719,7 +734,7 @@ public class PhieuLapController {
 		String MaKho = PLForm.getTable().getValueAt(rowSelectedPN, 4).toString();
 
 		try {
-			PLForm.getTable().setValueAt(pl.getNgay(), rowSelectedPN, 1);
+			PLForm.getTable().setValueAt(Formatter.formatterDate(pl.getNgay()) , rowSelectedPN, 1);
 			PLForm.getTable().setValueAt(pl.getMaSoDDH(), rowSelectedPN, 2);
 			PLForm.getTable().setValueAt(pl.getMaKho(), rowSelectedPN, 4);
 			PLForm.getDao().update(pl);
@@ -841,10 +856,14 @@ public class PhieuLapController {
 				return;
 			}
 			plModel.setMapn(PLForm.getTable().getValueAt(rowSelectedPN, 0).toString());
-			plModel.setNgay((Date) PLForm.getTable().getValueAt(rowSelectedPN, 1));
+			try {
+				plModel.setNgay(new java.sql.Date(new SimpleDateFormat("dd-MM-yyyy").parse((String) PLForm.getTable().getValueAt(PLForm.getTable().getSelectedRow(), 1)).getTime()));
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
 			plModel.setMaSoDDH(PLForm.getTable().getValueAt(rowSelectedPN, 2).toString());
-			plModel.setManv(Integer.parseInt(PLForm.getTable().getValueAt(rowSelectedPN, 3).toString()));
-			plModel.setMaKho(PLForm.getTable().getValueAt(rowSelectedPN, 4).toString());
+			plModel.setManv(Integer.parseInt(PLForm.getTFMaNV().getText()));
+			plModel.setMaKho(PLForm.getTFMaKho().getText());
 			if (checkPhieuNhap(plModel.getMapn())) {
 				JOptionPane.showMessageDialog(null, "Không thể xóa \n Phiếu nhập đã tồn tại trong chi tiết phiếu nhập");
 				return;
@@ -921,7 +940,7 @@ public class PhieuLapController {
 		return false;
 	}
 
-	private void UndoData() {
+	private void undoData() {
 		if (isThem) {
 			if (isPhieuNhap) {
 				PLForm.getTable().getSelectionModel().addListSelectionListener(selectionListener);

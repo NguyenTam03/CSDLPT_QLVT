@@ -4,6 +4,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
@@ -135,6 +137,14 @@ public class NhanVienController {
 						JOptionPane.WARNING_MESSAGE);
 				return;
 			}
+			LocalDate ngayHienTai = LocalDate.now();
+			// Tuổi phải lớn hơn 16
+			if (ngayHienTai.getYear() - NgaySinh.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getYear() < 16) {
+				JOptionPane.showMessageDialog(null, "Nhân viên phải trên 16 tuổi", "Thông Báo",
+						JOptionPane.WARNING_MESSAGE);
+				return;
+			}
+			
 			MaCN = NhanVienFrm.getTFMaCN().getText().trim();
 			TrangThaiXoa = NhanVienFrm.getTrangThaiXoa().isSelected();
 
@@ -175,10 +185,11 @@ public class NhanVienController {
 						JOptionPane.WARNING_MESSAGE);
 				return;
 			}
-			if (checkCMND(CMND)) {
+			if (checkCMND(CMND,MaNV)) {
 				JOptionPane.showMessageDialog(null, "Số CMND đã tồn tại", "Thông Báo", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
+			
 			int reply = JOptionPane.showConfirmDialog(null, "Bạn có muốn ghi dữ liệu vào bảng không?", "Confirm",
 					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 			if (reply == JOptionPane.YES_NO_OPTION) {
@@ -220,9 +231,9 @@ public class NhanVienController {
 
 	}
 	// Check CMND
-	public boolean checkCMND(String CMND) {
-		String sql = "SELECT CASE WHEN ? IN (SELECT SoCMND FROM NhanVien) THEN 'true' ELSE 'false' END";
-		Program.myReader = Program.ExecSqlDataReader(sql, CMND);
+	public boolean checkCMND(String CMND, String MaNV) {
+		String sql = "SELECT CASE WHEN ? IN (SELECT SoCMND FROM NhanVien where ? <> MaNv) THEN 'true' ELSE 'false' END";
+		Program.myReader = Program.ExecSqlDataReader(sql, CMND , MaNV);
 		try {
 			Program.myReader.next();
 			return Program.myReader.getBoolean(1);
@@ -295,7 +306,7 @@ public class NhanVienController {
 			NhanVienFrm.getTable().setValueAt(nhanVienModel.getTen(), rowSelected, 2);
 			NhanVienFrm.getTable().setValueAt(nhanVienModel.getSoCMND(), rowSelected, 3);
 			NhanVienFrm.getTable().setValueAt(nhanVienModel.getDiaChi(), rowSelected, 4);
-			NhanVienFrm.getTable().setValueAt(nhanVienModel.getNgaySinh(), rowSelected, 5);
+			NhanVienFrm.getTable().setValueAt(Formatter.formatterDate(nhanVienModel.getNgaySinh()), rowSelected, 5);
 			NhanVienFrm.getTable().setValueAt(Formatter.formatObjecttoMoney(nhanVienModel.getLuong()), rowSelected, 6);
 			NhanVienFrm.getDao().update(nhanVienModel);
 		}
@@ -604,7 +615,6 @@ public class NhanVienController {
 				try {
 					Program.ExecSqlDML(sql_CCN, NhanVienModel.getManv(), ChiNhanh.get(CCNFrm.getCBBoxChuyenChiNhanh().getSelectedItem()),MaNVMoi, true);
 					String sqlUndo = "exec sp_ChuyenChiNhanh "+ MaNVMoi+ " ,'" + NhanVienModel.getMacn() + "'," + NhanVienModel.getManv()+ ", "+ isDeleteNVNew;
-					System.out.println(sqlUndo);
 					undoList.push(sqlUndo);
 					NhanVienFrm.getBtnHoanTac().setEnabled(true);
 					JOptionPane.showMessageDialog(null, "Chuyển chi nhánh thành công", "Thông Báo",
