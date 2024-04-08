@@ -1,12 +1,9 @@
 package controller;
 
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.Enumeration;
 
 import javax.swing.AbstractButton;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import main.Program;
