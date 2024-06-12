@@ -51,6 +51,9 @@ public class PhieuXuatController implements ISearcher {
 	}
 
 	public void initController() {
+		if (Program.mGroup.equals("CONGTY")) {
+			px.getComboBox().setEnabled(true);
+		}
 		px.getMntmPhieuXuat().addActionListener(l -> {
 			if (!isSelectedPX) {
 				isSelectedPX = true;
@@ -110,7 +113,7 @@ public class PhieuXuatController implements ISearcher {
 
 		} else {
 			px.getComboBox().setEnabled(true);
-
+			px.getMnOption().setText("Phiếu Xuất");
 		}
 	}
 
@@ -143,6 +146,7 @@ public class PhieuXuatController implements ISearcher {
 			px.getMnOption().setText("Chi Tiết Phiếu Xuất");
 		} else {
 			px.getComboBox().setEnabled(true);
+			px.getMnOption().setText("Chi Tiết Phiếu Xuất");
 		}
 	}
 
@@ -224,7 +228,6 @@ public class PhieuXuatController implements ISearcher {
 			if (Program.mGroup.equals("CONGTY")) {
 				px.getBtnThem().setEnabled(false);
 				px.getBtnXoa().setEnabled(false);
-				px.getBtnThoat().setEnabled(false);
 			}
 
 //			trở về dòng được select hiện tại
@@ -442,7 +445,7 @@ public class PhieuXuatController implements ISearcher {
 				return;
 			}
 
-			// execute return 1, don da ton tai
+			// execute return 1, phieu xuat da ton tai
 			if (res == 1) {
 				JOptionPane.showMessageDialog(null,
 						"Đã tồn tại mã phiếu xuất " + phieuXuatModel.getMapx() + ", vui lòng nhập lại", "Warning",
@@ -506,7 +509,7 @@ public class PhieuXuatController implements ISearcher {
 
 			// Luu truy van de hoan tac yeu cau them
 			String sqlUndo = "";
-			sqlUndo = "DELETE FROM CTPX WHERE MAPX = '" + ctpxModel.getMapx() + "' AND MAVT = '" + ctpxModel.getMavt()
+			sqlUndo = "DELETE FROM CTPX WHERE MAPX = '" + ctpxModel.getMapx().trim() + "' AND MAVT = '" + ctpxModel.getMavt()
 					+ "'";
 
 //			sql = "EXEC sp_CapNhatSoLuongVatTu 'EXPORT','" + ctpxModel.getMavt() + "', " + ctpxModel.getSoLuong();
@@ -573,7 +576,6 @@ public class PhieuXuatController implements ISearcher {
 				px.getTableCTPX().setValueAt(ctpxModel.getSoLuong(), px.getTableCTPX().getSelectedRow(), 2);
 				px.getTableCTPX().setValueAt(Formatter.formatObjecttoMoney(ctpxModel.getDonGia()),
 						px.getTableCTPX().getSelectedRow(), 3);
-				px.getTableCTPX().setValueAt(phieuXuatModel.getMaKho(), px.getTableCTPX().getSelectedRow(), 3);
 				px.getTableCTPX().setValueAt(
 						Formatter.formatObjecttoMoney(ctpxModel.getSoLuong() * ctpxModel.getDonGia()),
 						px.getTableCTPX().getSelectedRow(), 4);
@@ -583,19 +585,23 @@ public class PhieuXuatController implements ISearcher {
 				JOptionPane.showMessageDialog(null, "Lỗi update chi tiết đơn đặt hàng!\n" + e.getMessage(), "Error",
 						JOptionPane.ERROR_MESSAGE);
 				reFreshData();
-				px.getTable().getSelectionModel().setSelectionInterval(row, row);
+				/* MỚI THAY ĐỔI Ở ĐÂY */
+				px.getTableCTPX().getSelectionModel().setSelectionInterval(row, row);
 				return;
 			}
 
 			JOptionPane.showMessageDialog(null, "Ghi thành công!", "Thông báo", JOptionPane.OK_OPTION);
 			px.getBtnHoanTac().setEnabled(true);
-			px.getTable().getSelectionModel().setSelectionInterval(row, row);
+			/* MỚI THAY ĐỔI Ở ĐÂY */
+			px.getTableCTPX().getSelectionModel().setSelectionInterval(row, row);
 			System.out.println("số phần tử trong ctpxlist: " + px.getCtpxList().size());
 			px.getCtpxList().set(row, ctpxModel);
 			// Luu truy van de hoan tac yeu cau update
 			String sqlUndo = "";
+			// Không sử dụng được phieuXuatModel.getMapx() vì bị null
 			sqlUndo = "UPDATE CTPX SET SOLUONG = '" + soLuong + "', " + "DONGIA = '" + donGia + "' " + "WHERE MAPX = '"
-					+ phieuXuatModel.getMapx() + "' AND MAVT = '" + ctpxModel.getMavt() + "'";
+					+ px.getTable().getValueAt(px.getTable().getSelectedRow(), 0).toString().trim() + "' AND MAVT = '" + ctpxModel.getMavt() + "'";
+			System.out.println(sqlUndo);
 			undoList.push(new Object[] { sqlUndo, row });
 		}
 	}
@@ -618,7 +624,7 @@ public class PhieuXuatController implements ISearcher {
 			Program.myReader = Program.ExecSqlDataReader(sql, px.getTextFieldMaPX().getText());
 			try {
 				if (Program.myReader.next()) {
-					JOptionPane.showMessageDialog(null, "Không thể xóa phiếu nhập khi đã tồn tại vật tư", "Error",
+					JOptionPane.showMessageDialog(null, "Không thể xóa phiếu xuất khi đã tồn tại vật tư", "Error",
 							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
