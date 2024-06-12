@@ -490,7 +490,7 @@ public class DatHangController implements ISearcher {
 			}
 			JOptionPane.showMessageDialog(null, "Ghi thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 			dh.getBtnHoanTac().setEnabled(true);
-			dh.getTable().getSelectionModel().setSelectionInterval(row, row);
+			dh.getTableCTDH().getSelectionModel().setSelectionInterval(row, row);
 			dh.getCtdhList().set(row, ctdhModel);
 			// Luu truy van de hoan tac yeu cau update
 			String sqlUndo;

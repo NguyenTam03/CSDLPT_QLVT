@@ -8,6 +8,10 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 //import javax.swing.JComboBox;
@@ -48,23 +52,32 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 	private JTextField textFieldMaNV;
 	private static JTextField textFieldMaKho;
 	private static JTextField textFieldMaVT;
+	private static JTextField textFieldTenKho;
+	private static JTextField textFieldTenVT;
 	private JTable tableCTPX;
-	private static JSpinner spinnerSoLuong, spinnerDonGia;
-//	private JComboBox<String> comboBoxNgay;
+	private JSpinner spinnerSoLuong, spinnerDonGia;
 	private JDateChooser ngay;
 	public DefaultTableModel ctpxModel;
 	private CTPXDao ctpxDao;
 	private ArrayList<CTPXModel> ctpxList;
 	private JMenuItem mntmPhieuXuat, mntmCTPX;
-	private JLabel lblHoTenNV;
-	private static JLabel lblTenKho;
-	private static JLabel lblTenVT;
 	private JMenu mnOption;
 	private ListSelectionListener selectionListenerCTPX;
 	private KhoOptionFormForPX khoOptionFormPx;
 	private VatTuOptionFormForPX vatTuOptionFormPx;
+	private Map<String, List<Object>> maNhanVienKho;
+	private Map<Integer, String> maVT;
+	private JTextField textFieldTenNV;
+	private PhieuXuatController ac;
+	
+	/* Những map này phục vụ cho chức năng search
+	 * key là khóa, value là tên */
+	private Map<Integer, String> nhanVienInfo;
+	private Map<String, String> khoInfo;
+	private Map<String, String> vatTuInfo;
 
 	public PhieuXuatForm() {
+		ac = new PhieuXuatController(this);
 		table.setEnabled(false);
 		comboBox.setEnabled(false);
 		scrollPane.setEnabled(false);
@@ -98,25 +111,29 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 
 		GroupLayout gl_panel_2 = new GroupLayout(panel_2);
-		gl_panel_2
-				.setHorizontalGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
-						.addGroup(Alignment.TRAILING, gl_panel_2.createSequentialGroup()
-								.addComponent(panelInfo, GroupLayout.DEFAULT_SIZE, 353, Short.MAX_VALUE)
-								.addPreferredGap(ComponentPlacement.RELATED)
-								.addGroup(gl_panel_2.createParallelGroup(Alignment.TRAILING, false)
-										.addComponent(lblNewLabel_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
-												Short.MAX_VALUE)
-										.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 695, Short.MAX_VALUE)))
-						.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 1052, Short.MAX_VALUE));
-		gl_panel_2.setVerticalGroup(gl_panel_2.createParallelGroup(Alignment.TRAILING).addGroup(gl_panel_2
-				.createSequentialGroup().addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
-				.addPreferredGap(ComponentPlacement.RELATED)
-				.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING).addGroup(gl_panel_2.createSequentialGroup()
-						.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(ComponentPlacement.RELATED).addComponent(scrollPane, 0, 0, Short.MAX_VALUE))
+		gl_panel_2.setHorizontalGroup(
+			gl_panel_2.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_panel_2.createSequentialGroup()
+					.addComponent(panelInfo, GroupLayout.PREFERRED_SIZE, 427, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblNewLabel_1, GroupLayout.DEFAULT_SIZE, 811, Short.MAX_VALUE)
+						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 811, Short.MAX_VALUE)))
+				.addComponent(lblNewLabel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 1244, Short.MAX_VALUE)
+		);
+		gl_panel_2.setVerticalGroup(
+			gl_panel_2.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_panel_2.createSequentialGroup()
+					.addGap(2)
+					.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
+					.addGap(2)
+					.addGroup(gl_panel_2.createParallelGroup(Alignment.TRAILING)
 						.addGroup(gl_panel_2.createSequentialGroup()
-								.addComponent(panelInfo, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE)
-								.addContainerGap()))));
+							.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
+							.addGap(2)
+							.addComponent(scrollPane, 0, 0, Short.MAX_VALUE))
+						.addComponent(panelInfo, GroupLayout.PREFERRED_SIZE, 284, GroupLayout.PREFERRED_SIZE)))
+		);
 
 		tableCTPX = new JTable();
 		tableCTPX.setEnabled(false);
@@ -129,45 +146,42 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 		panelDatHang.setLayout(null);
 
 		JLabel lblMaPX = new JLabel("Mã Phiếu Xuất");
-		lblMaPX.setBounds(20, 15, 103, 14);
+		lblMaPX.setBounds(20, 15, 92, 14);
 		panelDatHang.add(lblMaPX);
 
 		textFieldMaPX = new JTextField();
-		textFieldMaPX.setBounds(133, 12, 71, 20);
+		textFieldMaPX.setBounds(122, 12, 71, 20);
 		panelDatHang.add(textFieldMaPX);
 		textFieldMaPX.setColumns(10);
 		textFieldMaPX.setEditable(false);
 
 		JLabel lblNgay = new JLabel("Ngày");
-		lblNgay.setBounds(20, 36, 49, 14);
+		lblNgay.setBounds(210, 15, 39, 14);
 		panelDatHang.add(lblNgay);
 
-//		comboBoxNgay = new JComboBox<>();
-//		comboBoxNgay.setBounds(133, 33, 152, 20);
-//		panelDatHang.add(comboBoxNgay);
-//		comboBoxNgay.setEnabled(false);
 		ngay = new JDateChooser();
-		ngay.setBounds(133, 33, 152, 20);
+		ngay.setBounds(299, 15, 116, 20);
 		panelDatHang.add(ngay);
 		ngay.setEnabled(false);
+		ngay.setDateFormatString("dd-MM-yyyy");
 
 		JLabel lblTenKH = new JLabel("Tên Khách Hàng");
-		lblTenKH.setBounds(20, 58, 103, 14);
+		lblTenKH.setBounds(20, 42, 105, 14);
 		panelDatHang.add(lblTenKH);
 
 		textFieldTenKH = new JTextField();
-		textFieldTenKH.setBounds(133, 55, 131, 20);
+		textFieldTenKH.setBounds(122, 39, 131, 20);
 		panelDatHang.add(textFieldTenKH);
 		textFieldTenKH.setColumns(10);
 		textFieldTenKH.setEditable(false);
 
 		JLabel lblMaNV = new JLabel("Mã Nhân Viên");
-		lblMaNV.setBounds(20, 78, 103, 14);
+		lblMaNV.setBounds(20, 70, 82, 14);
 		panelDatHang.add(lblMaNV);
 
 		textFieldMaNV = new JTextField();
 		textFieldMaNV.setColumns(10);
-		textFieldMaNV.setBounds(133, 77, 71, 20);
+		textFieldMaNV.setBounds(122, 67, 71, 20);
 		panelDatHang.add(textFieldMaNV);
 		textFieldMaNV.setEditable(false);
 
@@ -177,7 +191,7 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 
 		textFieldMaKho = new JTextField();
 		textFieldMaKho.setEditable(false);
-		textFieldMaKho.setBounds(73, 97, 57, 20);
+		textFieldMaKho.setBounds(122, 97, 71, 20);
 		panelDatHang.add(textFieldMaKho);
 		textFieldMaKho.setColumns(10);
 
@@ -187,14 +201,22 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 				"Chi Ti\u1EBFt Phi\u1EBFu Xu\u1EA5t", TitledBorder.LEADING, TitledBorder.TOP, null,
 				new Color(0, 0, 0)));
 		GroupLayout gl_panelInfo = new GroupLayout(panelInfo);
-		gl_panelInfo.setHorizontalGroup(gl_panelInfo.createParallelGroup(Alignment.LEADING)
+		gl_panelInfo.setHorizontalGroup(
+			gl_panelInfo.createParallelGroup(Alignment.LEADING)
 				.addComponent(panelDatHang, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-				.addComponent(panelCTPX, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE));
-		gl_panelInfo.setVerticalGroup(gl_panelInfo.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panelInfo.createSequentialGroup()
-						.addComponent(panelDatHang, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(panelCTPX, GroupLayout.PREFERRED_SIZE, 116, GroupLayout.PREFERRED_SIZE)));
+				.addGroup(Alignment.TRAILING, gl_panelInfo.createSequentialGroup()
+					.addGap(3)
+					.addComponent(panelCTPX, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addGap(3))
+		);
+		gl_panelInfo.setVerticalGroup(
+			gl_panelInfo.createParallelGroup(Alignment.TRAILING)
+				.addGroup(Alignment.LEADING, gl_panelInfo.createSequentialGroup()
+					.addComponent(panelDatHang, GroupLayout.PREFERRED_SIZE, 152, GroupLayout.PREFERRED_SIZE)
+					.addGap(3)
+					.addComponent(panelCTPX, GroupLayout.PREFERRED_SIZE, 132, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(3, Short.MAX_VALUE))
+		);
 		panelCTPX.setLayout(null);
 
 		JLabel lblMaVT = new JLabel("Mã Vật Tư");
@@ -203,14 +225,14 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 
 		textFieldMaVT = new JTextField();
 		textFieldMaVT.setEditable(false);
-		textFieldMaVT.setBounds(89, 22, 86, 20);
+		textFieldMaVT.setBounds(114, 22, 86, 20);
 		panelCTPX.add(textFieldMaVT);
 		textFieldMaVT.setColumns(10);
 
 		btnVatTuOption = new JButton("Chọn Vật Tư");
 		btnVatTuOption.setEnabled(false);
 		btnVatTuOption.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		btnVatTuOption.setBounds(89, 54, 103, 23);
+		btnVatTuOption.setBounds(301, 21, 103, 23);
 		panelCTPX.add(btnVatTuOption);
 
 		JLabel lblSoLuong = new JLabel("Số Lượng");
@@ -221,24 +243,57 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 		spinnerSoLuong
 				.setModel(new SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
 		spinnerSoLuong.setEnabled(false);
-		spinnerSoLuong.setBounds(89, 88, 86, 20);
+		spinnerSoLuong.setBounds(114, 88, 86, 20);
 		panelCTPX.add(spinnerSoLuong);
 
 		JLabel lblDonGia = new JLabel("Đơn Giá");
-		lblDonGia.setBounds(197, 91, 52, 14);
+		lblDonGia.setBounds(239, 91, 52, 14);
 		panelCTPX.add(lblDonGia);
 
 		spinnerDonGia = new JSpinner();
-		spinnerDonGia.setModel(new SpinnerNumberModel(Float.valueOf(0), Float.valueOf(0), null, Float.valueOf(1)));
+		spinnerDonGia.setModel(new SpinnerNumberModel(Float.valueOf(0), Float.valueOf(0), null, Float.valueOf(100)));
 		spinnerDonGia.setEnabled(false);
-		spinnerDonGia.setBounds(253, 88, 86, 20);
+		spinnerDonGia.setBounds(318, 88, 86, 20);
 		panelCTPX.add(spinnerDonGia);
+
+		JLabel lblTenVT = new JLabel("Tên Vật Tư");
+		lblTenVT.setBounds(20, 60, 84, 14);
+		panelCTPX.add(lblTenVT);
+
+		textFieldTenVT = new JTextField();
+		textFieldTenVT.setText((String) null);
+		textFieldTenVT.setEditable(false);
+		textFieldTenVT.setColumns(10);
+		textFieldTenVT.setBounds(114, 57, 160, 20);
+		panelCTPX.add(textFieldTenVT);
 
 		btnKhoOption = new JButton("Chọn Kho Hàng");
 		btnKhoOption.setEnabled(false);
 		btnKhoOption.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		btnKhoOption.setBounds(234, 96, 105, 23);
+		btnKhoOption.setBounds(299, 96, 105, 23);
 		panelDatHang.add(btnKhoOption);
+
+		JLabel lblTenNV = new JLabel("Tên Nhân Viên");
+		lblTenNV.setBounds(210, 70, 89, 14);
+		panelDatHang.add(lblTenNV);
+
+		textFieldTenNV = new JTextField();
+		textFieldTenNV.setText((String) null);
+		textFieldTenNV.setEditable(false);
+		textFieldTenNV.setColumns(10);
+		textFieldTenNV.setBounds(299, 67, 116, 20);
+		panelDatHang.add(textFieldTenNV);
+
+		JLabel lblTenKho = new JLabel("Tên Kho");
+		lblTenKho.setBounds(20, 125, 61, 14);
+		panelDatHang.add(lblTenKho);
+
+		textFieldTenKho = new JTextField();
+		textFieldTenKho.setText((String) null);
+		textFieldTenKho.setEditable(false);
+		textFieldTenKho.setColumns(10);
+		textFieldTenKho.setBounds(122, 122, 131, 20);
+		panelDatHang.add(textFieldTenKho);
 		panelInfo.setLayout(gl_panelInfo);
 		panel_2.setLayout(gl_panel_2);
 
@@ -258,18 +313,8 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 		mntmCTPX = new JMenuItem("Chi tiết phiếu xuất");
 		mnOption.add(mntmCTPX);
 
-		lblHoTenNV = new JLabel("");
-		lblHoTenNV.setBounds(214, 75, 125, 20);
-		panelDatHang.add(lblHoTenNV);
-
-		lblTenKho = new JLabel("");
-		lblTenKho.setBounds(133, 97, 103, 20);
-		panelDatHang.add(lblTenKho);
-
-		lblTenVT = new JLabel("");
-		lblTenVT.setBounds(194, 22, 166, 20);
-		panelCTPX.add(lblTenVT);
-
+		getBtnThoat().addActionListener(l -> exitPhieuXuat());
+		
 //      load chi nhánh lên combobox
 		loadChiNhanh();
 
@@ -293,84 +338,42 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 
 //		CONGTY có thể chọn chi nhánh để xem dữ liệu
 		comboBox.addItemListener(l -> loadDataOtherServer(l));
-//		lắng nghe sự kiện chọn row đồng thời in dữ liệu ra textfield cho bảng phiếu xuất
+//		lắng nghe sự kiện chọn row đồng thời in dữ liệu ra textfield cho bảng ctpx
 		selectionListenerCTPX = e -> {
-			String sql = "SELECT MAVT FROM Vattu WHERE TENVT = ?";
-			Program.myReader = Program.ExecSqlDataReader(sql, tableCTPX.getValueAt(tableCTPX.getSelectedRow(), 1).toString());
-			try {
-				Program.myReader.next();
-				textFieldMaVT.setText(Program.myReader.getString(1));
-				
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			getLblTenVT().setText(tableCTPX.getValueAt(tableCTPX.getSelectedRow(), 1).toString());
+
+			textFieldMaVT.setText(maVT.get(tableCTPX.getSelectedRow()));
+			textFieldTenVT.setText(tableCTPX.getValueAt(tableCTPX.getSelectedRow(), 1).toString());
 			spinnerSoLuong.setValue(tableCTPX.getValueAt(tableCTPX.getSelectedRow(), 2));
-			spinnerDonGia.setValue(tableCTPX.getValueAt(tableCTPX.getSelectedRow(), 3));
-						
+			spinnerDonGia.setValue(Formatter.formatMoneyToFloat(tableCTPX.getValueAt(tableCTPX.getSelectedRow(), 3).toString()));
+
 		};
+//		lắng nghe sự kiện chọn row đồng thời in dữ liệu ra textfield cho bảng phiếu xuất
+
 		selectionListener = e -> {
 			textFieldMaPX.setText(table.getValueAt(table.getSelectedRow(), 0).toString());
 			try {
-				ngay.setDate(new SimpleDateFormat("dd-MM-yyyy").parse(table.getValueAt(table.getSelectedRow(), 1).toString()));
+				ngay.setDate(new SimpleDateFormat("dd-MM-yyyy")
+						.parse(table.getValueAt(table.getSelectedRow(), 1).toString()));
 			} catch (ParseException e1) {
 				e1.printStackTrace();
 			}
 			textFieldTenKH.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
-			
-			/* Lấy manv giựa trên họ tên */
-			String sql = "SELECT MANV FROM NhanVien WHERE Ho + ' ' + Ten = ?";
-			Program.myReader = Program.ExecSqlDataReader(sql, table.getValueAt(table.getSelectedRow(), 3).toString());
-			try {
-				Program.myReader.next();
-				textFieldMaNV.setText(Program.myReader.getString(1));
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			
-			getLblHoTenNV().setText(table.getValueAt(table.getSelectedRow(), 3).toString());
-			
-			
-			/* Lấy makho giựa trên tenkho */
-			sql = "SELECT MAKHO FROM KHO WHERE TENKHO = ?";
-			Program.myReader = Program.ExecSqlDataReader(sql, table.getValueAt(table.getSelectedRow(), 4).toString());
-			try {
-				Program.myReader.next();
-				textFieldMaKho.setText(Program.myReader.getString(1));
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
 
-			sql = "SELECT TENKHO FROM KHO WHERE MAKHO = ?";
-			Program.myReader = Program.ExecSqlDataReader(sql, getTextFieldMaKho().getText());
-			try {
-				Program.myReader.next();
-				getLblTenKho().setText(Program.myReader.getString(1));
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			textFieldMaNV.setText(maNhanVienKho.get(table.getValueAt(table.getSelectedRow(), 0)).get(0).toString());
+			textFieldTenNV.setText(table.getValueAt(table.getSelectedRow(), 3).toString());
+
+			textFieldMaKho.setText(maNhanVienKho.get(table.getValueAt(table.getSelectedRow(), 0)).get(1).toString());
+			textFieldTenKho.setText(table.getValueAt(table.getSelectedRow(), 4).toString());
+
+			tableCTPX.getSelectionModel().removeListSelectionListener(selectionListenerCTPX);
+			ctpxModel.setRowCount(0);
 			loadDataIntoTableCTPX();
 		};
 		table.getSelectionModel().addListSelectionListener(selectionListener);
 
-//		lắng nghe sự kiện chọn row đồng thời in dữ liệu ra textfield cho bảng ctpx
-
-//		selectionListener = e -> {
-//			textFieldMaVT.setText(tableCTPX.getValueAt(tableCTPX.getSelectedRow(), 1).toString()); 
-//			
-//			
-//			spinnerSoLuong.setValue(tableCTPX.getValueAt(tableCTPX.getSelectedRow(), 2));
-//			spinnerDonGia.setValue(tableCTPX.getValueAt(tableCTPX.getSelectedRow(), 3));
-//						
-//		};
-//		tableCTPX.setEnabled(false);
-//		tableCTPX.getSelectionModel().addListSelectionListener(selectionListener);
-//
-		PhieuXuatController ac = new PhieuXuatController(this);
+		if (table.getRowCount() > 0) {
+			table.getSelectionModel().setSelectionInterval(0, 0);
+		}
 		ac.initController();
 	}
 
@@ -394,13 +397,25 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 		return textFieldMaNV;
 	}
 
-
 	public static JTextField getTextFieldMaKho() {
 		return textFieldMaKho;
 	}
 
 	public static JTextField getTextFieldMaVT() {
 		return textFieldMaVT;
+	}
+
+	
+	public JTextField getTextFieldTenNV() {
+		return textFieldTenNV;
+	}
+
+	public static JTextField getTextFieldTenKho() {
+		return textFieldTenKho;
+	}
+
+	public static JTextField getTextFieldTenVT() {
+		return textFieldTenVT;
 	}
 
 	public JDateChooser getNgay() {
@@ -419,28 +434,16 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 		return mntmCTPX;
 	}
 
-	public static JSpinner getSpinnerSoLuong() {
+	public JSpinner getSpinnerSoLuong() {
 		return spinnerSoLuong;
 	}
 
-	public static JSpinner getSpinnerDonGia() {
+	public JSpinner getSpinnerDonGia() {
 		return spinnerDonGia;
 	}
 
 	public DefaultTableModel getCtpxModel() {
 		return ctpxModel;
-	}
-
-	public JLabel getLblHoTenNV() {
-		return lblHoTenNV;
-	}
-
-	public static JLabel getLblTenKho() {
-		return lblTenKho;
-	}
-
-	public static JLabel getLblTenVT() {
-		return lblTenVT;
 	}
 
 	public JMenu getMnOption() {
@@ -459,11 +462,6 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 		khoOptionFormPx = new KhoOptionFormForPX();
 		return khoOptionFormPx;
 	}
-	
-	
-
-
-	
 
 	public VatTuOptionFormForPX getVatTuOptionFormPx() {
 		String mapx = textFieldMaPX.getText();
@@ -471,29 +469,51 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 		return vatTuOptionFormPx;
 	}
 
+	public ArrayList<CTPXModel> getCtpxList() {
+		return ctpxList;
+	}
 
+	public Map<String, List<Object>> getMaNhanVienKho() {
+		return maNhanVienKho;
+	}
+
+	public Map<Integer, String> getMaVT() {
+		return maVT;
+	}
+	
+	
+	public Map<Integer, String> getNhanVienInfo() {
+		return nhanVienInfo;
+	}
+
+	public Map<String, String> getKhoInfo() {
+		return khoInfo;
+	}
+
+
+	public Map<String, String> getVatTuInfo() {
+		return vatTuInfo;
+	}
 
 	public void loadDataIntoTable() {
-		SimpleDateFormat sdf = null;
-		String ngayHienThi = "";
+		loadData();
+		maNhanVienKho = new HashMap<String, List<Object>>();
+		nhanVienInfo = new HashMap<Integer, String>();
+		khoInfo = new HashMap<String, String>();
+		String sql = "";
 		String hoTenNV = "";
 		String tenKho = "";
-		loadData();
 		for (PhieuXuatModel px : list) {
-			/* format ngày thành dd-mm-yyyy */
-			sdf = new SimpleDateFormat("dd-MM-yyyy");
-			ngayHienThi = sdf.format(px.getNgay()) ;
 			/* hiển thị tên nhân viên thay cho mã */
-			String sql = "SELECT Ho + ' ' + Ten FROM NhanVien WHERE MANV = ?";
+			sql = "SELECT Ho + ' ' + Ten FROM NhanVien WHERE MANV = ?";
 			Program.myReader = Program.ExecSqlDataReader(sql, px.getManv());
 			try {
 				Program.myReader.next();
 				hoTenNV = Program.myReader.getString(1);
 			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			
+
 			/* hiển thị tên nhân viên thay cho mã */
 			sql = "SELECT TENKHO FROM KHO WHERE MAKHO = ?";
 			Program.myReader = Program.ExecSqlDataReader(sql, px.getMaKho());
@@ -501,39 +521,65 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 				Program.myReader.next();
 				tenKho = Program.myReader.getString(1);
 			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			
-			Object[] rowData = { px.getMapx(), ngayHienThi, px.getHoTenKH(), hoTenNV, tenKho };
+			nhanVienInfo.put(px.getManv(), hoTenNV);
+			khoInfo.put(px.getMaKho(), tenKho);
+			
+			List<Object> values = new ArrayList<Object>();
+			values.add(px.getManv());
+			values.add(px.getMaKho());
+			maNhanVienKho.put(px.getMapx(), values);
+			Object[] rowData = { px.getMapx(), Formatter.formatterDate(px.getNgay()), px.getHoTenKH(), hoTenNV,
+					tenKho };
 			model.addRow(rowData);
 		}
 	}
 
 	public void loadDataIntoTableCTPX() {
-		tableCTPX.getSelectionModel().removeListSelectionListener(selectionListenerCTPX);
+//		String mapx = table.getValueAt(table.getSelectedRow(), 0).toString();
+		String mapx = getTextFieldMaPX().getText();
 		ctpxModel.setColumnIdentifiers(ctpxDao.getColName().toArray());
-		ctpxModel.setRowCount(0);
-
-		ctpxList = ctpxDao.selectAllByMaPX(textFieldMaPX.getText());
+		String sql = "SELECT MAPX, MAVT, SOLUONG, DONGIA FROM CTPX WHERE MAPX = ?";
+		ctpxList = ctpxDao.selectByCondition(sql, mapx);
+		maVT = new HashMap<Integer, String>();
 		String tenVT = "";
+		Integer key = 0;
+		
+		vatTuInfo = new HashMap<String, String>();
 		for (CTPXModel px : ctpxList) {
-			String sql = "SELECT TENVT FROM VATTU WHERE MAVT = ?";
+			sql = "SELECT TENVT FROM Vattu WHERE MAVT = ?";
 			Program.myReader = Program.ExecSqlDataReader(sql, px.getMavt());
 			try {
 				Program.myReader.next();
 				tenVT = Program.myReader.getString(1);
 			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			Object[] rowData = { px.getMapx(), tenVT, px.getSoLuong(), px.getDonGia() };
+			
+			vatTuInfo.put(px.getMavt(), tenVT);
+			
+			maVT.put(key, px.getMavt());
+			key += 1;
+			Object[] rowData = { px.getMapx(), tenVT, px.getSoLuong(), Formatter.formatObjecttoMoney(px.getDonGia()),
+					Formatter.formatObjecttoMoney(px.getSoLuong() * px.getDonGia())};
 			ctpxModel.addRow(rowData);
 		}
-		
+
 		if (tableCTPX.getRowCount() > 0) {
 			tableCTPX.getSelectionModel().addListSelectionListener(selectionListenerCTPX);
 			tableCTPX.getSelectionModel().setSelectionInterval(0, 0);
+			if (ac.isSelectedCTPX()) {
+				btnVatTuOption.setEnabled(true);
+			}
+		}
+		else {
+			textFieldMaVT.setText("");
+			textFieldTenVT.setText("");
+			spinnerSoLuong.setValue(1);
+			spinnerDonGia.setValue(0);
+			btnVatTuOption.setEnabled(false);
 		}
 	}
 
@@ -557,5 +603,10 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 			loadDataIntoTable();
 			table.getSelectionModel().addListSelectionListener(selectionListener);
 		}
+	}
+	
+	private void exitPhieuXuat() {
+		Program.frmMain.getTabbedPane_Main().removeTabAt(Program.frmMain.getTabbedPane_Main().getSelectedIndex());
+		Program.frmMain.getPanel_phieuxuat().remove(this);
 	}
 }
