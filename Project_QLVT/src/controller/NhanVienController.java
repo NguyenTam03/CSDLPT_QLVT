@@ -176,10 +176,6 @@ public class NhanVienController {
 						JOptionPane.WARNING_MESSAGE);
 				return;
 			}
-			if (NgaySinh == null) {
-				JOptionPane.showMessageDialog(null, "Hãy chọn ngày sinh", "Thông Báo", JOptionPane.WARNING_MESSAGE);
-				return;
-			}
 			if (Luong >= 40000000) {
 				JOptionPane.showMessageDialog(null, "Lương phải trên 4.000.000đ", "Thông Báo",
 						JOptionPane.WARNING_MESSAGE);
@@ -232,7 +228,7 @@ public class NhanVienController {
 	}
 	// Check CMND
 	public boolean checkCMND(String CMND, String MaNV) {
-		String sql = "SELECT CASE WHEN ? IN (SELECT SoCMND FROM NhanVien where ? <> MaNv) THEN 'true' ELSE 'false' END";
+		String sql = "SELECT CASE WHEN ? IN (SELECT SoCMND FROM Link2.QLVT_DATHANG.dbo.NhanVien where ? <> MaNv) THEN 'true' ELSE 'false' END";
 		Program.myReader = Program.ExecSqlDataReader(sql, CMND , MaNV);
 		try {
 			Program.myReader.next();
@@ -370,13 +366,14 @@ public class NhanVienController {
 				System.out.println("Kết nối không thành công");
 				return;
 			}
-			try {
-				Program.ExecSqlDML(queryUndo);
-				JOptionPane.showConfirmDialog(null, "Khôi phục nhân viên chuyển chi nhánh thành công", "Thông Báo", JOptionPane.CLOSED_OPTION);
-			}
-			catch (Exception e) {
+
+			if (Program.ExecSqlNonQuery(queryUndo) == -1) {
 				JOptionPane.showConfirmDialog(null, "Khôi phục nhân viên chuyển chi nhánh thất bại!", "Thông Báo", JOptionPane.CLOSED_OPTION);
-				e.printStackTrace();
+				return;
+			}
+			else {
+				JOptionPane.showConfirmDialog(null, "Khôi phục nhân viên chuyển chi nhánh thành công", "Thông Báo",
+						JOptionPane.CLOSED_OPTION);
 			}	
 			
 			Program.servername = CurrentBranch;
@@ -584,8 +581,8 @@ public class NhanVienController {
 			int MaNVMoi = -1;
 			// Kiểm tra xem nhân viên đã tồn tại bên site bên kia chưa
 			boolean isDeleteNVNew = false;
-			String sql_CheckMaNV = "select isnull(MaNV,-1) from link1.QLVT_DATHANG.dbo.NhanVien where ? = HO and ? = TEN and ? = SOCMND and ? =DIACHI and ? = NGAYSINH and ? = LUONG";
-			Program.myReader = Program.ExecSqlDataReader(sql_CheckMaNV, NhanVienModel.getHo(), NhanVienModel.getTen(), NhanVienModel.getSoCMND(), NhanVienModel.getDiaChi(), NhanVienModel.getNgaySinh(), NhanVienModel.getLuong());
+			String sql_CheckMaNV = "select isnull(MaNV,-1) from link1.QLVT_DATHANG.dbo.NhanVien where ? = SOCMND ";
+			Program.myReader = Program.ExecSqlDataReader(sql_CheckMaNV, NhanVienModel.getSoCMND());
 			try {
 				Program.myReader.next();
 				MaNVMoi = Program.myReader.getInt(1);
@@ -616,6 +613,7 @@ public class NhanVienController {
 					Program.ExecSqlDML(sql_CCN, NhanVienModel.getManv(), ChiNhanh.get(CCNFrm.getCBBoxChuyenChiNhanh().getSelectedItem()),MaNVMoi, true);
 					String sqlUndo = "exec sp_ChuyenChiNhanh "+ MaNVMoi+ " ,'" + NhanVienModel.getMacn() + "'," + NhanVienModel.getManv()+ ", "+ isDeleteNVNew;
 					undoList.push(sqlUndo);
+					System.out.println(sqlUndo);
 					NhanVienFrm.getBtnHoanTac().setEnabled(true);
 					JOptionPane.showMessageDialog(null, "Chuyển chi nhánh thành công", "Thông Báo",
 							JOptionPane.WARNING_MESSAGE);
