@@ -22,6 +22,7 @@ import views.LoginForm;
 import views.NhanVienForm;
 import views.NhanVienOptionForm;
 import views.PhieuXuatForm;
+import views.ReportDanhSachNhanVien;
 import views.PhieuLapForm;
 import views.VatTuForm;
 
@@ -52,6 +53,15 @@ public class NavController {
 			public void mouseClicked(MouseEvent e) {
 				ChangePasswordForm changePasswordForm = new ChangePasswordForm();
 				changePasswordForm.setVisible(true);
+			}
+		});
+		
+		frmMain.getMnNhanVienList().addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				ReportDanhSachNhanVien reportNhanVien = new ReportDanhSachNhanVien();
+				reportNhanVien.setVisible(true);
+				reportNhanVien.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			}
 		});
 
