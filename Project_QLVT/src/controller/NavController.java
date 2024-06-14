@@ -22,7 +22,11 @@ import views.LoginForm;
 import views.NhanVienForm;
 import views.NhanVienOptionForm;
 import views.PhieuXuatForm;
+<<<<<<< HEAD
 import views.TongHopNhapXuat;
+=======
+import views.ReportDanhSachNhanVien;
+>>>>>>> f38537b35c592ef0da72879a2b982938f06e1546
 import views.PhieuLapForm;
 import views.VatTuForm;
 
@@ -80,6 +84,15 @@ public class NavController {
 					form = new TongHopNhapXuat();
 					form.setVisible(true);
 				}
+			}
+		});
+		
+		frmMain.getMnNhanVienList().addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				ReportDanhSachNhanVien reportNhanVien = new ReportDanhSachNhanVien();
+				reportNhanVien.setVisible(true);
+				reportNhanVien.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			}
 		});
 

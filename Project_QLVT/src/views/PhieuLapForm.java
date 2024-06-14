@@ -6,10 +6,10 @@ import java.awt.Color;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 
-import dao.CTPLDao;
+import dao.KhoDao;
 import dao.PhieuLapDao;
 import main.Program;
-import model.CTPLModel;
+
 import model.PhieuLapModel;
 
 import javax.swing.JPanel;
@@ -19,10 +19,10 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JLabel;
 import javax.swing.border.LineBorder;
-import javax.swing.JComboBox;
+
 import javax.swing.JSpinner;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.ListSelectionListener;
+
 import javax.swing.table.DefaultTableModel;
 import controller.PhieuLapController;
 
@@ -32,6 +32,9 @@ import java.awt.Font;
 import java.awt.event.ItemEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+
 import javax.swing.SwingConstants;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -39,6 +42,10 @@ import javax.swing.JMenuBar;
 import javax.swing.border.EtchedBorder;
 import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
+
+import common.method.Formatter;
+
+import javax.swing.SpinnerNumberModel;
 
 public class PhieuLapForm extends CommonView<PhieuLapModel, PhieuLapDao> {
 	private static final long serialVersionUID = 1L;
@@ -56,7 +63,8 @@ public class PhieuLapForm extends CommonView<PhieuLapModel, PhieuLapDao> {
 	private JDateChooser Ngay;
 	private JLabel lbTenVatTu, lbTenKho,lbHoTenNV ;
 	private JButton btnKho;
-
+	public static HashMap<String, Integer> maHoTenNV;
+	public static HashMap<String, String> maTenKho;
 
 	public PhieuLapForm() {
 		super();
@@ -198,6 +206,7 @@ public class PhieuLapForm extends CommonView<PhieuLapModel, PhieuLapDao> {
 		panelCTDH.add(lblSoLuong);
 
 		SoLuong = new JSpinner();
+		SoLuong.setModel(new SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
 		SoLuong.setEnabled(false);
 		SoLuong.setBounds(111, 81, 86, 20);
 		panelCTDH.add(SoLuong);
@@ -207,6 +216,7 @@ public class PhieuLapForm extends CommonView<PhieuLapModel, PhieuLapDao> {
 		panelCTDH.add(lblDonGia);
 
 		DonGia = new JSpinner();
+		DonGia.setModel(new SpinnerNumberModel(Float.valueOf(0), Float.valueOf(0), null, Float.valueOf(10000)));
 		DonGia.setEnabled(false);
 		DonGia.setBounds(281, 81, 86, 20);
 		panelCTDH.add(DonGia);
@@ -379,13 +389,36 @@ public class PhieuLapForm extends CommonView<PhieuLapModel, PhieuLapDao> {
 	}
 
 	public void loadDataIntoTable() {
+		maHoTenNV = new HashMap<>();
+		maTenKho = new HashMap<>();
 		loadData();
+		String hoTenNV = "";
+		String tenKho = "";
+		String sql;
 		for (PhieuLapModel pl : list) {
-			Object[] rowData = { pl.getMapn(), pl.getNgay(), pl.getMaSoDDH(), pl.getManv(), pl.getMaKho()};
+			sql = "SELECT Ho +' '+Ten FROM NHANVIEN WHERE MANV = ?";
+			Program.myReader = Program.ExecSqlDataReader(sql, pl.getManv());
+			try {
+				Program.myReader.next();
+				hoTenNV = Program.myReader.getString(1);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+			maHoTenNV.put(pl.getMapn(), pl.getManv());
+			sql = "SELECT TENKHO FROM KHO WHERE MAKHO = ?";
+			Program.myReader = Program.ExecSqlDataReader(sql,pl.getMaKho());
+			try {
+				Program.myReader.next();
+				tenKho = Program.myReader.getString(1);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+			maTenKho.put(pl.getMapn(), pl.getMaKho());
+			Object[] rowData = { pl.getMapn(),Formatter.formatterDate(pl.getNgay()) , pl.getMaSoDDH(),hoTenNV ,tenKho };
 			model.addRow(rowData);
 		}
 	}
-
+	
 	private void loadDataOtherServer(ItemEvent l) {
 		if (l.getStateChange() == ItemEvent.SELECTED) {
 			if (Program.conn != null) {

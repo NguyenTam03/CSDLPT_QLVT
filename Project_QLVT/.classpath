@@ -18,7 +18,17 @@
 	<classpathentry kind="lib" path="libraries/itext-2.1.7.jar"/>
 	<classpathentry kind="lib" path="libraries/groovy-all-2.0.1.jar"/>
 	<classpathentry kind="lib" path="libraries/commons-logging-api-1.1.jar"/>
+<<<<<<< HEAD
 	<classpathentry kind="lib" path="libraries/jasperreports-6.21.3.jar"/>
 	<classpathentry kind="lib" path="libraries/commons-collections4-4.4.jar"/>
+=======
+	<classpathentry kind="lib" path="libraries/jasperreports-5.6.0.jar"/>
+	<classpathentry kind="lib" path="libraries/jasperreports-fonts-5.6.0.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+>>>>>>> f38537b35c592ef0da72879a2b982938f06e1546
 	<classpathentry kind="output" path="bin"/>
 </classpath>
