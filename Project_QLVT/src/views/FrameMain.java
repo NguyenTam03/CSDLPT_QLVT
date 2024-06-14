@@ -200,6 +200,7 @@ public class FrameMain extends JFrame {
 		ac.initController();
 	}
 
+
 	public JMenu getMnNhanVien() {
 		return mnNhanVien;
 	}
