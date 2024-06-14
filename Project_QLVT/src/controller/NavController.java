@@ -7,7 +7,6 @@ import java.awt.event.MouseEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 
-import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -16,12 +15,14 @@ import main.Program;
 import views.ChangePasswordForm;
 import views.CreateLoginForm;
 import views.DatHangForm;
+import views.DonDatHangChuaPN;
 import views.FrameMain;
 import views.KhoForm;
 import views.LoginForm;
 import views.NhanVienForm;
 import views.NhanVienOptionForm;
 import views.PhieuXuatForm;
+import views.TongHopNhapXuat;
 import views.PhieuLapForm;
 import views.VatTuForm;
 
@@ -50,8 +51,35 @@ public class NavController {
 		frmMain.getMnChangePassword().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				ChangePasswordForm changePasswordForm = new ChangePasswordForm();
-				changePasswordForm.setVisible(true);
+				if (!ChangePasswordForm.isVisible) {
+					ChangePasswordForm.isVisible = true;
+					ChangePasswordForm changePasswordForm = new ChangePasswordForm();
+					changePasswordForm.setVisible(true);
+					
+				}
+			}
+		});
+		
+		frmMain.getMnDHKhongPN().addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (!DonDatHangChuaPN.isVisible) {
+					DonDatHangChuaPN.isVisible = true;
+					DonDatHangChuaPN form = new DonDatHangChuaPN();
+					form.setVisible(true);
+				}
+			}
+		});
+		
+		frmMain.getMnTongHopNX().addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				TongHopNhapXuat form = null;
+				if (!TongHopNhapXuat.isVisible) {
+					TongHopNhapXuat.isVisible = true;
+					form = new TongHopNhapXuat();
+					form.setVisible(true);
+				}
 			}
 		});
 
@@ -86,8 +114,6 @@ public class NavController {
 		clickedMenuItem("Phiếu xuất", frmMain.getMntmPhieuXuat(), frmMain.getPanel_phieuxuat(), PhieuXuatForm.class);
 		clickedMenuItem("Phiếu Lập", frmMain.getMntmPhieuLap(), frmMain.getPanel_phieulap(), PhieuLapForm.class);
 		
-		
-		
 	}
 
 	private void logout() {
@@ -111,13 +137,20 @@ public class NavController {
 	}
 
 	private void createLogin() {
-		new CreateLoginForm().setVisible(true);
+		if (!CreateLoginForm.isVisible) {
+			CreateLoginForm.isVisible = true;
+			CreateLoginForm form = new CreateLoginForm();
+			form.setVisible(true);
+			
+		}
 	}
 	
 	private void deleteLogin() {
-		NhanVienOptionForm form = new NhanVienOptionForm(true);
-		form.setVisible(true);
-		form.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		if (!NhanVienOptionForm.isVisible) {
+			NhanVienOptionForm.isVisible = true;
+			NhanVienOptionForm form = new NhanVienOptionForm(true);
+			form.setVisible(true);
+		}
 	}
 
 	private void clickedComponentShowTab(String label, JMenu t, JPanel t1, Class<?> formClass) {

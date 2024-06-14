@@ -9,15 +9,6 @@ import model.PhieuXuatModel;
 public class PhieuXuatDao extends IAbstractDao<PhieuXuatModel>{
 
 	public PhieuXuatDao() {
-		init();
-	}
-	
-	private void init() {
-		String sql = "SELECT * FROM PhieuXuat";
-		Program.myReader = Program.ExecSqlDataReader(sql);
-
-		initModel();
-		getColName().remove(getColCount() - 1);
 	}
 	
 	public static PhieuXuatDao getInstance() {
@@ -32,21 +23,24 @@ public class PhieuXuatDao extends IAbstractDao<PhieuXuatModel>{
 
 	@Override
 	public void update(PhieuXuatModel t) throws SQLException {
-		// TODO Auto-generated method stub
-		
+		String sql = "UPDATE PhieuXuat SET HOTENKH = ?, MAKHO = ? WHERE MAPX = ?"; 
+		Program.ExecSqlDML(sql, t.getHoTenKH(), t.getMaKho(), t.getMapx());
 	}
 
 	@Override
 	public void delete(PhieuXuatModel t) throws SQLException {
-		// TODO Auto-generated method stub
-		
+		String sql = "DELETE FROM PhieuXuat WHERE MAPX = ?";
+		Program.ExecSqlDML(sql, t.getMapx());
 	}
 
 	@Override
 	public ArrayList<PhieuXuatModel> selectAll() {
 		ArrayList<PhieuXuatModel> phieuXuatList = new ArrayList<PhieuXuatModel>();
-		String sql = "SELECT * FROM PhieuXuat";
+		String sql = "SELECT MAPX, NGAY, HOTENKH, MANV, MAKHO FROM PhieuXuat";
 		Program.myReader = Program.ExecSqlDataReader(sql);
+		initModel();
+		getColName().set(3, "TENNV");
+		getColName().set(4, "TENKHO");
 		try {
 			while (Program.myReader.next()) {
 				PhieuXuatModel phieuXuatModel = new PhieuXuatModel(

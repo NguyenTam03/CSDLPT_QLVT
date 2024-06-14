@@ -16,6 +16,8 @@ public class CTPXDao extends IAbstractDao<CTPXModel> {
 		Program.myReader = Program.ExecSqlDataReader(sql);
 		initModel();
 		getColName().remove(getColCount() - 1);
+		getColName().set(1, "TENVT");
+		getColName().add("THANHTIEN");
 	}
 
 	public static CTPXDao getInstace() {
@@ -24,26 +26,27 @@ public class CTPXDao extends IAbstractDao<CTPXModel> {
 
 	@Override
 	public void insert(CTPXModel t) throws SQLException {
-		// TODO Auto-generated method stub
+		String sql = "INSERT INTO CTPX (MAPX, MAVT, SOLUONG, DONGIA) VALUES (?, ?, ?, ?)";
+		Program.ExecSqlDML(sql, t.getMapx(), t.getMavt(), t.getSoLuong(), t.getDonGia());
 
 	}
 
 	@Override
 	public void update(CTPXModel t) throws SQLException {
-		// TODO Auto-generated method stub
-
+		String sql = "UPDATE CTPX SET SOLUONG = ?, DONGIA = ? WHERE MAPX = ? AND MAVT = ?";
+		Program.ExecSqlDML(sql, t.getSoLuong(), t.getDonGia(), t.getMapx(), t.getMavt());
 	}
 
 	@Override
 	public void delete(CTPXModel t) throws SQLException {
-		// TODO Auto-generated method stub
-
+		String sql = "DELETE FROM CTPX WHERE MAPX = ? AND MAVT = ?";
+		Program.ExecSqlDML(sql, t.getMapx(), t.getMavt());
 	}
 
 	@Override
 	public ArrayList<CTPXModel> selectAll() {
 		ArrayList<CTPXModel> ctpxList = new ArrayList<CTPXModel>();
-		String sql = "SELECT * FROM CTPX";
+		String sql = "SELECT MAPX, MAVT, SOLUONG, DONGIA FROM CTPX";
 		Program.myReader = Program.ExecSqlDataReader(sql);
 
 		try {
@@ -54,7 +57,6 @@ public class CTPXDao extends IAbstractDao<CTPXModel> {
 			}
 			return ctpxList;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -87,7 +89,21 @@ public class CTPXDao extends IAbstractDao<CTPXModel> {
 
 	@Override
 	public ArrayList<CTPXModel> selectByCondition(String sql, Object... objects) {
-		// TODO Auto-generated method stub
+		ArrayList<CTPXModel> ctpxList = new ArrayList<CTPXModel>();
+//		String sql = "SELECT * FROM CTPX WHERE MAPX = ?";
+		Program.myReader = Program.ExecSqlDataReader(sql, objects);
+
+		try {
+			while (Program.myReader.next()) {
+				CTPXModel ctpxModel = new CTPXModel(Program.myReader.getString(1), Program.myReader.getString(2),
+						Program.myReader.getInt(3), Program.myReader.getFloat(4));
+				ctpxList.add(ctpxModel);
+			}
+			return ctpxList;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 
