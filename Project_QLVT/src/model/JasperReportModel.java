@@ -1,10 +1,12 @@
 package model;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.swing.JFileChooser;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -46,7 +48,27 @@ public class JasperReportModel<E> {
 		// --
 		JasperReport report = JasperCompileManager.compileReport(inputStream);
 		JasperPrint print = JasperFillManager.fillReport(report, parameters, dataSource);
-		JasperExportManager.exportReportToPdfFile(print, fileReport);
+		
+	    JFileChooser fileChooser = new JFileChooser();
+	    fileChooser.setDialogTitle("Chọn nơi lưu file PDF");
+
+	    // Hiển thị hộp thoại lưu file và kiểm tra xem người dùng đã chọn một đường dẫn
+	    // hợp lệ hay không
+	    int userSelection = fileChooser.showSaveDialog(null);
+	    if (userSelection == JFileChooser.APPROVE_OPTION) {
+	        // Lấy đường dẫn được chọn
+	        File fileToSave = fileChooser.getSelectedFile();
+	        fileReport = fileToSave.getAbsolutePath();
+
+	        // Kiểm tra xem đường dẫn đã kết thúc bằng phần mở rộng ".pdf" chưa
+	        if (!fileReport.toLowerCase().endsWith(".pdf")) {
+	            fileReport += ".pdf"; // Nếu không, thêm phần mở rộng ".pdf" vào đường dẫn
+	        }
+	        System.out.println(fileReport);
+	     // Xuất báo cáo ra file PDF
+	        JasperExportManager.exportReportToPdfFile(print, fileReport);
+	      
+	    }
 	}
 
 	public void preViewReport() throws JRException {

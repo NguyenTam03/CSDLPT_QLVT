@@ -1,6 +1,6 @@
 /common/
 /controller/
-/views/
-/model/
-/reports/
 /dao/
+/main/
+/model/
+/views/

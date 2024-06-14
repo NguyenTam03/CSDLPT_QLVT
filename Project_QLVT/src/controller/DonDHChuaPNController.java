@@ -9,7 +9,7 @@ import views.DonDatHangChuaPN;
 public class DonDHChuaPNController implements IJasperReportController {
 	private JasperReportModel<DonDatHangChuaPNModel> reportModel;
 	private DonDatHangChuaPN form;
-	
+
 	@Override
 	public void preview() {
 		String chiNhanh = form.getComboBox().getItemAt(Program.mChinhanh);
@@ -40,15 +40,13 @@ public class DonDHChuaPNController implements IJasperReportController {
 		this.reportModel = new JasperReportModel<DonDatHangChuaPNModel>();
 		this.form = form;
 		reportModel.setFilePath("reports/DS_DDH_CHUA_PN.jrxml");
-		reportModel.setFileReport("D:/Đồ án csdlpt/report/ds_ddh_chua_pn.html");
 		reportModel.setList(form.getList());
 	}
-	
+
 	public void initController() {
 		form.getBtnPreView().addActionListener(e -> preview());
 		form.getBtnPrint().addActionListener(e -> print());
 	}
-
 
 	public JasperReportModel<DonDatHangChuaPNModel> getReportModel() {
 		return reportModel;

@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 
+import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -22,11 +23,8 @@ import views.LoginForm;
 import views.NhanVienForm;
 import views.NhanVienOptionForm;
 import views.PhieuXuatForm;
-<<<<<<< HEAD
 import views.TongHopNhapXuat;
-=======
 import views.ReportDanhSachNhanVien;
->>>>>>> f38537b35c592ef0da72879a2b982938f06e1546
 import views.PhieuLapForm;
 import views.VatTuForm;
 
