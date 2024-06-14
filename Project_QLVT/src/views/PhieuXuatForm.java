@@ -514,7 +514,7 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 				e1.printStackTrace();
 			}
 
-			/* hiển thị tên nhân viên thay cho mã */
+			/* hiển thị tên kho thay cho mã */
 			sql = "SELECT TENKHO FROM KHO WHERE MAKHO = ?";
 			Program.myReader = Program.ExecSqlDataReader(sql, px.getMaKho());
 			try {

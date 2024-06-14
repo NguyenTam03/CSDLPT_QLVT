@@ -7,14 +7,23 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 
 import javax.swing.JOptionPane;
 
 import common.method.Formatter;
 import common.method.ISearcher;
+import dao.VatTuDao;
 import main.Program;
 import model.PhieuXuatModel;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import model.CTPXModel;
 import views.PhieuXuatForm;
 
@@ -85,6 +94,19 @@ public class PhieuXuatController implements ISearcher {
 				search();
 			}
 		});
+		
+		String fileName = "C:\\Users\\dangx\\JaspersoftWorkspace\\test\\FirstReport.jrxml";
+		VatTuDao vatTuDao = VatTuDao.getInstance();
+		JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(vatTuDao.selectAll());
+//		JasperReport report = null;
+		try {
+			JasperReport report = JasperCompileManager.compileReport(fileName);
+			JasperPrint print = JasperFillManager.fillReport(report, null, dataSource);
+			JasperExportManager.exportReportToPdfFile(print, "F:\\University\\Junior\\Second semester\\CSDLPT\\Detai\\FirstReport.pdf");
+		} catch (JRException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 
 	private void initPhieuXuat() {
@@ -105,16 +127,16 @@ public class PhieuXuatController implements ISearcher {
 				px.getBtnXoa().setEnabled(true);
 				px.getBtnKhoOption().setEnabled(true);
 				px.getTextFieldTenKH().setEditable(true);
+				px.getBtnGhi().setEnabled(true);
 			}
 
-			px.getMnOption().setText("Phiếu Xuất");
 			px.getBtnLamMoi().setEnabled(true);
 			px.getTextFieldTim().setEditable(true);
 
 		} else {
 			px.getComboBox().setEnabled(true);
-			px.getMnOption().setText("Phiếu Xuất");
 		}
+		px.getMnOption().setText("Phiếu Xuất");
 	}
 
 	private void initCTPX() {
@@ -143,11 +165,11 @@ public class PhieuXuatController implements ISearcher {
 				px.getBtnGhi().setEnabled(true);
 			}
 			px.getBtnLamMoi().setEnabled(true);
-			px.getMnOption().setText("Chi Tiết Phiếu Xuất");
+
 		} else {
 			px.getComboBox().setEnabled(true);
-			px.getMnOption().setText("Chi Tiết Phiếu Xuất");
 		}
+		px.getMnOption().setText("Chi Tiết Phiếu Xuất");
 	}
 
 	private void addPhieuXuatCTPX() {
@@ -224,7 +246,7 @@ public class PhieuXuatController implements ISearcher {
 			px.getBtnLamMoi().setEnabled(true);
 			px.getBtnThoat().setEnabled(true);
 			px.getMnOption().setEnabled(true);
-			
+
 			if (Program.mGroup.equals("CONGTY")) {
 				px.getBtnThem().setEnabled(false);
 				px.getBtnXoa().setEnabled(false);
@@ -273,8 +295,14 @@ public class PhieuXuatController implements ISearcher {
 		try {
 			sqlUndo = st[0].toString();
 			preRow = Integer.valueOf(st[1].toString());
+			if (preRow == -1) {
+				preRow = 0;
+				/* phần này để khắc phục lỗi preRow = -1 khi preRow chưa được gán giá trị */
+			}
 			if (!sqlUndo.equals("")) {
-				System.out.println(sqlUndo);
+				System.out.println("sqlUndo: " + sqlUndo);
+				System.out.println("preRow: " + preRow);
+				System.out.println("row: " + row);
 				Program.ExecSqlDML(sqlUndo);
 			}
 		} catch (SQLException e) {
@@ -283,8 +311,10 @@ public class PhieuXuatController implements ISearcher {
 			return;
 		}
 		reFreshData();
-		if (row <= px.getTable().getRowCount() - 1) {
+		if (mode == Mode.PHIEUXUAT && row <= px.getTable().getRowCount() - 1) {
 			px.getTable().getSelectionModel().setSelectionInterval(preRow, preRow);
+		} else if (mode == Mode.CTPX && row <= px.getTable().getRowCount() - 1) {
+			px.getTableCTPX().getSelectionModel().setSelectionInterval(preRow, preRow);
 		}
 		if (undoList.empty()) {
 			px.getBtnHoanTac().setEnabled(false);
@@ -497,7 +527,7 @@ public class PhieuXuatController implements ISearcher {
 				JOptionPane.showMessageDialog(null, "Lỗi thêm chi tiết phiếu xuất!\n" + e.getMessage(), "Error",
 						JOptionPane.ERROR_MESSAGE);
 				reFreshData();
-				px.getTableCTPX().getSelectionModel().setSelectionInterval(row, row);
+				px.getTable().getSelectionModel().setSelectionInterval(row, row);
 				return;
 			}
 			JOptionPane.showMessageDialog(null, "Ghi thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
@@ -509,8 +539,8 @@ public class PhieuXuatController implements ISearcher {
 
 			// Luu truy van de hoan tac yeu cau them
 			String sqlUndo = "";
-			sqlUndo = "DELETE FROM CTPX WHERE MAPX = '" + ctpxModel.getMapx().trim() + "' AND MAVT = '" + ctpxModel.getMavt()
-					+ "'";
+			sqlUndo = "DELETE FROM CTPX WHERE MAPX = '" + ctpxModel.getMapx().trim() + "' AND MAVT = '"
+					+ ctpxModel.getMavt() + "'";
 
 //			sql = "EXEC sp_CapNhatSoLuongVatTu 'EXPORT','" + ctpxModel.getMavt() + "', " + ctpxModel.getSoLuong();
 //			Program.ExecSqlNonQuery(sql);
@@ -532,7 +562,12 @@ public class PhieuXuatController implements ISearcher {
 		if (mode == Mode.PHIEUXUAT) {
 			row = px.getTable().getSelectedRow();
 			String tenKH = px.getTable().getValueAt(px.getTable().getSelectedRow(), 2).toString().trim();
-			String maKho = px.getTable().getValueAt(px.getTable().getSelectedRow(), 4).toString();
+			String maKho = px.getKhoInfo().entrySet().stream()
+					.filter(entry -> px.getTable().getValueAt(px.getTable().getSelectedRow(), 4).toString()
+							.equals(entry.getValue()))
+					.map(Map.Entry::getKey) // Chuyển đổi từ Entry<K, V> sang K (key)
+					.findFirst() // Lấy phần tử đầu tiên tìm được
+					.orElse(null); // Trả về null nếu không tìm thấy
 
 			try {
 				px.getTable().setValueAt(phieuXuatModel.getHoTenKH(), px.getTable().getSelectedRow(), 2);
@@ -600,7 +635,8 @@ public class PhieuXuatController implements ISearcher {
 			String sqlUndo = "";
 			// Không sử dụng được phieuXuatModel.getMapx() vì bị null
 			sqlUndo = "UPDATE CTPX SET SOLUONG = '" + soLuong + "', " + "DONGIA = '" + donGia + "' " + "WHERE MAPX = '"
-					+ px.getTable().getValueAt(px.getTable().getSelectedRow(), 0).toString().trim() + "' AND MAVT = '" + ctpxModel.getMavt() + "'";
+					+ px.getTable().getValueAt(px.getTable().getSelectedRow(), 0).toString().trim() + "' AND MAVT = '"
+					+ ctpxModel.getMavt() + "'";
 			System.out.println(sqlUndo);
 			undoList.push(new Object[] { sqlUndo, row });
 		}
@@ -748,11 +784,11 @@ public class PhieuXuatController implements ISearcher {
 	private void reFreshData() {
 		/* Refresh bảng phiếu xuất */
 		if (mode == Mode.PHIEUXUAT) {
-		px.getTable().getSelectionModel().removeListSelectionListener(px.getSelectionListener());
-		px.getModel().setRowCount(0);
-		px.loadDataIntoTable();
-		px.getTable().getSelectionModel().addListSelectionListener(px.getSelectionListener());
-		px.getTable().getSelectionModel().setSelectionInterval(0, 0);
+			px.getTable().getSelectionModel().removeListSelectionListener(px.getSelectionListener());
+			px.getModel().setRowCount(0);
+			px.loadDataIntoTable();
+			px.getTable().getSelectionModel().addListSelectionListener(px.getSelectionListener());
+			px.getTable().getSelectionModel().setSelectionInterval(0, 0);
 
 		}
 
@@ -802,7 +838,8 @@ public class PhieuXuatController implements ISearcher {
 			px.getCtpxModel().setRowCount(0);
 
 			for (CTPXModel model : px.getCtpxList()) {
-				if (model.getMapx().toLowerCase().contains(input) || px.getVatTuInfo().get(model.getMavt()).toLowerCase().contains(input)) {
+				if (model.getMapx().toLowerCase().contains(input)
+						|| px.getVatTuInfo().get(model.getMavt()).toLowerCase().contains(input)) {
 					Object[] rowData = { model.getMapx(), px.getVatTuInfo().get(model.getMavt()), model.getSoLuong(),
 							Formatter.formatObjecttoMoney(model.getDonGia()),
 							Formatter.formatObjecttoMoney(model.getSoLuong() * model.getDonGia()) };
