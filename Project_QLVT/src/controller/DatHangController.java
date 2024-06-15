@@ -205,7 +205,6 @@ public class DatHangController implements ISearcher {
 				dh.getTableCTDH().getSelectionModel().addListSelectionListener(dh.getSelectionCTDHListener());
 				dh.getTableCTDH().getSelectionModel().setSelectionInterval(row, row);
 			}
-
 			if (undoList.empty()) {
 				dh.getBtnHoanTac().setEnabled(false);
 			}
@@ -514,8 +513,6 @@ public class DatHangController implements ISearcher {
 			dh.getTableCTDH().getSelectionModel().removeListSelectionListener(dh.getSelectionCTDHListener());
 			dh.getCtdhModel().setRowCount(0);
 			dh.loadDataCTDDH();
-			dh.getTableCTDH().getSelectionModel().addListSelectionListener(dh.getSelectionCTDHListener());
-			dh.getTableCTDH().getSelectionModel().setSelectionInterval(0, 0);
 		}
 
 	}
