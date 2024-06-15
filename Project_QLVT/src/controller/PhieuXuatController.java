@@ -94,19 +94,6 @@ public class PhieuXuatController implements ISearcher {
 				search();
 			}
 		});
-		
-		String fileName = "C:\\Users\\dangx\\JaspersoftWorkspace\\test\\FirstReport.jrxml";
-		VatTuDao vatTuDao = VatTuDao.getInstance();
-		JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(vatTuDao.selectAll());
-//		JasperReport report = null;
-		try {
-			JasperReport report = JasperCompileManager.compileReport(fileName);
-			JasperPrint print = JasperFillManager.fillReport(report, null, dataSource);
-			JasperExportManager.exportReportToPdfFile(print, "F:\\University\\Junior\\Second semester\\CSDLPT\\Detai\\FirstReport.pdf");
-		} catch (JRException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 	}
 
 	private void initPhieuXuat() {
@@ -115,6 +102,8 @@ public class PhieuXuatController implements ISearcher {
 			undoList.push(new Object[] { mode, px.getTableCTPX().getSelectedRow() });
 		}
 		mode = Mode.PHIEUXUAT;
+		isSelectedPX = true;
+		isSelectedCTPX = false;
 		px.getTable().setEnabled(true);
 		px.getTableCTPX().setEnabled(true);
 		px.getBtnVatTuOption().setEnabled(false);
@@ -146,6 +135,8 @@ public class PhieuXuatController implements ISearcher {
 		}
 
 		mode = Mode.CTPX;
+		isSelectedCTPX = true;
+		isSelectedPX = false;
 		if (px.getTable().getSelectedRow() == -1) {
 			JOptionPane.showMessageDialog(null, "Chưa chọn phiếu xuất");
 			return;
@@ -403,10 +394,23 @@ public class PhieuXuatController implements ISearcher {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			if (Integer.valueOf(px.getSpinnerSoLuong().getValue().toString()) > soLuongTon) {
+			// đây là số lượng được chỉnh sửa
+			int soLuongTrongSpinner = Integer.valueOf(px.getSpinnerSoLuong().getValue().toString()); 
+			if (soLuongTrongSpinner > soLuongTon && !px.getBtnThem().isEnabled()) {
 				JOptionPane.showMessageDialog(null,
 						"Số lượng vật tư không thể lớn hơn số lượng vật tư đang có trong kho hàng.", "Thông báo",
 						JOptionPane.WARNING_MESSAGE);
+				px.getSpinnerSoLuong().requestFocusInWindow();
+				return false;
+			}
+			
+			// đây là số lượng lưu trong csdl
+			int soLuongTrongBangCTPX = (int) px.getTableCTPX().getValueAt(px.getTableCTPX().getSelectedRow(), 2); 
+			if (soLuongTrongSpinner > soLuongTrongBangCTPX && (soLuongTrongSpinner - soLuongTrongBangCTPX) > soLuongTon
+					&& px.getBtnThem().isEnabled()) {
+				JOptionPane.showMessageDialog(null,
+						"Số lượng vật tư vừa thêm không thể lớn hơn số lượng vật tư đang có trong kho hàng.",
+						"Thông báo", JOptionPane.WARNING_MESSAGE);
 				px.getSpinnerSoLuong().requestFocusInWindow();
 				return false;
 			}
@@ -762,7 +766,7 @@ public class PhieuXuatController implements ISearcher {
 			px.getTableCTPX().getSelectionModel().addListSelectionListener(px.getSelectionListenerCTPX());
 			if (px.getTable().getRowCount() > 0) {
 				if (row == 0) {
-					px.getTable().getSelectionModel().setSelectionInterval(row + 1, row + 1);
+					px.getTable().getSelectionModel().setSelectionInterval(row, row);
 				} else {
 					px.getTable().getSelectionModel().setSelectionInterval(row - 1, row - 1);
 				}
@@ -782,7 +786,8 @@ public class PhieuXuatController implements ISearcher {
 	}
 
 	private void reFreshData() {
-		/* Refresh bảng phiếu xuất */
+
+		// Refresh bảng phiếu xuất
 		if (mode == Mode.PHIEUXUAT) {
 			px.getTable().getSelectionModel().removeListSelectionListener(px.getSelectionListener());
 			px.getModel().setRowCount(0);
@@ -792,7 +797,7 @@ public class PhieuXuatController implements ISearcher {
 
 		}
 
-		/* Refresh bảng ctpx */
+		// Refresh bảng ctpx
 		if (mode == Mode.CTPX) {
 			px.getTableCTPX().getSelectionModel().removeListSelectionListener(px.getSelectionListenerCTPX());
 			px.getCtpxModel().setRowCount(0);
@@ -801,6 +806,31 @@ public class PhieuXuatController implements ISearcher {
 			px.getTableCTPX().getSelectionModel().setSelectionInterval(0, 0);
 
 		}
+
+		/*
+		 * px.getTableCTPX().getSelectionModel().removeListSelectionListener(px.
+		 * getSelectionListenerCTPX());
+		 * px.getTable().getSelectionModel().removeListSelectionListener(px.
+		 * getSelectionListener());
+		 * 
+		 * px.getCtpxModel().setRowCount(0); px.getModel().setRowCount(0);
+		 * 
+		 * px.loadDataIntoTable();
+		 * 
+		 * px.getTableCTPX().getSelectionModel().addListSelectionListener(px.
+		 * getSelectionListenerCTPX());
+		 * px.getTable().getSelectionModel().addListSelectionListener(px.
+		 * getSelectionListener());
+		 * 
+		 * if (mode == Mode.PHIEUXUAT) {
+		 * px.getTable().getSelectionModel().setSelectionInterval(0, 0); } else {
+		 * px.getTable().getSelectionModel().setSelectionInterval(row, row); }
+		 * 
+		 * px.getTableCTPX().getSelectionModel().setSelectionInterval(-1, -1);
+		 * PhieuXuatForm.getTextFieldMaVT().setText("");
+		 * PhieuXuatForm.getTextFieldTenVT().setText("");
+		 * px.getSpinnerSoLuong().setValue(1); px.getSpinnerDonGia().setValue(0);
+		 */
 
 	}
 
