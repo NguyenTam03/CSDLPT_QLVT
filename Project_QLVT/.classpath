@@ -18,5 +18,8 @@
 	<classpathentry kind="lib" path="libraries/mssql-jdbc-12.6.0.jre11.jar"/>
 	<classpathentry kind="lib" path="libraries/jcalendar-1.4.jar"/>
 	<classpathentry kind="lib" path="libraries/itext-4.2.0.jar"/>
+	<classpathentry kind="lib" path="libraries/jasperreports-fonts-6.21.3.jar"/>
+	<classpathentry kind="lib" path="libraries/jasperreports-5.6.0.jar"/>
+	<classpathentry kind="lib" path="libraries/jasperreports-fonts-5.6.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
