@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 
 import main.Program;
 import views.ChangePasswordForm;
+import views.ChiTietNhapXuat;
 import views.CreateLoginForm;
 import views.DatHangForm;
 import views.DonDatHangChuaPN;
@@ -99,6 +100,15 @@ public class NavController {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				ReportDanhSachVatTu form = new ReportDanhSachVatTu();
+				form.setVisible(true);
+				form.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			}
+		});
+		
+		frmMain.getMnCTNX().addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				ChiTietNhapXuat form = new ChiTietNhapXuat();
 				form.setVisible(true);
 				form.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			}

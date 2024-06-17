@@ -314,7 +314,7 @@ public class PhieuXuatController implements ISearcher {
 		if (mode == Mode.PHIEUXUAT) {
 			if (!Program.username.equals(px.getTextFieldMaNV().getText())) {
 				JOptionPane.showMessageDialog(null,
-						"Không thể thêm hoặc chỉnh sửa phiếu xuất với phiếu xuất do người khác tạo.", "Thông báo",
+						"Không thể chỉnh sửa phiếu xuất với phiếu xuất do người khác tạo.", "Thông báo",
 						JOptionPane.WARNING_MESSAGE);
 				return false;
 			}

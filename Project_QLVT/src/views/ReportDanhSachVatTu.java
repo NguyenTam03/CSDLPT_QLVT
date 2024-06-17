@@ -113,7 +113,6 @@ public class ReportDanhSachVatTu extends JFrame implements ISearcher {
 
 		btnXemTruoc = new JButton("Xem trước");
 		btnXemTruoc.setBackground(SystemColor.textHighlight);
-//		btnXemTruoc.addActionListener(l -> chooseNhanVien());
 
 		btnXuatBan = new JButton("Xuất bản");
 		btnXuatBan.setBackground(new Color(255, 0, 0));

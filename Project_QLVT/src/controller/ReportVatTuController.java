@@ -50,7 +50,6 @@ public class ReportVatTuController implements IJasperReportController {
 		} catch (JRException e) {
 			e.printStackTrace();
 		}
-		System.out.println("Report successfully");
 	}
 
 	@Override
@@ -61,7 +60,6 @@ public class ReportVatTuController implements IJasperReportController {
 		} catch (JRException e) {
 			e.printStackTrace();
 		}
-		System.out.println("Report successfully");
 	}
 	
 	public JasperReportModel<VattuModel> getReportModel() {

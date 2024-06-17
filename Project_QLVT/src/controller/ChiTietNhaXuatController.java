@@ -1,0 +1,150 @@
+package controller;
+
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+
+import main.Program;
+import model.ChiTietNXModel;
+import model.JasperReportModel;
+import net.sf.jasperreports.engine.JRException;
+import views.ChiTietNhapXuat;
+
+public class ChiTietNhaXuatController implements IJasperReportController {
+	private JasperReportModel<ChiTietNXModel> reportModel;
+	private ChiTietNhapXuat form;
+	private String tuNgay, denNgay;
+	private String tuNgaySP, denNgaySP;
+
+	public JasperReportModel<ChiTietNXModel> getReportModel() {
+		return reportModel;
+	}
+
+	public void setReportModel(JasperReportModel<ChiTietNXModel> reportModel) {
+		this.reportModel = reportModel;
+	}
+
+	public ChiTietNhapXuat getForm() {
+		return form;
+	}
+
+	public void setForm(ChiTietNhapXuat form) {
+		this.form = form;
+	}
+
+	public String getTuNgay() {
+		return tuNgay;
+	}
+
+	public void setTuNgay(String tuNgay) {
+		this.tuNgay = tuNgay;
+	}
+
+	public String getDenNgay() {
+		return denNgay;
+	}
+
+	public void setDenNgay(String denNgay) {
+		this.denNgay = denNgay;
+	}
+	
+
+	public String getTuNgaySP() {
+		return tuNgaySP;
+	}
+
+	public String getDenNgaySP() {
+		return denNgaySP;
+	}
+
+	public ChiTietNhaXuatController(ChiTietNhapXuat form) {
+		this.form = form;
+		reportModel = new JasperReportModel<ChiTietNXModel>();
+		reportModel.setFilePath("reports/ChiTietNhapXuat.jrxml");
+	}
+
+	public void initController() {
+		form.getBtnXemTruoc().addActionListener(e -> {
+			if (form.getTuNgay().getDate() != null && form.getDenNgay().getDate() != null) {
+				SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+				tuNgay = format.format(form.getTuNgay().getDate());
+				denNgay = format.format(form.getDenNgay().getDate());
+				
+				SimpleDateFormat formatSP = new SimpleDateFormat("yyyy-MM-dd");
+				tuNgaySP = formatSP.format(form.getTuNgay().getDate());
+				denNgaySP = formatSP.format(form.getDenNgay().getDate());
+				preview();
+			}
+		});
+
+		form.getBtnXuat().addActionListener(e -> {
+			if (form.getTuNgay().getDate() != null && form.getDenNgay().getDate() != null) {
+				SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+				tuNgay = format.format(form.getTuNgay().getDate());
+				denNgay = format.format(form.getDenNgay().getDate());
+				
+				SimpleDateFormat formatSP = new SimpleDateFormat("yyyy-MM-dd");
+				tuNgaySP = formatSP.format(form.getTuNgay().getDate());
+				denNgaySP = formatSP.format(form.getDenNgay().getDate());
+				print();
+			}
+		});
+	}
+
+	private void getData() {
+		if (!reportModel.getList().isEmpty())
+			reportModel.getList().clear();
+		String sql = "";
+		String chiNhanh = "";
+		String loaiPhieu = (form.getComboBox().getSelectedItem().toString() == "NHẬP") ? "NHAP" : "XUAT";
+		System.out.println(loaiPhieu);
+		System.out.println(tuNgaySP + "  " + denNgaySP);
+		if (Program.mGroup.equals("CONGTY")) {
+			sql = "EXEC sp_ChiTietSoLuongTriGiaHangNhapXuat_SongSong ?, ?, ?";
+			Program.myReader = Program.ExecSqlDataReader(sql, loaiPhieu, tuNgaySP, denNgaySP);
+		} else {
+			sql = "EXEC sp_ChiTietSoLuongTriGiaHangNhapXuat ?, ?, ?";
+			Program.myReader = Program.ExecSqlDataReader(sql, loaiPhieu, tuNgaySP, denNgaySP);
+			chiNhanh = Program.servername = form.getComboBoxChiNhanh().getItemAt(Program.mChinhanh);
+		}
+
+		try {
+			while (Program.myReader.next()) {
+				ChiTietNXModel model = new ChiTietNXModel(Program.myReader.getString(1), Program.myReader.getString(2),
+						Program.myReader.getInt(3), Program.myReader.getInt(4));
+				reportModel.getList().add(model);
+			}
+			
+			reportModel.getParameters().put("tenChiNhanh", chiNhanh);
+			reportModel.getParameters().put("tuNgay", tuNgay);
+			reportModel.getParameters().put("denNgay", denNgay);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@Override
+	public void preview() {
+		getData();
+		try {
+			reportModel.preViewReport();
+		} catch (JRException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	@Override
+	public void print() {
+		getData();
+		try {
+			reportModel.saveReport();
+		} catch (JRException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+}
