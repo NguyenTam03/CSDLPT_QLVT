@@ -10,9 +10,6 @@ import main.Program;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.Font;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
@@ -45,8 +42,7 @@ public class CreateLoginForm extends JFrame {
 	private JButton btnExit;
 	private JButton btnNVOption;
 	private static JTextField textFieldName;
-	public static boolean isVisible = false;
-	
+
 	public CreateLoginForm() {
 		setTitle("Tạo tài khoản");
 		setResizable(false);
@@ -177,12 +173,7 @@ public class CreateLoginForm extends JFrame {
 		panelFooter.setLayout(gl_panelFooter);
 
 		setLocationRelativeTo(null);
-		this.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosed(WindowEvent e) {
-				isVisible = false;
-			}
-		});
+
 		CreateLoginController ac = new CreateLoginController(this);
 		ac.initController();
 	}

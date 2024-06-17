@@ -17,8 +17,6 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.SystemColor;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.awt.Color;
 import javax.swing.JTextField;
@@ -30,7 +28,7 @@ public class ChangePasswordForm extends JFrame {
 	private JTextField textFieldLoginName;
 	private JPasswordField passwordFieldOld;
 	private JPasswordField passwordFieldNew;
-	public static boolean isVisible = false;
+
 	/**
 	 * Create the frame.
 	 */
@@ -120,12 +118,6 @@ public class ChangePasswordForm extends JFrame {
 						.addContainerGap()));
 		panelFooter.setLayout(gl_panelFooter);
 		setLocationRelativeTo(null);
-		this.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosed(WindowEvent e) {
-				isVisible = false;
-			}
-		});
 	}
 
 	@SuppressWarnings("deprecation")

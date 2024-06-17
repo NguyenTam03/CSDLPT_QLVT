@@ -19,11 +19,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.Font;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,20 +49,12 @@ public class NhanVienOptionForm extends JFrame implements ISearcher {
 	private List<NhanVienModel> list;
 	private JComboBox<String> comboBox;
 	private boolean hasAccount;
-	public static boolean isVisible = false;
-	
 	/**
 	 * Create the frame.
 	 */
 	public NhanVienOptionForm(boolean hasAccount) {
 		super("Chọn Nhân Viên");
 		this.hasAccount = hasAccount;
-		this.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosed(WindowEvent e) {
-				isVisible = false;
-			}
-		});
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 814, 409);
 		contentPane = new JPanel();

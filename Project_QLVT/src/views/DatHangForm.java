@@ -217,7 +217,7 @@ public class DatHangForm extends CommonView<DatHangModel, DatHangDao> {
 		lblSoLuong.setBounds(20, 75, 59, 14);
 		panelCTDH.add(lblSoLuong);
 
-		SpinnerModel spinnerSLModel = new SpinnerNumberModel(0, 0, null, 1);
+		SpinnerModel spinnerSLModel = new SpinnerNumberModel(0, 0, 100, 1);
 		spinnerSoLuong = new JSpinner(spinnerSLModel);
 		spinnerSoLuong.setEnabled(false);
 		spinnerSoLuong.setBounds(101, 72, 86, 20);
@@ -228,7 +228,7 @@ public class DatHangForm extends CommonView<DatHangModel, DatHangDao> {
 		panelCTDH.add(lblDonGia);
 
 
-		SpinnerModel spinnerDGModel = new SpinnerNumberModel(0, 0, null, 10000);
+		SpinnerModel spinnerDGModel = new SpinnerNumberModel(Float.valueOf(0), 0, null, Float.valueOf(10000));
 		spinnerDonGia = new JSpinner(spinnerDGModel);
 		spinnerDonGia.setEnabled(false);
 		spinnerDonGia.setBounds(288, 72, 86, 20);

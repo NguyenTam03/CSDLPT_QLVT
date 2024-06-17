@@ -1,4 +1,3 @@
-
 package common.method;
 
 import java.sql.Date;

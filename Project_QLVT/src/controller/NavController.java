@@ -16,14 +16,12 @@ import main.Program;
 import views.ChangePasswordForm;
 import views.CreateLoginForm;
 import views.DatHangForm;
-import views.DonDatHangChuaPN;
 import views.FrameMain;
 import views.KhoForm;
 import views.LoginForm;
 import views.NhanVienForm;
 import views.NhanVienOptionForm;
 import views.PhieuXuatForm;
-import views.TongHopNhapXuat;
 import views.ReportDanhSachNhanVien;
 import views.PhieuLapForm;
 import views.VatTuForm;
@@ -53,35 +51,8 @@ public class NavController {
 		frmMain.getMnChangePassword().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (!ChangePasswordForm.isVisible) {
-					ChangePasswordForm.isVisible = true;
-					ChangePasswordForm changePasswordForm = new ChangePasswordForm();
-					changePasswordForm.setVisible(true);
-					
-				}
-			}
-		});
-		
-		frmMain.getMnDHKhongPN().addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (!DonDatHangChuaPN.isVisible) {
-					DonDatHangChuaPN.isVisible = true;
-					DonDatHangChuaPN form = new DonDatHangChuaPN();
-					form.setVisible(true);
-				}
-			}
-		});
-		
-		frmMain.getMnTongHopNX().addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				TongHopNhapXuat form = null;
-				if (!TongHopNhapXuat.isVisible) {
-					TongHopNhapXuat.isVisible = true;
-					form = new TongHopNhapXuat();
-					form.setVisible(true);
-				}
+				ChangePasswordForm changePasswordForm = new ChangePasswordForm();
+				changePasswordForm.setVisible(true);
 			}
 		});
 		
@@ -125,6 +96,8 @@ public class NavController {
 		clickedMenuItem("Phiếu xuất", frmMain.getMntmPhieuXuat(), frmMain.getPanel_phieuxuat(), PhieuXuatForm.class);
 		clickedMenuItem("Phiếu Lập", frmMain.getMntmPhieuLap(), frmMain.getPanel_phieulap(), PhieuLapForm.class);
 		
+		
+		
 	}
 
 	private void logout() {
@@ -148,20 +121,13 @@ public class NavController {
 	}
 
 	private void createLogin() {
-		if (!CreateLoginForm.isVisible) {
-			CreateLoginForm.isVisible = true;
-			CreateLoginForm form = new CreateLoginForm();
-			form.setVisible(true);
-			
-		}
+		new CreateLoginForm().setVisible(true);
 	}
 	
 	private void deleteLogin() {
-		if (!NhanVienOptionForm.isVisible) {
-			NhanVienOptionForm.isVisible = true;
-			NhanVienOptionForm form = new NhanVienOptionForm(true);
-			form.setVisible(true);
-		}
+		NhanVienOptionForm form = new NhanVienOptionForm(true);
+		form.setVisible(true);
+		form.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 
 	private void clickedComponentShowTab(String label, JMenu t, JPanel t1, Class<?> formClass) {
