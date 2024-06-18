@@ -23,14 +23,11 @@
 	<classpathentry kind="lib" path="libraries/itext-4.2.0.jar"/>
 	<classpathentry kind="lib" path="libraries/jasperreports-5.6.0.jar"/>
 	<classpathentry kind="lib" path="libraries/jasperreports-fonts-5.6.0.jar"/>
-<<<<<<< HEAD
 	<classpathentry kind="lib" path="libraries/NumberToWord.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-=======
->>>>>>> c6f9daa1569ad1f82fdf274339df6e110e5f5a79
 	<classpathentry kind="output" path="bin"/>
 </classpath>
