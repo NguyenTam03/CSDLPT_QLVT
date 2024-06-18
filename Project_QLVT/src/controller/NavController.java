@@ -90,6 +90,7 @@ public class NavController {
 		frmMain.getMnNhanVienList().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				System.out.println("click");
 				ReportDanhSachNhanVien reportNhanVien = new ReportDanhSachNhanVien();
 				reportNhanVien.setVisible(true);
 				reportNhanVien.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

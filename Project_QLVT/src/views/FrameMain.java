@@ -144,11 +144,11 @@ public class FrameMain extends JFrame {
 		mnNhanVienList.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/staff.png")));
 		menuBarReport.add(mnNhanVienList);
 
-		mnVatTuList = new JMenu("Danh sách vật tư");
+		mnVatTuList = new JMenu("Chi tiết nhập xuất");
 		mnVatTuList.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/material.png")));
 		menuBarReport.add(mnVatTuList);
 
-		mnCTNX = new JMenu("Chi tiết nhập xuất");
+		mnCTNX = new JMenu("CHI TIẾT NHẬP XUẤT");
 		mnCTNX.setIcon(new ImageIcon(FrameMain.class.getResource("/imgs/activity.png")));
 		menuBarReport.add(mnCTNX);
 

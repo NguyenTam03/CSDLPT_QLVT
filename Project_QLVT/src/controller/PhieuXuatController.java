@@ -14,16 +14,8 @@ import javax.swing.JOptionPane;
 
 import common.method.Formatter;
 import common.method.ISearcher;
-import dao.VatTuDao;
 import main.Program;
 import model.PhieuXuatModel;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import model.CTPXModel;
 import views.PhieuXuatForm;
 
@@ -121,7 +113,7 @@ public class PhieuXuatController implements ISearcher {
 					px.getBtnKhoOption().setEnabled(true);
 					px.getTextFieldTenKH().setEditable(true);
 					px.getBtnGhi().setEnabled(true);
-					
+
 				}
 			}
 
@@ -168,9 +160,9 @@ public class PhieuXuatController implements ISearcher {
 					px.getSpinnerSoLuong().setEnabled(true);
 					px.getSpinnerDonGia().setEnabled(true);
 					px.getBtnGhi().setEnabled(true);
-					
+
 				}
-				
+
 			}
 			px.getBtnLamMoi().setEnabled(true);
 
@@ -323,7 +315,7 @@ public class PhieuXuatController implements ISearcher {
 		reFreshData();
 		if (row <= px.getTable().getRowCount() - 1) {
 			px.getTable().getSelectionModel().setSelectionInterval(preRow, preRow);
-		}	
+		}
 //		 else if (mode == Mode.CTPX && row <= px.getTable().getRowCount() - 1) {
 //			px.getTableCTPX().getSelectionModel().setSelectionInterval(preRow, preRow);
 //		}
@@ -336,9 +328,8 @@ public class PhieuXuatController implements ISearcher {
 	private boolean checkInputData() {
 		if (mode == Mode.PHIEUXUAT) {
 			if (!Program.username.equals(px.getTextFieldMaNV().getText())) {
-				JOptionPane.showMessageDialog(null,
-						"Không thể chỉnh sửa phiếu xuất với phiếu xuất do người khác tạo.", "Thông báo",
-						JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Không thể chỉnh sửa phiếu xuất với phiếu xuất do người khác tạo.",
+						"Thông báo", JOptionPane.WARNING_MESSAGE);
 				return false;
 			}
 			if (px.getTextFieldMaPX().getText().equals("")) {
@@ -433,8 +424,8 @@ public class PhieuXuatController implements ISearcher {
 			// đây là số lượng lưu trong csdl
 			if (px.getTableCTPX().getRowCount() > 0) {
 				int soLuongTrongBangCTPX = (int) px.getTableCTPX().getValueAt(px.getTableCTPX().getSelectedRow(), 2);
-				if (soLuongTrongSpinner > soLuongTrongBangCTPX && (soLuongTrongSpinner - soLuongTrongBangCTPX) > soLuongTon
-						&& px.getBtnThem().isEnabled()) {
+				if (soLuongTrongSpinner > soLuongTrongBangCTPX
+						&& (soLuongTrongSpinner - soLuongTrongBangCTPX) > soLuongTon && px.getBtnThem().isEnabled()) {
 					JOptionPane.showMessageDialog(null,
 							"Số lượng vật tư vừa thêm không thể lớn hơn số lượng vật tư đang có trong kho hàng.",
 							"Thông báo", JOptionPane.WARNING_MESSAGE);
@@ -679,7 +670,7 @@ public class PhieuXuatController implements ISearcher {
 					JOptionPane.WARNING_MESSAGE);
 			return;
 		}
-		
+
 		if (JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa dữ liệu này không?", "Confirm",
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) != JOptionPane.OK_OPTION) {
 			return;
@@ -761,7 +752,7 @@ public class PhieuXuatController implements ISearcher {
 
 		}
 
-		if (mode == Mode.CTPX) {			
+		if (mode == Mode.CTPX) {
 			if (px.getTable().getSelectedRow() == -1) {
 				return;
 			}
