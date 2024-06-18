@@ -40,7 +40,8 @@ public class DonDatHangChuaPN extends JFrame {
 	private int colCount;
 	private List<String> colName;
 	public static boolean isVisible = false;
-
+	private boolean check = false;
+	
 	public JTable getTable() {
 		return table;
 	}
