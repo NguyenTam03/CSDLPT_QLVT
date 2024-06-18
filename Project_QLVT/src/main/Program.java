@@ -39,6 +39,7 @@ public class Program {
 	public static String remotelogin = "";
 	public static String remotepassword = "";
 
+
 	public static String mloginDN = "";
 	public static String passwordDN = "";
 	public static String mGroup = "";
