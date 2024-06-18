@@ -150,6 +150,7 @@ public class KhoController {
 				} else {
 					upDateDataToDB(khoModel);
 				}
+				khoView.getTextFieldMaKho().setEditable(false);
 			}
 		}
 	}
@@ -185,13 +186,6 @@ public class KhoController {
 			JOptionPane.showMessageDialog(null, "Tên kho không được bỏ trống", "Thông báo",
 					JOptionPane.WARNING_MESSAGE);
 			khoView.getTextFieldTenKho().requestFocusInWindow();
-			return false;
-		}
-
-		if (!regexMatch(khoModel.getTenKho())) {
-			JOptionPane.showMessageDialog(null, "Tên kho chỉ được gồm các chữ cái số và khoảng trắng!", "Thông báo",
-					JOptionPane.WARNING_MESSAGE);
-			khoView.getTextFieldMaKho().requestFocusInWindow();
 			return false;
 		}
 
@@ -240,7 +234,7 @@ public class KhoController {
 			}
 
 			
-			JOptionPane.showMessageDialog(null, "Ghi thành công!", "Thông báo", JOptionPane.OK_OPTION);
+			JOptionPane.showMessageDialog(null, "Ghi thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 
 			khoView.getTable().setEnabled(true);
 			khoView.getBtnThem().setEnabled(true);
@@ -278,7 +272,7 @@ public class KhoController {
 		}
 		khoView.getBtnHoanTac().setEnabled(true);
 		
-		JOptionPane.showMessageDialog(null, "Ghi thành công!", "Thông báo", JOptionPane.OK_OPTION);
+		JOptionPane.showMessageDialog(null, "Ghi thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 		khoView.getTable().getSelectionModel().setSelectionInterval(row, row);
 		khoView.getList().set(row, khoModel);
 		// Luu truy van de hoan tac yeu cau update
@@ -395,6 +389,13 @@ public class KhoController {
 		khoView.getTable().getSelectionModel().addListSelectionListener(khoView.getSelectionListener());
 		khoView.getBtnHoanTac().setEnabled(true);
 		khoView.getList().remove(row);
+		if (khoView.getTable().getRowCount() > 0) {
+			if (row == 0) {
+				khoView.getTable().getSelectionModel().setSelectionInterval(row + 1, row + 1);
+			}else {
+				khoView.getTable().getSelectionModel().setSelectionInterval(row - 1, row - 1);
+			}
+		}
 		
 		String sqlUndo = "INSERT INTO Kho (MAKHO, TENKHO, DIACHI, MACN) VALUES ('" + khoModel.getMaKho() + "', '"
 				+ khoModel.getTenKho() + "', '" + khoModel.getDiaChi() + "', '" + khoModel.getMacn() + "')";

@@ -37,12 +37,13 @@ public class LoginController {
 					);
 		}else {
 			Program.servername = Program.servers.get(cbChiNhanh.getSelectedItem());
-			Program.mChinhanh = cbChiNhanh.getSelectedIndex();
 			Program.mlogin = login.getText();
 			Program.password = password.getText();
 			if (Program.Connect() == 0) return;
+			
 			Program.mloginDN = Program.mlogin;
 			Program.passwordDN = Program.password;
+			Program.mChinhanh = cbChiNhanh.getSelectedIndex();
 		    String strLenh = "EXEC SP_LayThongTinNhanVien ?";
             Program.myReader = Program.ExecSqlDataReader(strLenh, Program.mlogin);
             if(Program.myReader == null) return;

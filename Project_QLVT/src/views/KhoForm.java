@@ -4,10 +4,11 @@ import javax.swing.JPanel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 
 import java.awt.Font;
 import javax.swing.LayoutStyle.ComponentPlacement;
+
+import common.method.Authorization;
 import controller.KhoController;
 import dao.KhoDao;
 import main.Program;
@@ -18,7 +19,6 @@ import javax.swing.JTextField;
 import java.awt.event.ItemEvent;
 import java.sql.SQLException;
 
-
 public class KhoForm extends CommonView<KhoModel, KhoDao> {
 
 	private static final long serialVersionUID = 1L;
@@ -26,7 +26,7 @@ public class KhoForm extends CommonView<KhoModel, KhoDao> {
 	private JTextField textFieldTenKho;
 	private JTextField textFieldDiaChi;
 	private JTextField textFieldMaCN;
-	
+
 	/**
 	 * Create the panel.
 	 */
@@ -55,6 +55,11 @@ public class KhoForm extends CommonView<KhoModel, KhoDao> {
 
 		textFieldDiaChi = new JTextField();
 		textFieldDiaChi.setColumns(10);
+
+		if (Authorization.valueOf(Program.mGroup) == Authorization.CONGTY) {
+			textFieldDiaChi.setEditable(false);
+			textFieldTenKho.setEditable(false);
+		}
 
 		JLabel lblMaCN = new JLabel("Mã Chi Nhánh");
 		lblMaCN.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -108,11 +113,11 @@ public class KhoForm extends CommonView<KhoModel, KhoDao> {
 //		load dữ liệu từ chi nhánh lên table
 		dao = KhoDao.getInstance();
 		loadDataIntoTableKho();
-		
+
 		if (table.getRowCount() == 0) {
 			getBtnXoa().setEnabled(false);
 		}
-		
+
 //		CONGTY có thể chọn chi nhánh để xem dữ liệu
 		comboBox.addItemListener(l -> loadDataOtherServer(l));
 
@@ -123,7 +128,7 @@ public class KhoForm extends CommonView<KhoModel, KhoDao> {
 			textFieldDiaChi.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
 		};
 		table.getSelectionModel().addListSelectionListener(selectionListener);
-		
+
 		if (table.getRowCount() > 0) {
 			table.getSelectionModel().setSelectionInterval(0, 0);
 		}
@@ -147,7 +152,7 @@ public class KhoForm extends CommonView<KhoModel, KhoDao> {
 	public JTextField getTextFieldMaCN() {
 		return textFieldMaCN;
 	}
-	
+
 	public void loadDataIntoTableKho() {
 		loadData();
 		for (KhoModel kho : list) {
@@ -165,20 +170,27 @@ public class KhoForm extends CommonView<KhoModel, KhoDao> {
 					e1.printStackTrace();
 				}
 			}
-			Program.servername = Program.servers.get(comboBox.getSelectedItem());
+
 			Program.mlogin = Program.remotelogin;
 			Program.password = Program.remotepassword;
-			Program.mChinhanh = comboBox.getSelectedIndex();
+			Program.servername = Program.servers.get(comboBox.getSelectedItem());
 			if (Program.Connect() == 0) {
-				JOptionPane.showMessageDialog(null, "Đã xảy ra lỗi kết nối với chi nhánh hiện tại", "Thông báo", JOptionPane.OK_OPTION);
 				return;
 			}
-				
+			
+			Program.mChinhanh = comboBox.getSelectedIndex();
 			textFieldMaCN.setText(Program.macn.get(Program.mChinhanh));
 			table.getSelectionModel().removeListSelectionListener(selectionListener);
 			model.setRowCount(0);
 			loadDataIntoTableKho();
 			table.getSelectionModel().addListSelectionListener(selectionListener);
+			if (model.getRowCount() > 0) {
+				table.getSelectionModel().setSelectionInterval(0, 0);
+			} else {
+				textFieldMaKho.setText("");
+				textFieldTenKho.setText("");
+				textFieldDiaChi.setText("");
+			}
 		}
 	}
 
