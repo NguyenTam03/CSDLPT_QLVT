@@ -69,7 +69,7 @@ public class Program {
 				Program.conn = DriverManager.getConnection(Program.connstr, Program.mlogin, Program.password);
 			} catch (SQLException e) {
 				JOptionPane.showMessageDialog(null,
-						"Lỗi kết nối cơ sở dữ liệu.\nBạn xem lại user name và password.\n " + e.getMessage(), "",
+						"Lỗi kết nối cơ sở dữ liệu.\nBạn xem lại user name và password.\n " + e.getMessage(), "Error",
 						JOptionPane.WARNING_MESSAGE);
 				return 0;
 			}

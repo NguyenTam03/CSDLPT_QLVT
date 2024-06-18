@@ -8,13 +8,16 @@ import javax.swing.border.EmptyBorder;
 
 import com.toedter.calendar.JDateChooser;
 
+import common.method.Authorization;
 import controller.TongHopNhapXuatController;
 import main.Program;
 
 import javax.swing.SwingConstants;
 import java.awt.Font;
+import java.awt.event.ItemEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.SQLException;
 
 import javax.swing.JComboBox;
 import javax.swing.JButton;
@@ -56,9 +59,10 @@ public class TongHopNhapXuat extends JFrame {
 		}
 		comboBox.setSelectedIndex(Program.mChinhanh);
 
-		if (Program.mGroup.equals("CHINHANH") || Program.mGroup.equals("USER")) {
+		if (Authorization.valueOf(Program.mGroup) != Authorization.CONGTY) {
 			comboBox.setEnabled(false);
 		}
+		comboBox.addItemListener((l) -> loadDataOtherServer(l));
 
 		JLabel lblNewLabel_1 = new JLabel("Chi Nhánh");
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.LEFT);
@@ -151,5 +155,24 @@ public class TongHopNhapXuat extends JFrame {
 	public JButton getBtnXuat() {
 		return btnXuat;
 	}
-
+	
+	private void loadDataOtherServer(ItemEvent l) {
+		if (l.getStateChange() == ItemEvent.SELECTED) {
+			if (Program.conn != null) {
+				try {
+					Program.conn.close();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+			}
+			Program.servername = Program.servers.get(comboBox.getSelectedItem());
+			Program.mlogin = Program.remotelogin;
+			Program.password = Program.remotepassword;
+			
+			if (Program.Connect() == 0)
+				return;
+			Program.mChinhanh = comboBox.getSelectedIndex();
+			
+		}
+	}
 }
