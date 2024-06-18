@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 
 import main.Program;
 import views.ChangePasswordForm;
+import views.ChiTietNhapXuat;
 import views.CreateLoginForm;
 import views.DatHangForm;
 import views.DonDatHangChuaPN;
@@ -25,6 +26,7 @@ import views.NhanVienOptionForm;
 import views.PhieuXuatForm;
 import views.TongHopNhapXuat;
 import views.ReportDanhSachNhanVien;
+import views.ReportDanhSachVatTu;
 import views.PhieuLapForm;
 import views.VatTuForm;
 
@@ -49,7 +51,7 @@ public class NavController {
 				exitFrameMain();
 			}
 		});
-		
+
 		frmMain.getMnChangePassword().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -57,11 +59,11 @@ public class NavController {
 					ChangePasswordForm.isVisible = true;
 					ChangePasswordForm changePasswordForm = new ChangePasswordForm();
 					changePasswordForm.setVisible(true);
-					
+
 				}
 			}
 		});
-		
+
 		frmMain.getMnDHKhongPN().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -72,7 +74,7 @@ public class NavController {
 				}
 			}
 		});
-		
+
 		frmMain.getMnTongHopNX().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -84,13 +86,31 @@ public class NavController {
 				}
 			}
 		});
-		
+
 		frmMain.getMnNhanVienList().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				ReportDanhSachNhanVien reportNhanVien = new ReportDanhSachNhanVien();
 				reportNhanVien.setVisible(true);
 				reportNhanVien.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			}
+		});
+
+		frmMain.getMnVatTuList().addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				ReportDanhSachVatTu form = new ReportDanhSachVatTu();
+				form.setVisible(true);
+				form.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			}
+		});
+		
+		frmMain.getMnCTNX().addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				ChiTietNhapXuat form = new ChiTietNhapXuat();
+				form.setVisible(true);
+				form.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			}
 		});
 
@@ -109,8 +129,7 @@ public class NavController {
 			});
 		}
 
-		clickedComponentShowTab("Nhân viên", frmMain.getMnNhanVien(), frmMain.getPanel_NV(),
-				NhanVienForm.class);
+		clickedComponentShowTab("Nhân viên", frmMain.getMnNhanVien(), frmMain.getPanel_NV(), NhanVienForm.class);
 		// --------
 		// mouse listener vat tu
 		clickedComponentShowTab("Vật tư", frmMain.getMnVatTu(), frmMain.getPanel_VT(), VatTuForm.class);
@@ -121,10 +140,10 @@ public class NavController {
 
 		// ---------------------
 		clickedMenuItem("Đặt hàng", frmMain.getMntmDatHang(), frmMain.getPanel_dathang(), DatHangForm.class);
-		
+
 		clickedMenuItem("Phiếu xuất", frmMain.getMntmPhieuXuat(), frmMain.getPanel_phieuxuat(), PhieuXuatForm.class);
 		clickedMenuItem("Phiếu Lập", frmMain.getMntmPhieuLap(), frmMain.getPanel_phieulap(), PhieuLapForm.class);
-		
+
 	}
 
 	private void logout() {
@@ -152,10 +171,10 @@ public class NavController {
 			CreateLoginForm.isVisible = true;
 			CreateLoginForm form = new CreateLoginForm();
 			form.setVisible(true);
-			
+
 		}
 	}
-	
+
 	private void deleteLogin() {
 		if (!NhanVienOptionForm.isVisible) {
 			NhanVienOptionForm.isVisible = true;
@@ -173,12 +192,12 @@ public class NavController {
 					if (t1.getComponents().length == 0) {
 						form = (Component) formClass.getDeclaredConstructor().newInstance();
 						t1.add(form, BorderLayout.CENTER);
-					}else if (t1.getComponents().length > 0 && Program.mGroup.equals("CONGTY")) {
+					} else if (t1.getComponents().length > 0 && Program.mGroup.equals("CONGTY")) {
 						t1.removeAll();
 						form = (Component) formClass.getDeclaredConstructor().newInstance();
 						t1.add(form, BorderLayout.CENTER);
 					}
-					
+
 					frmMain.getTabbedPane_Main().addTab(label, null, t1);
 					frmMain.getTabbedPane_Main().setSelectedComponent(t1);
 				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
@@ -197,12 +216,12 @@ public class NavController {
 				if (t1.getComponents().length == 0) {
 					form = (Component) formClass.getDeclaredConstructor().newInstance();
 					t1.add(form, BorderLayout.CENTER);
-				}else if (t1.getComponents().length > 0 && Program.mGroup.equals("CONGTY")) {
+				} else if (t1.getComponents().length > 0 && Program.mGroup.equals("CONGTY")) {
 					t1.removeAll();
 					form = (Component) formClass.getDeclaredConstructor().newInstance();
 					t1.add(form, BorderLayout.CENTER);
 				}
-				 
+
 				frmMain.getTabbedPane_Main().addTab(label, null, t1);
 				frmMain.getTabbedPane_Main().setSelectedComponent(t1);
 			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
