@@ -10,6 +10,7 @@ import java.util.Stack;
 
 import javax.swing.JOptionPane;
 
+import common.method.Authorization;
 import common.method.Formatter;
 import common.method.ISearcher;
 import common.method.IValidation;
@@ -24,8 +25,6 @@ public class DatHangController implements ISearcher {
 	private CTDDHModel ctdhModel;
 	private Stack<Object[]> undoList;
 	private int row;
-	private boolean isSelectedDH;
-	private boolean isSelectedCTDH;
 
 	private enum Mode {
 		DON_DAT_HANG, CTDDH
@@ -39,31 +38,21 @@ public class DatHangController implements ISearcher {
 		ctdhModel = new CTDDHModel();
 		undoList = new Stack<>();
 		row = 0;
-		isSelectedDH = false;
-		isSelectedCTDH = false;
-	}
-
-	public boolean isSelectedDH() {
-		return isSelectedDH;
-	}
-
-	public boolean isSelectedCTDH() {
-		return isSelectedCTDH;
 	}
 
 	public void initController() {
 		dh.getMntmDatHang().addActionListener(l -> {
-			if (!isSelectedDH) {
-				isSelectedDH = true;
-				isSelectedCTDH = false;
+			if (!dh.isSelectedDH()) {
+				dh.setSelectedDH(true);
+				dh.setSelectedCTDH(false);
 				initDatHang();
 			}
 
 		});
 		dh.getMntmCTDH().addActionListener(l -> {
-			if (!isSelectedCTDH) {
-				isSelectedCTDH = true;
-				isSelectedDH = false;
+			if (!dh.isSelectedCTDH()) {
+				dh.setSelectedCTDH(true);
+				dh.setSelectedDH(false);
 				initCTDatHang();
 			}
 
@@ -84,7 +73,7 @@ public class DatHangController implements ISearcher {
 	}
 
 	private void initDatHang() {
-		if (mode == Mode.CTDDH && isSelectedDH) {
+		if (mode == Mode.CTDDH && dh.isSelectedDH()) {
 			dh.getBtnHoanTac().setEnabled(true);
 			undoList.push(new Object[] { mode, dh.getTableCTDH().getSelectedRow() });
 		}
@@ -94,24 +83,24 @@ public class DatHangController implements ISearcher {
 		dh.getBtnVatTuOption().setEnabled(false);
 		dh.getSpinnerDonGia().setEnabled(false);
 		dh.getSpinnerSoLuong().setEnabled(false);
-		if (!Program.mGroup.equals("CONGTY")) {
+		dh.getBtnLamMoi().setEnabled(true);
+		dh.getMnOption().setText("Đặt hàng");
+		dh.getTextFieldTim().setEnabled(true);
+		if (Authorization.valueOf(Program.mGroup) != Authorization.CONGTY) {
 			dh.getBtnThem().setEnabled(true);
-			if (dh.getTable().getRowCount() > 0) {
+			if (dh.getTable().getRowCount() > 0 && dh.getTextFieldMaNV().getText().equals(Program.username)) {
 				dh.getBtnXoa().setEnabled(true);
 				dh.getBtnKhoOption().setEnabled(true);
 				dh.getTextFieldNCC().setEditable(true);
 				dh.getBtnGhi().setEnabled(true);
 			}
-			dh.getBtnLamMoi().setEnabled(true);
-			dh.getMnOption().setText("Đặt hàng");
-			dh.getTextFieldTim().setEnabled(true);
 		} else {
 			dh.getComboBox().setEnabled(true);
 		}
 	}
 
 	private void initCTDatHang() {
-		if (mode == Mode.DON_DAT_HANG && isSelectedCTDH) {
+		if (mode == Mode.DON_DAT_HANG && dh.isSelectedCTDH()) {
 			dh.getBtnHoanTac().setEnabled(true);
 			undoList.push(new Object[] { mode, dh.getTable().getSelectedRow() });
 		}
@@ -120,21 +109,19 @@ public class DatHangController implements ISearcher {
 		dh.getTableCTDH().setEnabled(true);
 		dh.getBtnKhoOption().setEnabled(false);
 		dh.getTextFieldNCC().setEditable(false);
-		if (!Program.mGroup.equals("CONGTY")) {
+		dh.getBtnLamMoi().setEnabled(true);
+		dh.getMnOption().setText("CT đặt hàng");
+		if (Authorization.valueOf(Program.mGroup) != Authorization.CONGTY) {
 			dh.getBtnThem().setEnabled(true);
-			dh.getBtnVatTuOption().setEnabled(true);
-
 			// có data thì mới được xóa
-			if (dh.getTable().getRowCount() > 0) {
+			if (dh.getTableCTDH().getRowCount() > 0 && dh.getTextFieldMaNV().getText().equals(Program.username)) {
+				dh.getBtnVatTuOption().setEnabled(true);
 				dh.getBtnXoa().setEnabled(true);
 				dh.getBtnVatTuOption().setEnabled(true);
 				dh.getSpinnerSoLuong().setEnabled(true);
 				dh.getSpinnerDonGia().setEnabled(true);
 				dh.getBtnGhi().setEnabled(true);
 			}
-
-			dh.getBtnLamMoi().setEnabled(true);
-			dh.getMnOption().setText("CT đặt hàng");
 
 		} else {
 			dh.getComboBox().setEnabled(true);
@@ -172,6 +159,8 @@ public class DatHangController implements ISearcher {
 			DatHangForm.getTextFieldMaVT().setText("");
 			DatHangForm.getTextFieldTenVT().setText("");
 			dh.getBtnVatTuOption().setEnabled(true);
+			dh.getSpinnerDonGia().setEnabled(true);
+			dh.getSpinnerSoLuong().setEnabled(true);
 			dh.getSpinnerSoLuong().setValue(0);
 			dh.getSpinnerDonGia().setValue(0);
 
@@ -184,7 +173,7 @@ public class DatHangController implements ISearcher {
 
 	private void btnUndo() {
 //		hoan tac su kien click btnthem
-		if (!dh.getBtnThem().isEnabled()) {
+		if (!dh.getBtnThem().isEnabled() && Authorization.valueOf(Program.mGroup) != Authorization.CONGTY) {
 			dh.getTextFieldMaDH().setEditable(false);
 			dh.getNgayDat().setEnabled(false);
 			dh.getTextFieldTim().setEnabled(true);
@@ -205,7 +194,6 @@ public class DatHangController implements ISearcher {
 				dh.getTableCTDH().getSelectionModel().addListSelectionListener(dh.getSelectionCTDHListener());
 				dh.getTableCTDH().getSelectionModel().setSelectionInterval(row, row);
 			}
-
 			if (undoList.empty()) {
 				dh.getBtnHoanTac().setEnabled(false);
 			}
@@ -317,6 +305,8 @@ public class DatHangController implements ISearcher {
 					} else {
 						upDateDataToDB();
 					}
+					dh.getTextFieldMaDH().setEditable(false);
+					dh.getNgayDat().setEnabled(false);
 				}
 			}
 			if (mode == Mode.CTDDH) {
@@ -394,6 +384,13 @@ public class DatHangController implements ISearcher {
 			row = dh.getTable().getRowCount() - 1;
 		}
 		if (mode == Mode.CTDDH) {
+			if (checkPhieuNhap(ctdhModel.getMaSoDDH())) {
+				JOptionPane.showMessageDialog(null,
+						"Không thể thêm vật tư vào đơn đặt hàng vì đơn hàng đã lập phiếu nhập.", "Thông báo",
+						JOptionPane.WARNING_MESSAGE);
+				return;
+			}
+
 			try {
 				Object[] newRow = { ctdhModel.getMaSoDDH(), DatHangForm.getTextFieldTenVT().getText(),
 						ctdhModel.getSoLuong(), Formatter.formatObjecttoMoney(ctdhModel.getDonGia()),
@@ -432,6 +429,11 @@ public class DatHangController implements ISearcher {
 	}
 
 	private void upDateDataToDB() {
+		if (checkPhieuNhap(ctdhModel.getMaSoDDH())) {
+			JOptionPane.showMessageDialog(null, "Không thể sửa đơn đặt hàng này vì đơn hàng đã lập phiếu nhập.",
+					"Thông báo", JOptionPane.WARNING_MESSAGE);
+			return;
+		}
 		if (mode == Mode.DON_DAT_HANG) {
 			row = dh.getTable().getSelectedRow();
 			String nhacc = dh.getTable().getValueAt(dh.getTable().getSelectedRow(), 2).toString();
@@ -514,8 +516,6 @@ public class DatHangController implements ISearcher {
 			dh.getTableCTDH().getSelectionModel().removeListSelectionListener(dh.getSelectionCTDHListener());
 			dh.getCtdhModel().setRowCount(0);
 			dh.loadDataCTDDH();
-			dh.getTableCTDH().getSelectionModel().addListSelectionListener(dh.getSelectionCTDHListener());
-			dh.getTableCTDH().getSelectionModel().setSelectionInterval(0, 0);
 		}
 
 	}
@@ -541,6 +541,13 @@ public class DatHangController implements ISearcher {
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) != JOptionPane.OK_OPTION) {
 			return;
 		}
+		String maDDH = dh.getTextFieldMaDH().getText().trim();
+//		check exist
+		if (checkPhieuNhap(dhModel.getMaSoDDH())) {
+			JOptionPane.showMessageDialog(null, "Không thể xóa đơn đặt hàng này vì đã lập phiếu nhập.", "Thông báo",
+					JOptionPane.WARNING_MESSAGE);
+			return;
+		}
 
 		if (mode == Mode.DON_DAT_HANG) {
 //			chưa chọn hàng thì không xóa được
@@ -550,7 +557,7 @@ public class DatHangController implements ISearcher {
 				undoList.push(new Object[] { "", row });
 			}
 //			set dữ liệu của row đó
-			String maDDH = dh.getTextFieldMaDH().getText().trim();
+
 			Integer manv = Integer.parseInt(dh.getTextFieldMaNV().getText());
 			String nhacc = dh.getTextFieldNCC().getText();
 			String makho = DatHangForm.getTextFieldMaKho().getText();
@@ -560,12 +567,6 @@ public class DatHangController implements ISearcher {
 			dhModel.setManv(manv);
 			dhModel.setMakho(makho);
 			dhModel.setNhaCC(nhacc);
-//			check exist
-			if (checkPhieuNhap(dhModel.getMaSoDDH())) {
-				JOptionPane.showMessageDialog(null, "Không thể xóa đơn đặt hàng này vì đã lập phiếu nhập.", "Thông báo",
-						JOptionPane.WARNING_MESSAGE);
-				return;
-			}
 
 			row = dh.getTable().getSelectedRow();
 			try {
@@ -612,7 +613,6 @@ public class DatHangController implements ISearcher {
 			if (dh.getTableCTDH().getSelectedRow() != row) {
 				undoList.push(new Object[] { "", row });
 			}
-			String maDDH = dh.getTableCTDH().getValueAt(dh.getTableCTDH().getSelectedRow(), 0).toString();
 			String maVT = dh.getMaVT().get(dh.getTableCTDH().getSelectedRow());
 			Integer soLuong = (Integer) dh.getTableCTDH().getValueAt(dh.getTableCTDH().getSelectedRow(), 2);
 			Float donGia = Formatter

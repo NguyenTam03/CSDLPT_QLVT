@@ -24,6 +24,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import com.toedter.calendar.JDateChooser;
+
+import common.method.Authorization;
 import common.method.Formatter;
 import controller.DatHangController;
 import javax.swing.JScrollPane;
@@ -68,7 +70,9 @@ public class DatHangForm extends CommonView<DatHangModel, DatHangDao> {
 	private Map<Integer, String> maVT;
 	private JTextField textFieldTenNV;
 	private DatHangController ac;
-	
+	private boolean isSelectedDH = false;
+	private boolean isSelectedCTDH = false;
+
 	public DatHangForm() {
 		super();
 		ac = new DatHangController(this);
@@ -217,7 +221,7 @@ public class DatHangForm extends CommonView<DatHangModel, DatHangDao> {
 		lblSoLuong.setBounds(20, 75, 59, 14);
 		panelCTDH.add(lblSoLuong);
 
-		SpinnerModel spinnerSLModel = new SpinnerNumberModel(0, 0, 100, 1);
+		SpinnerModel spinnerSLModel = new SpinnerNumberModel(0, 0, null, 1);
 		spinnerSoLuong = new JSpinner(spinnerSLModel);
 		spinnerSoLuong.setEnabled(false);
 		spinnerSoLuong.setBounds(101, 72, 86, 20);
@@ -227,8 +231,7 @@ public class DatHangForm extends CommonView<DatHangModel, DatHangDao> {
 		lblDonGia.setBounds(216, 75, 46, 14);
 		panelCTDH.add(lblDonGia);
 
-
-		SpinnerModel spinnerDGModel = new SpinnerNumberModel(Float.valueOf(0), 0, null, Float.valueOf(10000));
+		SpinnerModel spinnerDGModel = new SpinnerNumberModel(0, 0, null, 10000);
 		spinnerDonGia = new JSpinner(spinnerDGModel);
 		spinnerDonGia.setEnabled(false);
 		spinnerDonGia.setBounds(288, 72, 86, 20);
@@ -319,6 +322,22 @@ public class DatHangForm extends CommonView<DatHangModel, DatHangDao> {
 			textFieldTenVT.setText(tableCTDH.getValueAt(tableCTDH.getSelectedRow(), 1).toString());
 			spinnerSoLuong.setValue(tableCTDH.getValueAt(tableCTDH.getSelectedRow(), 2));
 			spinnerDonGia.setValue(Formatter.formatMoneyToFloat(tableCTDH.getValueAt(tableCTDH.getSelectedRow(), 3)));
+			if (isSelectedCTDH && Authorization.valueOf(Program.mGroup) != Authorization.CONGTY) {
+				if (!textFieldMaNV.getText().equals(Program.username)) {
+					btnVatTuOption.setEnabled(false);
+					spinnerSoLuong.setEnabled(false);
+					spinnerDonGia.setEnabled(false);
+					getBtnGhi().setEnabled(false);
+					getBtnXoa().setEnabled(false);
+
+				} else {
+					btnVatTuOption.setEnabled(true);
+					spinnerSoLuong.setEnabled(true);
+					spinnerDonGia.setEnabled(true);
+					getBtnGhi().setEnabled(true);
+					getBtnXoa().setEnabled(true);
+				}
+			}
 		};
 
 		selectionListener = e -> {
@@ -336,6 +355,21 @@ public class DatHangForm extends CommonView<DatHangModel, DatHangDao> {
 
 			textFieldMaKho.setText(maNhanVienKho.get(table.getValueAt(table.getSelectedRow(), 0)).get(1).toString());
 			textFieldTenKho.setText(table.getValueAt(table.getSelectedRow(), 4).toString());
+
+			if (isSelectedDH && Authorization.valueOf(Program.mGroup) != Authorization.CONGTY) {
+				if (!textFieldMaNV.getText().equals(Program.username)) {
+					textFieldNCC.setEditable(false);
+					btnKhoOption.setEnabled(false);
+					getBtnGhi().setEnabled(false);
+					getBtnXoa().setEnabled(false);
+
+				} else {
+					textFieldNCC.setEditable(true);
+					btnKhoOption.setEnabled(true);
+					getBtnGhi().setEnabled(true);
+					getBtnXoa().setEnabled(true);
+				}
+			}
 
 			tableCTDH.getSelectionModel().removeListSelectionListener(selectionCTDHListener);
 			ctdhModel.setRowCount(0);
@@ -454,6 +488,22 @@ public class DatHangForm extends CommonView<DatHangModel, DatHangDao> {
 		return khoOptionForm;
 	}
 
+	public boolean isSelectedDH() {
+		return isSelectedDH;
+	}
+
+	public void setSelectedDH(boolean isSelectedDH) {
+		this.isSelectedDH = isSelectedDH;
+	}
+
+	public boolean isSelectedCTDH() {
+		return isSelectedCTDH;
+	}
+
+	public void setSelectedCTDH(boolean isSelectedCTDH) {
+		this.isSelectedCTDH = isSelectedCTDH;
+	}
+
 	public void loadDataCTDDH() {
 		String msddh = table.getValueAt(table.getSelectedRow(), 0).toString();
 		ctdhList = ctdhDao.selectByCondition("SELECT MasoDDH, MAVT, SOLUONG, DONGIA FROM CTDDH WHERE MasoDDH = ?",
@@ -480,15 +530,13 @@ public class DatHangForm extends CommonView<DatHangModel, DatHangDao> {
 		if (tableCTDH.getRowCount() > 0) {
 			tableCTDH.getSelectionModel().addListSelectionListener(selectionCTDHListener);
 			tableCTDH.getSelectionModel().setSelectionInterval(0, 0);
-			if (ac.isSelectedCTDH()) {
-				btnVatTuOption.setEnabled(true);
-			}
-			
-		}else {
+		} else {
 			textFieldMaVT.setText("");
 			textFieldTenVT.setText("");
 			spinnerSoLuong.setValue(0);
 			spinnerDonGia.setValue(0);
+			spinnerSoLuong.setEnabled(false);
+			spinnerDonGia.setEnabled(false);
 			btnVatTuOption.setEnabled(false);
 		}
 	}
@@ -536,16 +584,35 @@ public class DatHangForm extends CommonView<DatHangModel, DatHangDao> {
 					e1.printStackTrace();
 				}
 			}
-			Program.servername = Program.servers.get(comboBox.getSelectedItem());
+			
 			Program.mlogin = Program.remotelogin;
-			Program.password = Program.remotepassword;
-			Program.mChinhanh = comboBox.getSelectedIndex();
+			Program.password = Program.remotepassword;		
+			Program.servername = Program.servers.get(comboBox.getSelectedItem());
 			if (Program.Connect() == 0)
 				return;
+			
+			Program.mChinhanh = comboBox.getSelectedIndex();
 			table.getSelectionModel().removeListSelectionListener(selectionListener);
 			model.setRowCount(0);
 			loadDataIntoTable();
 			table.getSelectionModel().addListSelectionListener(selectionListener);
+			if (model.getRowCount() > 0) {
+				table.getSelectionModel().setSelectionInterval(0, 0);
+			} else {
+				textFieldMaDH.setText("");
+				textFieldMaKho.setText("");
+				ngayDat.setDate(null);
+				textFieldNCC.setText("");
+				textFieldMaNV.setText("");
+				textFieldTenNV.setText("");	
+				textFieldTenKho.setText("");
+				textFieldTenVT.setText("");
+				textFieldMaVT.setText("");
+				spinnerDonGia.setValue(0);
+				spinnerSoLuong.setValue(0);
+				tableCTDH.getSelectionModel().removeListSelectionListener(selectionCTDHListener);
+				ctdhModel.setRowCount(0);
+			}
 		}
 	}
 

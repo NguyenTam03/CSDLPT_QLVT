@@ -2,30 +2,18 @@ package controller;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.swing.JFileChooser;
 
 import main.Program;
-import model.NhanVienModel;
-import net.sf.jasperreports.engine.DefaultJasperReportsContext;
 import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRPropertiesUtil;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.engine.design.JRDesignStyle;
-import net.sf.jasperreports.engine.design.JasperDesign;
-import net.sf.jasperreports.engine.export.ooxml.JRDocxExporter;
-import net.sf.jasperreports.export.SimpleExporterInput;
-import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.view.JasperViewer;
 import views.ReportDanhSachNhanVien;
 
@@ -47,7 +35,6 @@ public class ReportNhanVien {
 	public JasperPrint DanhSachNhanVien() {
 	    JasperPrint jasperPrint = null;
 	    try {
-	    	
 	        InputStream inputStream = ReportNhanVien.class.getResourceAsStream("/reports/ReportDSNV.jrxml");
 	        JasperReport jasperReport = JasperCompileManager.compileReport(inputStream);
 	        Map<String, Object> parameters = new HashMap<>();
