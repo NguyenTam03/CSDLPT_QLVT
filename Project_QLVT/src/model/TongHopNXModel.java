@@ -7,6 +7,9 @@ public class TongHopNXModel {
 	private int xuat;
 	private String tyLeXuat;
 
+	public TongHopNXModel() {
+	}
+
 	public TongHopNXModel(String ngay, int nhap, String tyLeNhap, int xuat, String tyLeXuat) {
 		this.ngay = ngay;
 		this.nhap = nhap;

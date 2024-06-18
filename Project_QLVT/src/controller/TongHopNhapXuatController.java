@@ -3,6 +3,7 @@ package controller;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 
+import common.method.Formatter;
 import main.Program;
 import model.JasperReportModel;
 import model.TongHopNXModel;
@@ -49,9 +50,12 @@ public class TongHopNhapXuatController implements IJasperReportController {
 
 		try {
 			while (Program.myReader.next()) {
-				TongHopNXModel model = new TongHopNXModel(Program.myReader.getDate(1).toString(),
-						Program.myReader.getInt(2), Program.myReader.getString(3), Program.myReader.getInt(4),
-						Program.myReader.getString(5));
+				TongHopNXModel model = new TongHopNXModel();
+				model.setNgay(Formatter.formatterDate(Program.myReader.getDate(1)));
+				model.setNhap(Program.myReader.getInt(2));
+				model.setTyLeNhap(Program.myReader.getString(3));
+				model.setXuat(Program.myReader.getInt(4));
+				model.setTyLeXuat(Program.myReader.getString(5));
 				tongNhap += model.getNhap();
 				tongXuat += model.getXuat();
 				reportModel.getList().add(model);

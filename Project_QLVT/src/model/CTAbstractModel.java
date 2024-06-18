@@ -21,7 +21,6 @@ public class CTAbstractModel implements IValidation {
 	}
 	
 	public CTAbstractModel(String mavt, Integer soLuong, Float donGia) {
-		
 		this.mavt = mavt;
 		this.soLuong = soLuong;
 		this.donGia = donGia;
