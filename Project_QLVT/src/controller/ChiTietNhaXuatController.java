@@ -96,8 +96,7 @@ public class ChiTietNhaXuatController implements IJasperReportController {
 		String sql = "";
 		String chiNhanh = "";
 		String loaiPhieu = (form.getComboBox().getSelectedItem().toString() == "NHẬP") ? "NHAP" : "XUAT";
-		System.out.println(loaiPhieu);
-		System.out.println(tuNgaySP + "  " + denNgaySP);
+		
 		if (Program.mGroup.equals("CONGTY")) {
 			sql = "EXEC sp_ChiTietSoLuongTriGiaHangNhapXuat_SongSong ?, ?, ?";
 			Program.myReader = Program.ExecSqlDataReader(sql, loaiPhieu, tuNgaySP, denNgaySP);
@@ -115,6 +114,7 @@ public class ChiTietNhaXuatController implements IJasperReportController {
 			}
 			
 			reportModel.getParameters().put("tenChiNhanh", chiNhanh);
+			reportModel.getParameters().put("loaiPhieu", form.getComboBox().getSelectedItem().toString());
 			reportModel.getParameters().put("tuNgay", tuNgay);
 			reportModel.getParameters().put("denNgay", denNgay);
 			

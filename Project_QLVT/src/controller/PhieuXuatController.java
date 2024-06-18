@@ -107,14 +107,22 @@ public class PhieuXuatController implements ISearcher {
 		px.getBtnVatTuOption().setEnabled(false);
 		px.getSpinnerSoLuong().setEnabled(false);
 		px.getSpinnerDonGia().setEnabled(false);
+		px.getBtnXoa().setEnabled(false);
+		px.getBtnGhi().setEnabled(false);
 
 		if (!Program.mGroup.equals("CONGTY")) {
 			px.getBtnThem().setEnabled(true);
 			if (px.getTable().getRowCount() > 0) {
-				px.getBtnXoa().setEnabled(true);
-				px.getBtnKhoOption().setEnabled(true);
-				px.getTextFieldTenKH().setEditable(true);
-				px.getBtnGhi().setEnabled(true);
+				if (!Program.username.equals(px.getTextFieldMaNV().getText())) {
+					px.getBtnKhoOption().setEnabled(false);
+					px.getTextFieldTenKH().setEditable(false);
+				} else {
+					px.getBtnXoa().setEnabled(true);
+					px.getBtnKhoOption().setEnabled(true);
+					px.getTextFieldTenKH().setEditable(true);
+					px.getBtnGhi().setEnabled(true);
+					
+				}
 			}
 
 			px.getBtnLamMoi().setEnabled(true);
@@ -122,6 +130,8 @@ public class PhieuXuatController implements ISearcher {
 
 		} else {
 			px.getComboBox().setEnabled(true);
+			px.getBtnXoa().setEnabled(false);
+			px.getBtnGhi().setEnabled(false);
 		}
 		px.getMnOption().setText("Phiếu Xuất");
 	}
@@ -142,19 +152,32 @@ public class PhieuXuatController implements ISearcher {
 		px.getTableCTPX().setEnabled(true);
 		px.getBtnKhoOption().setEnabled(false);
 		px.getTextFieldTenKH().setEditable(false);
+		px.getBtnGhi().setEnabled(false);
+		px.getBtnVatTuOption().setEnabled(false);
 		if (!Program.mGroup.equals("CONGTY")) {
 			px.getBtnThem().setEnabled(true);
 			px.getBtnVatTuOption().setEnabled(true);
 			if (px.getTable().getRowCount() > 0) {
-				px.getBtnXoa().setEnabled(true);
-				px.getSpinnerSoLuong().setEnabled(true);
-				px.getSpinnerDonGia().setEnabled(true);
-				px.getBtnGhi().setEnabled(true);
+				if (!Program.username.equals(px.getTextFieldMaNV().getText())) {
+					px.getSpinnerSoLuong().setEnabled(false);
+					px.getSpinnerDonGia().setEnabled(false);
+					px.getBtnVatTuOption().setEnabled(false);
+					px.getBtnThem().setEnabled(false);
+				} else {
+					px.getBtnXoa().setEnabled(true);
+					px.getSpinnerSoLuong().setEnabled(true);
+					px.getSpinnerDonGia().setEnabled(true);
+					px.getBtnGhi().setEnabled(true);
+					
+				}
+				
 			}
 			px.getBtnLamMoi().setEnabled(true);
 
 		} else {
 			px.getComboBox().setEnabled(true);
+			px.getBtnGhi().setEnabled(false);
+			px.getBtnVatTuOption().setEnabled(false);
 		}
 		px.getMnOption().setText("Chi Tiết Phiếu Xuất");
 	}
@@ -650,6 +673,13 @@ public class PhieuXuatController implements ISearcher {
 	}
 
 	private void deleteData() {
+		if (!Program.username.equals(px.getTextFieldMaNV().getText())) {
+			JOptionPane.showMessageDialog(null,
+					"Không thể xóa phiếu xuất/chi tiết phiếu xuất với phiếu xuất do người khác tạo.", "Thông báo",
+					JOptionPane.WARNING_MESSAGE);
+			return;
+		}
+		
 		if (JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa dữ liệu này không?", "Confirm",
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) != JOptionPane.OK_OPTION) {
 			return;
@@ -731,7 +761,7 @@ public class PhieuXuatController implements ISearcher {
 
 		}
 
-		if (mode == Mode.CTPX) {
+		if (mode == Mode.CTPX) {			
 			if (px.getTable().getSelectedRow() == -1) {
 				return;
 			}
