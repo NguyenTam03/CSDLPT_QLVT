@@ -5,7 +5,7 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" path="src"/>
+	<classpathentry excluding="NumberToWordsScriptlet.java" kind="src" path="src"/>
 	<classpathentry kind="lib" path="libraries/mssql-jdbc-12.4.1.jre8.jar"/>
 	<classpathentry kind="lib" path="jgoodies-common-1.8.0.jar" sourcepath="jgoodies-common-1.8.0-sources.jar"/>
 	<classpathentry kind="lib" path="jgoodies-forms-1.8.0.jar" sourcepath="jgoodies-forms-1.8.0-sources.jar"/>
@@ -23,5 +23,14 @@
 	<classpathentry kind="lib" path="libraries/itext-4.2.0.jar"/>
 	<classpathentry kind="lib" path="libraries/jasperreports-5.6.0.jar"/>
 	<classpathentry kind="lib" path="libraries/jasperreports-fonts-5.6.0.jar"/>
+<<<<<<< HEAD
+	<classpathentry kind="lib" path="libraries/NumberToWord.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+=======
+>>>>>>> c6f9daa1569ad1f82fdf274339df6e110e5f5a79
 	<classpathentry kind="output" path="bin"/>
 </classpath>

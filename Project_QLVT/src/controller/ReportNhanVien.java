@@ -68,14 +68,12 @@ public class ReportNhanVien {
 		        if (!filePath.toLowerCase().endsWith(".pdf")) {
 		            filePath += ".pdf"; // Nếu không, thêm phần mở rộng ".pdf" vào đường dẫn
 		        }
- 
 		     // Xuất báo cáo ra file PDF
 		        JasperExportManager.exportReportToPdfFile(jasperPrint, filePath);
 		    }
 		} catch (Exception e) {
 		    e.printStackTrace();
 		}
-
 	}
 	
 	public void xemTruocNhanVien() {
