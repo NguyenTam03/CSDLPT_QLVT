@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 import views.FrameMain;
 import views.LoginForm;
@@ -29,6 +30,7 @@ public class Program {
 	public static String servername = "";
 	public static String servernameLeft = "";
 
+
 	public static String username = "";
 	public static String mlogin = "";
 	public static String password = "";
@@ -36,6 +38,7 @@ public class Program {
 	public static String database = "";
 	public static String remotelogin = "";
 	public static String remotepassword = "";
+
 
 	public static String mloginDN = "";
 	public static String passwordDN = "";
@@ -78,7 +81,7 @@ public class Program {
 			return 0;
 		}
 	}
-
+	
 	@SuppressWarnings("resource")
 	public static void readInfoDBFile() {
 		String file = "D:\\infoDB.txt";

@@ -19,6 +19,8 @@ import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JTable;
 import java.awt.SystemColor;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.List;
 import java.awt.Color;
 
@@ -52,6 +54,12 @@ public class VatTuOptionFormForPX extends JFrame implements ISearcher {
 		contentPane.add(textFieldSearch, BorderLayout.NORTH);
 		textFieldSearch.setColumns(10);
 		Searcher.focusInput(textFieldSearch);
+		textFieldSearch.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				search();
+			}
+		});
 
 		JScrollPane scrollPane = new JScrollPane();
 		contentPane.add(scrollPane, BorderLayout.CENTER);
@@ -137,8 +145,10 @@ public class VatTuOptionFormForPX extends JFrame implements ISearcher {
 		model.setRowCount(0);
 
 		for (VattuModel vt : vatTuList) {
-			if (vt.getTenVT().toLowerCase().contains(input)) {
-				Object[] rowData = { vt.getMavt(), vt.getTenVT(), vt.getDvt() };
+			if (vt.getTenVT().toLowerCase().contains(input) || vt.getMavt().toLowerCase().contains(input)
+					|| vt.getDvt().toLowerCase().contains(input)
+					|| vt.getSoLuongTon().toString().toLowerCase().contains(input)) {
+				Object[] rowData = { vt.getMavt(), vt.getTenVT(), vt.getDvt(), vt.getSoLuongTon() };
 				model.addRow(rowData);
 			}
 		}

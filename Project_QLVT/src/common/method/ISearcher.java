@@ -1,4 +1,3 @@
-
 package common.method;
 
 public interface ISearcher {
