@@ -47,8 +47,6 @@ public class ReportNhanVien {
 	public JasperPrint DanhSachNhanVien() {
 	    JasperPrint jasperPrint = null;
 	    try {
-	    	JRPropertiesUtil.getInstance(DefaultJasperReportsContext.getInstance())
-            .setProperty("net.sf.jasperreports.fonts", "D:/Repository_CSDLPT/Project_QLVT/font.xml");
 	    	
 	        InputStream inputStream = ReportNhanVien.class.getResourceAsStream("/reports/ReportDSNV.jrxml");
 	        JasperReport jasperReport = JasperCompileManager.compileReport(inputStream);
@@ -83,14 +81,12 @@ public class ReportNhanVien {
 		        if (!filePath.toLowerCase().endsWith(".pdf")) {
 		            filePath += ".pdf"; // Nếu không, thêm phần mở rộng ".pdf" vào đường dẫn
 		        }
- 
 		     // Xuất báo cáo ra file PDF
 		        JasperExportManager.exportReportToPdfFile(jasperPrint, filePath);
 		    }
 		} catch (Exception e) {
 		    e.printStackTrace();
 		}
-
 	}
 	
 	public void xemTruocNhanVien() {
