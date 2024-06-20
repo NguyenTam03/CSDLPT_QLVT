@@ -27,6 +27,7 @@ import views.PhieuXuatForm;
 import views.TongHopNhapXuat;
 import views.ReportDanhSachNhanVien;
 import views.ReportDanhSachVatTu;
+import views.ReportHoatDongNhanVien;
 import views.PhieuLapForm;
 import views.VatTuForm;
 
@@ -89,11 +90,19 @@ public class NavController {
 
 		frmMain.getMnNhanVienList().addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
-				System.out.println("click");
+			public void mouseClicked(MouseEvent e) {			
 				ReportDanhSachNhanVien reportNhanVien = new ReportDanhSachNhanVien();
 				reportNhanVien.setVisible(true);
 				reportNhanVien.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			}
+		});
+		
+		frmMain.getMnHdNV().addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				ReportHoatDongNhanVien reportHoatDongNhanVien = new ReportHoatDongNhanVien();
+				reportHoatDongNhanVien.setVisible(true);
+				reportHoatDongNhanVien.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			}
 		});
 
