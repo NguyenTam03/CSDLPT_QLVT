@@ -2,15 +2,15 @@ package model;
 
 public class TongHopNXModel {
 	private String ngay;
-	private int nhap;
+	private float nhap;
 	private String tyLeNhap;
-	private int xuat;
+	private float xuat;
 	private String tyLeXuat;
 
 	public TongHopNXModel() {
 	}
 
-	public TongHopNXModel(String ngay, int nhap, String tyLeNhap, int xuat, String tyLeXuat) {
+	public TongHopNXModel(String ngay, float nhap, String tyLeNhap, float xuat, String tyLeXuat) {
 		this.ngay = ngay;
 		this.nhap = nhap;
 		this.tyLeNhap = tyLeNhap;
@@ -22,7 +22,7 @@ public class TongHopNXModel {
 		return ngay;
 	}
 
-	public int getNhap() {
+	public float getNhap() {
 		return nhap;
 	}
 
@@ -30,7 +30,7 @@ public class TongHopNXModel {
 		return tyLeNhap;
 	}
 
-	public int getXuat() {
+	public float getXuat() {
 		return xuat;
 	}
 
@@ -42,7 +42,7 @@ public class TongHopNXModel {
 		this.ngay = ngay;
 	}
 
-	public void setNhap(int nhap) {
+	public void setNhap(float nhap) {
 		this.nhap = nhap;
 	}
 
@@ -50,7 +50,7 @@ public class TongHopNXModel {
 		this.tyLeNhap = tyLeNhap;
 	}
 
-	public void setXuat(int xuat) {
+	public void setXuat(float xuat) {
 		this.xuat = xuat;
 	}
 

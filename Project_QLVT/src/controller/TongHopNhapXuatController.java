@@ -14,7 +14,7 @@ public class TongHopNhapXuatController implements IJasperReportController {
 	private JasperReportModel<TongHopNXModel> reportModel;
 	private String tuNgay, denNgay;
 	private TongHopNhapXuat form;
-	private int tongNhap, tongXuat;
+	private float tongNhap, tongXuat;
 
 	public TongHopNhapXuatController(TongHopNhapXuat form) {
 		this.tongNhap = 0;
@@ -52,9 +52,9 @@ public class TongHopNhapXuatController implements IJasperReportController {
 			while (Program.myReader.next()) {
 				TongHopNXModel model = new TongHopNXModel();
 				model.setNgay(Formatter.formatterDate(Program.myReader.getDate(1)));
-				model.setNhap(Program.myReader.getInt(2));
+				model.setNhap(Program.myReader.getFloat(2));
 				model.setTyLeNhap(Program.myReader.getString(3));
-				model.setXuat(Program.myReader.getInt(4));
+				model.setXuat(Program.myReader.getFloat(4));
 				model.setTyLeXuat(Program.myReader.getString(5));
 				tongNhap += model.getNhap();
 				tongXuat += model.getXuat();

@@ -5,7 +5,9 @@ import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 
 import javax.swing.JOptionPane;
@@ -356,9 +358,11 @@ public class DatHangController implements ISearcher {
 							dhModel.getNhaCC(), dh.getTextFieldTenNV().getText(),
 							DatHangForm.getTextFieldTenKho().getText() };
 					dh.getModel().addRow(newRow);
-					List<Object> values = new ArrayList<Object>();
-					values.add(dhModel.getManv());
-					values.add(dhModel.getMakho());
+					Map<String, Object> values = new HashMap<>();
+					values.put("maNhanVien", dhModel.getManv());
+					values.put("maKho", dhModel.getMakho());
+					values.put("tenNhanVien", dh.getTextFieldTenNV().getText());
+					values.put("tenKho", DatHangForm.getTextFieldTenKho().getText());
 					dh.getMaNhanVienKho().put(dhModel.getMaSoDDH(), values);
 					dh.getDao().insert(dhModel);
 				} catch (SQLException e) {
@@ -442,10 +446,9 @@ public class DatHangController implements ISearcher {
 			try {
 				dh.getTable().setValueAt(dhModel.getNhaCC(), dh.getTable().getSelectedRow(), 2);
 				dh.getTable().setValueAt(DatHangForm.getTextFieldTenKho().getText(), dh.getTable().getSelectedRow(), 3);
-				List<Object> values = new ArrayList<Object>();
-				values.add(dhModel.getManv());
-				values.add(dhModel.getMakho());
-				dh.getMaNhanVienKho().put(dhModel.getMaSoDDH(), values);
+				dh.getMaNhanVienKho().get(dhModel.getMaSoDDH()).put("maKho", dhModel.getMakho());
+				dh.getMaNhanVienKho().get(dhModel.getMaSoDDH()).put("tenKho",
+						DatHangForm.getTextFieldTenKho().getText());
 				dh.getDao().update(dhModel);
 			} catch (SQLException e) {
 				JOptionPane.showMessageDialog(null, "Lỗi update đơn đặt hàng!\n" + e.getMessage(), "Error",
@@ -676,10 +679,14 @@ public class DatHangController implements ISearcher {
 		dh.getModel().setRowCount(0);
 
 		for (DatHangModel d : dh.getList()) {
-			if (d.getMakho().toLowerCase().contains(input) || d.getManv().toString().contains(input)
-					|| d.getMaSoDDH().contains(input) || d.getNhaCC().contains(input)) {
-				Object[] rowData = { d.getMaSoDDH(), Formatter.formatterDate(d.getNgay()), d.getNhaCC(), d.getManv(),
-						d.getMakho() };
+			if (dh.getMaNhanVienKho().get(d.getMaSoDDH()).get("tenNhanVien").toString().contains(input)
+					|| dh.getMaNhanVienKho().get(d.getMaSoDDH()).get("tenKho").toString().toLowerCase().contains(input)
+					|| d.getMaSoDDH().toLowerCase().contains(input) || d.getNhaCC().toLowerCase().contains(input)
+					|| Formatter.formatterDate(d.getNgay()).toString().contains(input)) {
+
+				Object[] rowData = { d.getMaSoDDH(), Formatter.formatterDate(d.getNgay()), d.getNhaCC(),
+						dh.getMaNhanVienKho().get(d.getMaSoDDH()).get("tenNhanVien"),
+						dh.getMaNhanVienKho().get(d.getMaSoDDH()).get("tenKho") };
 				dh.getModel().addRow(rowData);
 			}
 		}

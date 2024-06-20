@@ -11,20 +11,17 @@ public class DatHangModel implements IValidation {
 	private String nhaCC;
 	private Integer manv;
 	private String makho;
+
 	public static enum ValidateError {
-		ERROR_MASODDH,
-		ERROR_NGAY,
-		ERROR_NHACC,
-		ERROR_MANV,
-		ERROR_MAKHO,
-		NO_ERROR
+		ERROR_MASODDH, ERROR_NGAY, ERROR_NHACC, ERROR_MANV, ERROR_MAKHO, NO_ERROR
 	}
+
 	public static ValidateError validateError;
-	
+
 	public DatHangModel() {
-		
+
 	}
-	
+
 	public DatHangModel(String maSoDDH, Date ngay, String nhaCC, Integer manv, String makho) {
 		super();
 		this.maSoDDH = maSoDDH;
@@ -73,7 +70,8 @@ public class DatHangModel implements IValidation {
 	public void setMakho(String makho) {
 		this.makho = makho;
 	}
-	
+
+
 	@Override
 	public boolean validate() {
 		if (maSoDDH.equals("")) {
@@ -113,6 +111,5 @@ public class DatHangModel implements IValidation {
 		validateError = ValidateError.NO_ERROR;
 		return true;
 	}
-	
-	
+
 }
