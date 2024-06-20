@@ -13,7 +13,6 @@ public class ChiTietNhaXuatController implements IJasperReportController {
 	private JasperReportModel<ChiTietNXModel> reportModel;
 	private ChiTietNhapXuat form;
 	private String tuNgay, denNgay;
-	private String tuNgaySP, denNgaySP;
 
 	public JasperReportModel<ChiTietNXModel> getReportModel() {
 		return reportModel;
@@ -46,15 +45,6 @@ public class ChiTietNhaXuatController implements IJasperReportController {
 	public void setDenNgay(String denNgay) {
 		this.denNgay = denNgay;
 	}
-	
-
-	public String getTuNgaySP() {
-		return tuNgaySP;
-	}
-
-	public String getDenNgaySP() {
-		return denNgaySP;
-	}
 
 	public ChiTietNhaXuatController(ChiTietNhapXuat form) {
 		this.form = form;
@@ -68,10 +58,6 @@ public class ChiTietNhaXuatController implements IJasperReportController {
 				SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 				tuNgay = format.format(form.getTuNgay().getDate());
 				denNgay = format.format(form.getDenNgay().getDate());
-				
-				SimpleDateFormat formatSP = new SimpleDateFormat("yyyy-MM-dd");
-				tuNgaySP = formatSP.format(form.getTuNgay().getDate());
-				denNgaySP = formatSP.format(form.getDenNgay().getDate());
 				preview();
 			}
 		});
@@ -81,10 +67,6 @@ public class ChiTietNhaXuatController implements IJasperReportController {
 				SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 				tuNgay = format.format(form.getTuNgay().getDate());
 				denNgay = format.format(form.getDenNgay().getDate());
-				
-				SimpleDateFormat formatSP = new SimpleDateFormat("yyyy-MM-dd");
-				tuNgaySP = formatSP.format(form.getTuNgay().getDate());
-				denNgaySP = formatSP.format(form.getDenNgay().getDate());
 				print();
 			}
 		});
@@ -99,10 +81,10 @@ public class ChiTietNhaXuatController implements IJasperReportController {
 		
 		if (Program.mGroup.equals("CONGTY")) {
 			sql = "EXEC sp_ChiTietSoLuongTriGiaHangNhapXuat_SongSong ?, ?, ?";
-			Program.myReader = Program.ExecSqlDataReader(sql, loaiPhieu, tuNgaySP, denNgaySP);
+			Program.myReader = Program.ExecSqlDataReader(sql, loaiPhieu, tuNgay, denNgay);
 		} else {
 			sql = "EXEC sp_ChiTietSoLuongTriGiaHangNhapXuat ?, ?, ?";
-			Program.myReader = Program.ExecSqlDataReader(sql, loaiPhieu, tuNgaySP, denNgaySP);
+			Program.myReader = Program.ExecSqlDataReader(sql, loaiPhieu, tuNgay, denNgay);
 			chiNhanh = Program.servername = form.getComboBoxChiNhanh().getItemAt(Program.mChinhanh);
 		}
 
