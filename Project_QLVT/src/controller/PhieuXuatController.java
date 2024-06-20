@@ -90,13 +90,16 @@ public class PhieuXuatController implements ISearcher {
 		px.getBtnVatTuOption().setEnabled(false);
 		px.getSpinnerSoLuong().setEnabled(false);
 		px.getSpinnerDonGia().setEnabled(false);
+
 		px.getBtnLamMoi().setEnabled(true);
 		px.getTextFieldTim().setEditable(true);
+
 		px.getBtnXoa().setEnabled(false);
 		px.getBtnGhi().setEnabled(false);
 
 		if (!Program.mGroup.equals("CONGTY")) {
 			px.getBtnThem().setEnabled(true);
+
 			if (px.getTable().getRowCount() > 0 && Program.username.equals(px.getTextFieldMaNV().getText())) {
 				px.getBtnXoa().setEnabled(true);
 				px.getBtnKhoOption().setEnabled(true);
@@ -107,6 +110,7 @@ public class PhieuXuatController implements ISearcher {
 
 		} else {
 			px.getComboBox().setEnabled(true);
+
 		}
 		px.getMnOption().setText("Phiếu Xuất");
 	}
@@ -127,6 +131,7 @@ public class PhieuXuatController implements ISearcher {
 		px.getTableCTPX().setEnabled(true);
 		px.getBtnKhoOption().setEnabled(false);
 		px.getTextFieldTenKH().setEditable(false);
+
 		px.getBtnLamMoi().setEnabled(true);
 		px.getBtnGhi().setEnabled(false);
 		px.getBtnVatTuOption().setEnabled(false);

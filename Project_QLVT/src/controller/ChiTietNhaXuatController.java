@@ -46,6 +46,7 @@ public class ChiTietNhaXuatController implements IJasperReportController {
 		this.denNgay = denNgay;
 	}
 
+
 	public ChiTietNhaXuatController(ChiTietNhapXuat form) {
 		this.form = form;
 		reportModel = new JasperReportModel<ChiTietNXModel>();
@@ -58,6 +59,7 @@ public class ChiTietNhaXuatController implements IJasperReportController {
 				SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 				tuNgay = format.format(form.getTuNgay().getDate());
 				denNgay = format.format(form.getDenNgay().getDate());
+
 				preview();
 			}
 		});

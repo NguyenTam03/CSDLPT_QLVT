@@ -35,7 +35,8 @@ public class KhoOptionForm extends JFrame implements ISearcher {
 	private KhoDao khoDao;
 	private List<KhoModel> khoList;
 	private JTextField textFieldSearch;
-
+	public static boolean isVisible = false;
+	
 	/**
 	 * Create the frame.
 	 */

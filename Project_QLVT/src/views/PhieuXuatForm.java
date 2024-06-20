@@ -71,8 +71,10 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 
 	private JTextField textFieldTenNV;
 	private PhieuXuatController ac;
+
 	private boolean isSelectedCTPX = false;
 	private boolean isSelectedPX = false;
+
 
 	/*
 	 * Những map này phục vụ cho chức năng search key là khóa, value là tên
@@ -338,6 +340,7 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 			spinnerSoLuong.setValue(tableCTPX.getValueAt(tableCTPX.getSelectedRow(), 2));
 			spinnerDonGia.setValue(
 					Formatter.formatMoneyToFloat(tableCTPX.getValueAt(tableCTPX.getSelectedRow(), 3).toString()));
+
 			if (isSelectedCTPX && !Program.mGroup.equals("CONGTY")) {
 				if (!Program.username.equals(getTextFieldMaNV().getText())) {
 					getBtnXoa().setEnabled(false);
@@ -358,6 +361,18 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 //		lắng nghe sự kiện chọn row đồng thời in dữ liệu ra textfield cho bảng phiếu xuất
 
 		selectionListener = e -> {
+			if (!Program.mHoten.equals(table.getValueAt(table.getSelectedRow(), 3))) {
+				getBtnXoa().setEnabled(false);
+				getBtnGhi().setEnabled(false);
+				getBtnKhoOption().setEnabled(false);
+				getTextFieldTenKH().setEditable(false);
+			} else if (!Program.mGroup.equals("CONGTY")){
+				getBtnXoa().setEnabled(true);
+				getBtnGhi().setEnabled(true);
+				getBtnKhoOption().setEnabled(true);
+				getTextFieldTenKH().setEditable(true);
+			}
+
 			textFieldMaPX.setText(table.getValueAt(table.getSelectedRow(), 0).toString());
 			try {
 				ngay.setDate(new SimpleDateFormat("dd-MM-yyyy")
@@ -606,6 +621,7 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 		if (tableCTPX.getRowCount() > 0) {
 			tableCTPX.getSelectionModel().addListSelectionListener(selectionListenerCTPX);
 			tableCTPX.getSelectionModel().setSelectionInterval(0, 0);
+
 		} else {
 			textFieldMaVT.setText("");
 			textFieldTenVT.setText("");

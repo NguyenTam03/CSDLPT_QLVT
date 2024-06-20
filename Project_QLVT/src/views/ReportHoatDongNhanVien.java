@@ -15,8 +15,6 @@ import main.Program;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.awt.event.ItemEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 
 import javax.swing.JComboBox;

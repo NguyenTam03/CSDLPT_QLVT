@@ -40,6 +40,7 @@ public class ReportDanhSachVatTu extends JFrame implements ISearcher {
 	private JButton btnXuatBan;
 	private List<VattuModel> vatTuList;
 	private VatTuDao vtDao;
+	public static boolean isVisible = false;
 
 	/**
 	 * Create the frame.

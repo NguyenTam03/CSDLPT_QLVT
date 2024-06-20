@@ -6,7 +6,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.Stack;
 
 import javax.swing.JFrame;
@@ -18,17 +18,13 @@ import common.method.Formatter;
 import dao.CTDDHDao;
 import dao.CTPLDao;
 import dao.DatHangDao;
-import dao.IAbstractDao;
 import dao.KhoDao;
-import dao.PhieuLapDao;
 import main.Program;
 import model.CTDDHModel;
 import model.CTPLModel;
 import model.DatHangModel;
 import model.KhoModel;
-import model.NhanVienModel;
 import model.PhieuLapModel;
-import views.DatHangForm;
 import views.DonHangOptionForm;
 import views.PhieuLapForm;
 
