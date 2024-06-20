@@ -17,11 +17,8 @@ import model.NhanVienModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 
 import java.awt.Font;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -39,8 +36,6 @@ import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import java.awt.SystemColor;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class ReportDanhSachNhanVien extends JFrame implements ISearcher {
 	private static final long serialVersionUID = 1L;
@@ -53,6 +48,8 @@ public class ReportDanhSachNhanVien extends JFrame implements ISearcher {
 	private JComboBox<String> comboBox;
 	private JButton btnXemTruoc;
 	private JButton btnXuatBan;
+	public static boolean isVisible = false;
+	
 	/**
 	 * Create the frame.
 	 */
@@ -229,10 +226,10 @@ public class ReportDanhSachNhanVien extends JFrame implements ISearcher {
 			Program.servername = Program.servers.get(comboBox.getSelectedItem());
 			Program.mlogin = Program.remotelogin;
 			Program.password = Program.remotepassword;
-			Program.mChinhanh = comboBox.getSelectedIndex();
+			
 			if (Program.Connect() == 0)
 				return;
-
+			Program.mChinhanh = comboBox.getSelectedIndex();
 			model.setRowCount(0);
 			loadNhanVien();
 

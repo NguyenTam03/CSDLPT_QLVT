@@ -40,9 +40,9 @@
 	</queryString>
 	<field name="ngay" class="java.lang.String"/>
 	<field name="nhap" class="java.lang.Float"/>
-	<field name="tyLeNhap" class="java.lang.String"/>
+	<field name="tyLeNhap" class="java.lang.Float"/>
 	<field name="xuat" class="java.lang.Float"/>
-	<field name="tyLeXuat" class="java.lang.String"/>
+	<field name="tyLeXuat" class="java.lang.Float"/>
 	<title>
 		<band height="109">
 			<frame>
@@ -168,7 +168,7 @@
 			<line>
 				<reportElement positionType="FixRelativeToBottom" x="-20" y="-1" width="595" height="1" uuid="7c3045af-c36d-40f1-adc3-5d0f668e4463"/>
 			</line>
-			<textField >
+			<textField>
 				<reportElement x="-20" y="0" width="110" height="20" uuid="2f177c53-ac62-465f-a97c-c44035ace4db">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="955416e5-4265-4972-86c6-fa1a8e7f6f92"/>
 				</reportElement>
@@ -177,7 +177,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ngay}]]></textFieldExpression>
 			</textField>
-			<textField >
+			<textField pattern="#,##0.00#;#,##0.00#-">
 				<reportElement x="90" y="0" width="138" height="20" uuid="620e238f-a8dc-4dc6-9883-b3e01d3b82f8">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f3235797-5fdc-4c94-85ee-816928107212"/>
 				</reportElement>
@@ -186,7 +186,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nhap}]]></textFieldExpression>
 			</textField>
-			<textField >
+			<textField pattern="#,##0.##%">
 				<reportElement x="228" y="0" width="104" height="20" uuid="69d6962d-1a17-4f8c-84eb-61488e887139">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4a41eb6f-0236-462e-bc0e-92cc5bde8e66"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -196,7 +196,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{tyLeNhap}]]></textFieldExpression>
 			</textField>
-			<textField >
+			<textField pattern="#,##0.00#;#,##0.00#-">
 				<reportElement x="333" y="0" width="137" height="20" uuid="e31b738b-5ba8-4e52-be73-59e1c199630c">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="54c3e3ce-3360-4384-bc2c-620e75aa0575"/>
 				</reportElement>
@@ -205,7 +205,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{xuat}]]></textFieldExpression>
 			</textField>
-			<textField >
+			<textField pattern="#,##0.##%">
 				<reportElement x="471" y="0" width="104" height="20" uuid="fb64d054-b2e7-4675-a6a3-b3bb17596cf0">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="54c3e3ce-3360-4384-bc2c-620e75aa0575"/>
 				</reportElement>
@@ -238,7 +238,7 @@
 	</pageFooter>
 	<lastPageFooter>
 		<band height="143">
-			<textField >
+			<textField pattern="#,##0.00#;#,##0.00#-">
 				<reportElement x="110" y="12" width="118" height="35" uuid="0db4a6fe-235d-4521-afda-fb729a7fe4b1">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="54c3e3ce-3360-4384-bc2c-620e75aa0575"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -248,7 +248,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{tongNhap}]]></textFieldExpression>
 			</textField>
-			<textField >
+			<textField pattern="#,##0.00#;#,##0.00#-">
 				<reportElement x="333" y="12" width="111" height="35" uuid="5db33e6c-a8dd-4959-8921-e4ad33adb850">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="54c3e3ce-3360-4384-bc2c-620e75aa0575"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>

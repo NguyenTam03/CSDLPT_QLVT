@@ -63,8 +63,11 @@ public class PhieuLapForm extends CommonView<PhieuLapModel, PhieuLapDao> {
 	private JDateChooser Ngay;
 	private JLabel lbTenVatTu, lbTenKho,lbHoTenNV ;
 	private JButton btnKho;
-	public static HashMap<String, Integer> maHoTenNV;
-	public static HashMap<String, String> maTenKho;
+	// String MaPN: MaNV | TenKho
+	public static HashMap<String, Integer> maPN_NV;
+	public static HashMap<Integer, String> maNV_TenNV;
+	public static HashMap<String, String> maPN_Kho;
+	public static HashMap<String, String> maKho_TenKho;
 
 	public PhieuLapForm() {
 		super();
@@ -389,8 +392,10 @@ public class PhieuLapForm extends CommonView<PhieuLapModel, PhieuLapDao> {
 	}
 
 	public void loadDataIntoTable() {
-		maHoTenNV = new HashMap<>();
-		maTenKho = new HashMap<>();
+		maPN_NV = new HashMap<>();
+		maPN_Kho = new HashMap<>();
+		maNV_TenNV = new HashMap<>();
+		maKho_TenKho = new HashMap<>();
 		loadData();
 		String hoTenNV = "";
 		String tenKho = "";
@@ -404,7 +409,8 @@ public class PhieuLapForm extends CommonView<PhieuLapModel, PhieuLapDao> {
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
-			maHoTenNV.put(pl.getMapn(), pl.getManv());
+			maPN_NV.put(pl.getMapn(), pl.getManv());
+			maNV_TenNV.put(pl.getManv(), hoTenNV);
 			sql = "SELECT TENKHO FROM KHO WHERE MAKHO = ?";
 			Program.myReader = Program.ExecSqlDataReader(sql,pl.getMaKho());
 			try {
@@ -413,7 +419,8 @@ public class PhieuLapForm extends CommonView<PhieuLapModel, PhieuLapDao> {
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
-			maTenKho.put(pl.getMapn(), pl.getMaKho());
+			maPN_Kho.put(pl.getMapn(), pl.getMaKho());
+			maKho_TenKho.put(pl.getMaKho(), tenKho);
 			Object[] rowData = { pl.getMapn(),Formatter.formatterDate(pl.getNgay()) , pl.getMaSoDDH(),hoTenNV ,tenKho };
 			model.addRow(rowData);
 		}

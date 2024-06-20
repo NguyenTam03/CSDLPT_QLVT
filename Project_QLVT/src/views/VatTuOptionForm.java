@@ -34,7 +34,8 @@ public class VatTuOptionForm extends JFrame implements ISearcher {
 	private List<VattuModel> vatTuList;
 	private VatTuDao vtDao;
 	private String masoddh;
-
+	public static boolean isVisible = false;
+	
 	public VatTuOptionForm(String masoddh) {
 		// giao diện
 		super("Chọn Vật Tư");

@@ -20,6 +20,8 @@ import main.Program;
 import model.CTDDHModel;
 import model.DatHangModel;
 import views.DatHangForm;
+import views.KhoOptionForm;
+import views.VatTuOptionForm;
 
 public class DatHangController implements ISearcher {
 	private DatHangForm dh;
@@ -379,6 +381,7 @@ public class DatHangController implements ISearcher {
 			dh.getTable().getSelectionModel().addListSelectionListener(dh.getSelectionListener());
 			dh.getTable().getSelectionModel().setSelectionInterval(dh.getTable().getRowCount() - 1,
 					dh.getTable().getRowCount() - 1);
+			// insert 1 item into list
 			dh.getList().add(dhModel);
 
 			// Luu truy van de hoan tac yeu cau them
@@ -414,6 +417,7 @@ public class DatHangController implements ISearcher {
 			dh.getTableCTDH().getSelectionModel().addListSelectionListener(dh.getSelectionCTDHListener());
 			dh.getTableCTDH().getSelectionModel().setSelectionInterval(dh.getTableCTDH().getRowCount() - 1,
 					dh.getTableCTDH().getRowCount() - 1);
+			// insert 1 item into list
 			dh.getCtdhList().add(ctdhModel);
 
 			String sqlUndo;
@@ -461,6 +465,7 @@ public class DatHangController implements ISearcher {
 			JOptionPane.showMessageDialog(null, "Ghi thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 			dh.getBtnHoanTac().setEnabled(true);
 			dh.getTable().getSelectionModel().setSelectionInterval(row, row);
+			// update item for list
 			dh.getList().set(row, dhModel);
 			// Luu truy van de hoan tac yeu cau update
 			String sqlUndo;
@@ -496,6 +501,7 @@ public class DatHangController implements ISearcher {
 			JOptionPane.showMessageDialog(null, "Ghi thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 			dh.getBtnHoanTac().setEnabled(true);
 			dh.getTableCTDH().getSelectionModel().setSelectionInterval(row, row);
+			// update item for list
 			dh.getCtdhList().set(row, ctdhModel);
 			// Luu truy van de hoan tac yeu cau update
 			String sqlUndo;
@@ -599,6 +605,7 @@ public class DatHangController implements ISearcher {
 				}
 			}
 			dh.getBtnHoanTac().setEnabled(true);
+			// delete item in list
 			dh.getList().remove(row);
 
 			String sqlUndo = "INSERT INTO DatHang (MasoDDH, NGAY, NhaCC, MANV, MAKHO) VALUES ('" + dhModel.getMaSoDDH()
@@ -665,11 +672,15 @@ public class DatHangController implements ISearcher {
 	}
 
 	private void openKhoForm() {
-		dh.getKhoOptionForm().setVisible(true);
+		if (!KhoOptionForm.isVisible) {
+			dh.getKhoOptionForm().setVisible(true);
+		}
 	}
 
 	private void openVatTuForm() {
-		dh.getVtOptionForm().setVisible(true);
+		if (!VatTuOptionForm.isVisible) {
+			dh.getVtOptionForm().setVisible(true);
+		}
 	}
 
 	@Override

@@ -53,9 +53,9 @@ public class TongHopNhapXuatController implements IJasperReportController {
 				TongHopNXModel model = new TongHopNXModel();
 				model.setNgay(Formatter.formatterDate(Program.myReader.getDate(1)));
 				model.setNhap(Program.myReader.getFloat(2));
-				model.setTyLeNhap(Program.myReader.getString(3));
+				model.setTyLeNhap(Program.myReader.getFloat(3));
 				model.setXuat(Program.myReader.getFloat(4));
-				model.setTyLeXuat(Program.myReader.getString(5));
+				model.setTyLeXuat(Program.myReader.getFloat(5));
 				tongNhap += model.getNhap();
 				tongXuat += model.getXuat();
 				reportModel.getList().add(model);

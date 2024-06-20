@@ -67,8 +67,14 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 	private VatTuOptionFormForPX vatTuOptionFormPx;
 	private Map<String, List<Object>> maNhanVienKho;
 	private Map<Integer, String> maVT;
+	
+
 	private JTextField textFieldTenNV;
 	private PhieuXuatController ac;
+
+	private boolean isSelectedCTPX = false;
+	private boolean isSelectedPX = false;
+
 
 	/*
 	 * Những map này phục vụ cho chức năng search key là khóa, value là tên
@@ -335,6 +341,22 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 			spinnerDonGia.setValue(
 					Formatter.formatMoneyToFloat(tableCTPX.getValueAt(tableCTPX.getSelectedRow(), 3).toString()));
 
+			if (isSelectedCTPX && !Program.mGroup.equals("CONGTY")) {
+				if (!Program.username.equals(getTextFieldMaNV().getText())) {
+					getBtnXoa().setEnabled(false);
+					getBtnGhi().setEnabled(false);
+					getBtnVatTuOption().setEnabled(false);
+					spinnerSoLuong.setEnabled(false);
+					spinnerDonGia.setEnabled(false);
+				} else {
+					getBtnXoa().setEnabled(true);
+					getBtnGhi().setEnabled(true);
+					getBtnVatTuOption().setEnabled(true);
+					spinnerSoLuong.setEnabled(false);
+					spinnerDonGia.setEnabled(false);
+				}				
+			}
+
 		};
 //		lắng nghe sự kiện chọn row đồng thời in dữ liệu ra textfield cho bảng phiếu xuất
 
@@ -365,6 +387,20 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 
 			textFieldMaKho.setText(maNhanVienKho.get(table.getValueAt(table.getSelectedRow(), 0)).get(1).toString());
 			textFieldTenKho.setText(table.getValueAt(table.getSelectedRow(), 4).toString());
+
+			if (isSelectedPX && !Program.mGroup.equals("CONGTY")) {
+				if (!Program.username.equals(getTextFieldMaNV().getText())) {
+					getBtnXoa().setEnabled(false);
+					getBtnGhi().setEnabled(false);
+					getBtnKhoOption().setEnabled(false);
+					getTextFieldTenKH().setEditable(false);
+				} else {
+					getBtnXoa().setEnabled(true);
+					getBtnGhi().setEnabled(true);
+					getBtnKhoOption().setEnabled(true);
+					getTextFieldTenKH().setEditable(true);
+				}				
+			}
 
 			tableCTPX.getSelectionModel().removeListSelectionListener(selectionListenerCTPX);
 			ctpxModel.setRowCount(0);
@@ -492,6 +528,23 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 	public Map<String, String> getVatTuInfo() {
 		return vatTuInfo;
 	}
+	
+
+	public void setSelectedCTPX(boolean isSelectedCTPX) {
+		this.isSelectedCTPX = isSelectedCTPX;
+	}
+
+	public void setSelectedPX(boolean isSelectedPX) {
+		this.isSelectedPX = isSelectedPX;
+	}
+	
+	public boolean isSelectedCTPX() {
+		return isSelectedCTPX;
+	}
+
+	public boolean isSelectedPX() {
+		return isSelectedPX;
+	}
 
 	public void loadDataIntoTable() {
 		loadData();
@@ -568,14 +621,14 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 		if (tableCTPX.getRowCount() > 0) {
 			tableCTPX.getSelectionModel().addListSelectionListener(selectionListenerCTPX);
 			tableCTPX.getSelectionModel().setSelectionInterval(0, 0);
-			if (ac.isSelectedCTPX()) {
-				btnVatTuOption.setEnabled(true);
-			}
+
 		} else {
 			textFieldMaVT.setText("");
 			textFieldTenVT.setText("");
-			spinnerSoLuong.setValue(1);
+			spinnerSoLuong.setValue(0);
 			spinnerDonGia.setValue(0);
+			spinnerSoLuong.setEnabled(false);
+			spinnerDonGia.setEnabled(false);
 			btnVatTuOption.setEnabled(false);
 		}
 	}
@@ -599,8 +652,27 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 			model.setRowCount(0);
 			loadDataIntoTable();
 			table.getSelectionModel().addListSelectionListener(selectionListener);
+
+			if (model.getRowCount() > 0) {
+				table.getSelectionModel().setSelectionInterval(0, 0);
+			} else {
+				getTextFieldMaPX().setText("");
+				getNgay().setDate(null);
+				getTextFieldTenKH().setText("");
+				getTextFieldMaNV().setText("");
+				getTextFieldTenNV().setText("");
+				getTextFieldMaKho().setText("");
+				getTextFieldTenKho().setText("");
+				getTextFieldMaVT().setText("");
+				getTextFieldTenVT().setText("");
+				getSpinnerSoLuong().setValue(0);
+				getSpinnerDonGia().setValue(0);
+				tableCTPX.getSelectionModel().removeListSelectionListener(selectionListenerCTPX);
+				ctpxModel.setRowCount(0);				
+			}
 		}
 	}
+
 
 	private void exitPhieuXuat() {
 		Program.frmMain.getTabbedPane_Main().removeTabAt(Program.frmMain.getTabbedPane_Main().getSelectedIndex());
