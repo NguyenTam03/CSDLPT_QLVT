@@ -54,7 +54,7 @@ public class PhieuLapController {
 		undoList = new Stack<String>();
 		isThem = isPhieuNhap = false;
 	}
-
+	
 	public void initController() {
 		PLForm.getMenuItemPN().addActionListener(l -> initPhieuLap());
 		PLForm.getMenuItemCTPN().addActionListener(l -> initCTPhieuLap());
@@ -86,9 +86,9 @@ public class PhieuLapController {
 
 		for (PhieuLapModel pl : PLForm.getList()) {
 			if (pl.getMapn().toLowerCase().contains(input) || pl.getMaSoDDH().toLowerCase().contains(input)
-					|| pl.getMaKho().toLowerCase().contains(input) || pl.getManv().toString().contains(input)
+					|| PhieuLapForm.maKho_TenKho.get(pl.getMaKho()).toLowerCase().contains(input) || PhieuLapForm.maNV_TenNV.get(pl.getManv()).toLowerCase().contains(input)
 					|| Formatter.formatterDate(pl.getNgay()).toString().contains(input)) {
-				Object[] rowData = { pl.getMapn(),Formatter.formatterDate(pl.getNgay()), pl.getMaSoDDH(), pl.getManv(), pl.getMaKho() };
+				Object[] rowData = { pl.getMapn(),Formatter.formatterDate(pl.getNgay()), pl.getMaSoDDH(), PhieuLapForm.maNV_TenNV.get(pl.getManv()), PhieuLapForm.maKho_TenKho.get(pl.getMaKho()) };
 				PLForm.getModel().addRow(rowData);
 			}
 		}
@@ -118,9 +118,9 @@ public class PhieuLapController {
 				PLForm.getTFMaDDH()
 						.setText(PLForm.getTable().getValueAt(PLForm.getTable().getSelectedRow(), 2).toString());
 				PLForm.getTFMaNV().
-				setText(String.valueOf(PhieuLapForm.maHoTenNV.get(PLForm.getTable().getValueAt(PLForm.getTable().getSelectedRow(), 0))));
+				setText(String.valueOf(PhieuLapForm.maPN_NV.get(PLForm.getTable().getValueAt(PLForm.getTable().getSelectedRow(), 0))));
 				PLForm.getLbHoTenNV().setText(PLForm.getTable().getValueAt(PLForm.getTable().getSelectedRow(), 3).toString());
-				PLForm.getTFMaKho().setText(PhieuLapForm.maTenKho.get(PLForm.getTable().getValueAt(PLForm.getTable().getSelectedRow(), 0)));
+				PLForm.getTFMaKho().setText(PhieuLapForm.maPN_Kho.get(PLForm.getTable().getValueAt(PLForm.getTable().getSelectedRow(), 0)));
 				PLForm.getLbTenKho().setText(PLForm.getTable().getValueAt(PLForm.getTable().getSelectedRow(), 4).toString());				
 
 				ctplDao = CTPLDao.getInstance();
@@ -360,6 +360,7 @@ public class PhieuLapController {
 			return;
 		}
 		rowSelectedPN = PLForm.getTable().getSelectedRow();
+		PLForm.getTableCTPN().getSelectionModel().setSelectionInterval(0, 0);
 		isPhieuNhap = false;
 		selectionListener_CTPN = e -> {
 			if (PLForm.getTableCTPN().getSelectedRow() != -1) {
@@ -379,7 +380,7 @@ public class PhieuLapController {
 						PLForm.getTableCTPN().getValueAt(PLForm.getTableCTPN().getSelectedRow(), 3)));
 			}
 		};
-		PLForm.getTable().setEnabled(false);
+//		PLForm.getTable().setEnabled(false);
 		PLForm.getTableCTPN().setEnabled(true);
 		PLForm.getTableCTPN().getSelectionModel().addListSelectionListener(selectionListener_CTPN);
 		PLForm.getTableCTPN().getSelectionModel().removeListSelectionListener(selectionListener);
