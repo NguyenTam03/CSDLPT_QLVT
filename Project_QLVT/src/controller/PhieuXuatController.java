@@ -25,7 +25,7 @@ public class PhieuXuatController implements ISearcher {
 	private CTPXModel ctpxModel;
 	private Stack<Object[]> undoList;
 	private int row;
-	private boolean isSelectedCTPX, isSelectedPX;
+	
 
 	private enum Mode {
 		PHIEUXUAT, CTPX;
@@ -39,16 +39,7 @@ public class PhieuXuatController implements ISearcher {
 		ctpxModel = new CTPXModel();
 		undoList = new Stack<>();
 		row = 0;
-		isSelectedCTPX = isSelectedPX = false;
 
-	}
-
-	public boolean isSelectedCTPX() {
-		return isSelectedCTPX;
-	}
-
-	public boolean isSelectedPX() {
-		return isSelectedPX;
 	}
 
 	public void initController() {
@@ -56,17 +47,17 @@ public class PhieuXuatController implements ISearcher {
 			px.getComboBox().setEnabled(true);
 		}
 		px.getMntmPhieuXuat().addActionListener(l -> {
-			if (!isSelectedPX) {
-				isSelectedPX = true;
-				isSelectedCTPX = false;
+			if (!px.isSelectedPX()) {
+				px.setSelectedPX(true);
+				px.setSelectedCTPX(false);
 				initPhieuXuat();
 			}
 		});
 
 		px.getMntmCTPX().addActionListener(l -> {
-			if (!isSelectedCTPX) {
-				isSelectedCTPX = true;
-				isSelectedPX = false;
+			if (!px.isSelectedCTPX()) {
+				px.setSelectedCTPX(true);
+				px.setSelectedPX(false);
 				initCTPX();
 			}
 		});
@@ -89,7 +80,7 @@ public class PhieuXuatController implements ISearcher {
 	}
 
 	private void initPhieuXuat() {
-		if (mode == Mode.CTPX && isSelectedPX) {
+		if (mode == Mode.CTPX && px.isSelectedPX()) {
 			px.getBtnHoanTac().setEnabled(true);
 			undoList.push(new Object[] { mode, px.getTableCTPX().getSelectedRow() });
 		}
@@ -99,37 +90,29 @@ public class PhieuXuatController implements ISearcher {
 		px.getBtnVatTuOption().setEnabled(false);
 		px.getSpinnerSoLuong().setEnabled(false);
 		px.getSpinnerDonGia().setEnabled(false);
+		px.getBtnLamMoi().setEnabled(true);
+		px.getTextFieldTim().setEditable(true);
 		px.getBtnXoa().setEnabled(false);
 		px.getBtnGhi().setEnabled(false);
 
 		if (!Program.mGroup.equals("CONGTY")) {
 			px.getBtnThem().setEnabled(true);
-			if (px.getTable().getRowCount() > 0) {
-				if (!Program.username.equals(px.getTextFieldMaNV().getText())) {
-					px.getBtnKhoOption().setEnabled(false);
-					px.getTextFieldTenKH().setEditable(false);
-				} else {
-					px.getBtnXoa().setEnabled(true);
-					px.getBtnKhoOption().setEnabled(true);
-					px.getTextFieldTenKH().setEditable(true);
-					px.getBtnGhi().setEnabled(true);
+			if (px.getTable().getRowCount() > 0 && Program.username.equals(px.getTextFieldMaNV().getText())) {
+				px.getBtnXoa().setEnabled(true);
+				px.getBtnKhoOption().setEnabled(true);
+				px.getTextFieldTenKH().setEditable(true);
+				px.getBtnGhi().setEnabled(true);
 
-				}
 			}
-
-			px.getBtnLamMoi().setEnabled(true);
-			px.getTextFieldTim().setEditable(true);
 
 		} else {
 			px.getComboBox().setEnabled(true);
-			px.getBtnXoa().setEnabled(false);
-			px.getBtnGhi().setEnabled(false);
 		}
 		px.getMnOption().setText("Phiếu Xuất");
 	}
 
 	private void initCTPX() {
-		if (mode == Mode.PHIEUXUAT && isSelectedCTPX) {
+		if (mode == Mode.PHIEUXUAT && px.isSelectedCTPX()) {
 			px.getBtnHoanTac().setEnabled(true);
 			undoList.push(new Object[] { mode, px.getTable().getSelectedRow() });
 		}
@@ -144,32 +127,20 @@ public class PhieuXuatController implements ISearcher {
 		px.getTableCTPX().setEnabled(true);
 		px.getBtnKhoOption().setEnabled(false);
 		px.getTextFieldTenKH().setEditable(false);
+		px.getBtnLamMoi().setEnabled(true);
 		px.getBtnGhi().setEnabled(false);
 		px.getBtnVatTuOption().setEnabled(false);
 		if (!Program.mGroup.equals("CONGTY")) {
 			px.getBtnThem().setEnabled(true);
-			px.getBtnVatTuOption().setEnabled(true);
-			if (px.getTable().getRowCount() > 0) {
-				if (!Program.username.equals(px.getTextFieldMaNV().getText())) {
-					px.getSpinnerSoLuong().setEnabled(false);
-					px.getSpinnerDonGia().setEnabled(false);
-					px.getBtnVatTuOption().setEnabled(false);
-					px.getBtnThem().setEnabled(false);
-				} else {
-					px.getBtnXoa().setEnabled(true);
-					px.getSpinnerSoLuong().setEnabled(true);
-					px.getSpinnerDonGia().setEnabled(true);
-					px.getBtnGhi().setEnabled(true);
-
-				}
-
+			if (px.getTable().getRowCount() > 0 && Program.username.equals(px.getTextFieldMaNV().getText())) {
+				px.getBtnVatTuOption().setEnabled(true);
+				px.getBtnXoa().setEnabled(true);
+				px.getSpinnerSoLuong().setEnabled(true);
+				px.getSpinnerDonGia().setEnabled(true);
+				px.getBtnGhi().setEnabled(true);
 			}
-			px.getBtnLamMoi().setEnabled(true);
-
 		} else {
 			px.getComboBox().setEnabled(true);
-			px.getBtnGhi().setEnabled(false);
-			px.getBtnVatTuOption().setEnabled(false);
 		}
 		px.getMnOption().setText("Chi Tiết Phiếu Xuất");
 	}
@@ -237,7 +208,7 @@ public class PhieuXuatController implements ISearcher {
 
 	private void btnUndo() {
 		/* hoàn tác sự kiện click btnthem */
-		if (!px.getBtnThem().isEnabled()) {
+		if (!px.getBtnThem().isEnabled() && !Program.mGroup.equals("CONGTY")) {
 			px.getTextFieldMaPX().setEditable(false);
 			px.getNgay().setEnabled(false);
 			px.getTextFieldTim().setEnabled(true);
