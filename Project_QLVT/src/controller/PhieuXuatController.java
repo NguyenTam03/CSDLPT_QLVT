@@ -818,7 +818,7 @@ public class PhieuXuatController implements ISearcher {
 			for (PhieuXuatModel model : px.getList()) {
 				if (model.getMapx().toLowerCase().contains(input) || model.getHoTenKH().toLowerCase().contains(input)
 						|| px.getKhoInfo().get(model.getMaKho()).toLowerCase().contains(input)
-						|| px.getNhanVienInfo().get(model.getManv()).toString().contains(input)) {
+						|| px.getNhanVienInfo().get(model.getManv()).toString().toLowerCase().contains(input)) {
 					Object[] rowData = { model.getMapx(), Formatter.formatterDate(model.getNgay()), model.getHoTenKH(),
 							px.getNhanVienInfo().get(model.getManv()), px.getKhoInfo().get(model.getMaKho()) };
 					px.getModel().addRow(rowData);
