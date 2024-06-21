@@ -19,6 +19,7 @@
 	<field name="donGia" class="java.lang.Integer"/>
 	<field name="triGia" class="java.lang.Integer"/>
 	<field name="tenVt" class="java.lang.String"/>
+	<field name="tenKH" class="java.lang.String"/>
 	<variable name="V_SUM_SoLuong" class="java.lang.Integer" resetType="Group" resetGroup="Gr_Thang" calculation="Sum">
 		<variableExpression><![CDATA[$F{soLuong}]]></variableExpression>
 	</variable>
@@ -47,7 +48,7 @@
 		<groupFooter>
 			<band height="29">
 				<textField>
-					<reportElement x="0" y="0" width="309" height="29" uuid="283b4bf3-961c-41d3-97f6-5b2bf91e2bb0"/>
+					<reportElement x="0" y="0" width="340" height="29" uuid="283b4bf3-961c-41d3-97f6-5b2bf91e2bb0"/>
 					<box>
 						<pen lineWidth="0.0"/>
 						<topPen lineWidth="0.25"/>
@@ -60,7 +61,7 @@
 					<textFieldExpression><![CDATA["Tổng tháng: "+new java.text.SimpleDateFormat("MM/yyyy").format(new java.text.SimpleDateFormat("dd/MM/yyyy").parse($F{ngay}))]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="310" y="0" width="60" height="29" uuid="1367707a-9287-4199-ac53-cec92d72f91f"/>
+					<reportElement x="340" y="0" width="50" height="29" uuid="1367707a-9287-4199-ac53-cec92d72f91f"/>
 					<box>
 						<pen lineWidth="0.25"/>
 						<topPen lineWidth="0.25"/>
@@ -72,7 +73,7 @@
 					<textFieldExpression><![CDATA[$V{V_SUM_SoLuong}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="450" y="0" width="104" height="29" uuid="8d12698c-eac4-43da-9730-2ff8bc1f718d"/>
+					<reportElement x="460" y="0" width="94" height="29" uuid="8d12698c-eac4-43da-9730-2ff8bc1f718d"/>
 					<box>
 						<pen lineWidth="0.25"/>
 						<topPen lineWidth="0.25"/>
@@ -85,7 +86,7 @@
 					<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0").format($V{V_SUM_TriGia}) + " đ"]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="370" y="0" width="80" height="29" uuid="8f14eeee-6af0-4326-b527-5ab0121bc715"/>
+					<reportElement x="390" y="0" width="70" height="29" uuid="8f14eeee-6af0-4326-b527-5ab0121bc715"/>
 					<box>
 						<topPen lineWidth="0.25"/>
 						<bottomPen lineWidth="0.25"/>
@@ -170,7 +171,7 @@
 	<columnHeader>
 		<band height="30" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="80" height="30" uuid="e363abb7-89cf-4bb5-b67f-fee7a8a35054">
+				<reportElement x="0" y="0" width="70" height="30" uuid="e363abb7-89cf-4bb5-b67f-fee7a8a35054">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9525c24f-ebf1-44d2-8b64-7e4a30fa9c31"/>
 				</reportElement>
 				<box>
@@ -182,7 +183,7 @@
 				<text><![CDATA[Ngày]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="80" y="0" width="64" height="30" uuid="21432608-4a7d-46d0-9488-8f8e27407652">
+				<reportElement x="70" y="0" width="50" height="30" uuid="21432608-4a7d-46d0-9488-8f8e27407652">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="982ef742-88cb-451d-9eba-8fa8719437ff"/>
 				</reportElement>
 				<box>
@@ -194,7 +195,7 @@
 				<text><![CDATA[Số Phiếu]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="144" y="0" width="72" height="30" uuid="69e90c1e-d682-4b57-8b36-dd6265af8031">
+				<reportElement x="120" y="0" width="66" height="30" uuid="69e90c1e-d682-4b57-8b36-dd6265af8031">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9f295b7c-8938-49b6-9968-294c93f6be43"/>
 				</reportElement>
 				<box>
@@ -206,7 +207,7 @@
 				<text><![CDATA[Loại Phiếu]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="310" y="0" width="60" height="30" uuid="eef7463a-beba-4aa8-a17e-0be14bf307a7">
+				<reportElement x="340" y="0" width="50" height="30" uuid="eef7463a-beba-4aa8-a17e-0be14bf307a7">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="03a824fb-172a-49b4-a880-98a9c10f914c"/>
 				</reportElement>
 				<box>
@@ -218,7 +219,7 @@
 				<text><![CDATA[Số Lượng]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="370" y="0" width="80" height="30" uuid="8b2b5095-3f8c-45b7-b296-9b8db17cae94">
+				<reportElement x="390" y="0" width="70" height="30" uuid="8b2b5095-3f8c-45b7-b296-9b8db17cae94">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2d7106ae-09a4-48d8-aa83-51267dc87bda"/>
 				</reportElement>
 				<box>
@@ -230,7 +231,7 @@
 				<text><![CDATA[Đơn giá]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="450" y="0" width="104" height="30" uuid="14cbcd83-c08a-4b69-b567-2293967ba91f">
+				<reportElement x="460" y="0" width="94" height="30" uuid="14cbcd83-c08a-4b69-b567-2293967ba91f">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fbf293e7-27fe-41e2-a10c-7dda21c09740"/>
 				</reportElement>
 				<box>
@@ -242,7 +243,7 @@
 				<text><![CDATA[Trị Giá]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="216" y="0" width="94" height="30" uuid="6394cf96-e3bb-4ff3-a876-f0d77b9973e7">
+				<reportElement x="256" y="0" width="84" height="30" uuid="6394cf96-e3bb-4ff3-a876-f0d77b9973e7">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="512ee2d2-70b5-4332-be0c-45439a22975e"/>
 				</reportElement>
 				<box>
@@ -253,12 +254,24 @@
 				</textElement>
 				<text><![CDATA[Tên Vật Tư]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="186" y="0" width="70" height="30" uuid="308c450b-25d7-472d-b930-9ecb89da2dcc">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c06f2a8a-85e5-4c97-8993-d008fa83bb8e"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<text><![CDATA[Khách Hàng]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="31" splitType="Stretch">
+		<band height="32" splitType="Stretch">
 			<textField>
-				<reportElement stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="80" y="0" width="64" height="31" isPrintInFirstWholeBand="true" uuid="db8f5090-72db-4471-962c-82862af22663">
+				<reportElement stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="70" y="0" width="50" height="32" isPrintInFirstWholeBand="true" uuid="db8f5090-72db-4471-962c-82862af22663">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="982ef742-88cb-451d-9eba-8fa8719437ff"/>
 				</reportElement>
 				<box>
@@ -270,7 +283,7 @@
 				<textFieldExpression><![CDATA[$F{maPhieu}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="144" y="0" width="72" height="31" isPrintInFirstWholeBand="true" uuid="0640d104-93be-4e2f-9791-7a80b6ede070">
+				<reportElement stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="120" y="0" width="66" height="32" isPrintInFirstWholeBand="true" uuid="0640d104-93be-4e2f-9791-7a80b6ede070">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9f295b7c-8938-49b6-9968-294c93f6be43"/>
 				</reportElement>
 				<box>
@@ -282,7 +295,7 @@
 				<textFieldExpression><![CDATA[$F{loaiPhieu}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="310" y="0" width="60" height="31" uuid="aa276c7b-9373-42ea-9b81-e6ce40b039c2">
+				<reportElement x="340" y="0" width="50" height="32" uuid="aa276c7b-9373-42ea-9b81-e6ce40b039c2">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="03a824fb-172a-49b4-a880-98a9c10f914c"/>
 				</reportElement>
 				<box>
@@ -294,7 +307,7 @@
 				<textFieldExpression><![CDATA[$F{soLuong}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="370" y="0" width="80" height="31" uuid="8e3a26f6-53b7-444b-aff1-9fda519cd798">
+				<reportElement x="390" y="0" width="70" height="32" uuid="8e3a26f6-53b7-444b-aff1-9fda519cd798">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2d7106ae-09a4-48d8-aa83-51267dc87bda"/>
 				</reportElement>
 				<box>
@@ -306,7 +319,7 @@
 				<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0").format($F{donGia}) + " đ"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="450" y="0" width="104" height="31" uuid="f7d17485-bcbe-4928-9929-8a17924fd833">
+				<reportElement x="460" y="0" width="94" height="32" uuid="f7d17485-bcbe-4928-9929-8a17924fd833">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fbf293e7-27fe-41e2-a10c-7dda21c09740"/>
 				</reportElement>
 				<box>
@@ -318,7 +331,7 @@
 				<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0").format($F{triGia}) + " đ"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="0" y="0" width="80" height="31" isPrintInFirstWholeBand="true" uuid="4803b1a9-3c37-4c44-b3b6-219aebbccfcc">
+				<reportElement stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="0" y="0" width="70" height="32" isPrintInFirstWholeBand="true" uuid="4803b1a9-3c37-4c44-b3b6-219aebbccfcc">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e375bcd3-de38-4bfe-8b20-9b6ef7d6b64b"/>
 				</reportElement>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
@@ -330,7 +343,7 @@
 				<textFieldExpression><![CDATA[$F{ngay}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="216" y="0" width="94" height="31" uuid="dd08c909-5afd-4540-a935-562513b9384e">
+				<reportElement x="256" y="0" width="84" height="32" uuid="dd08c909-5afd-4540-a935-562513b9384e">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="512ee2d2-70b5-4332-be0c-45439a22975e"/>
 				</reportElement>
 				<box>
@@ -340,6 +353,18 @@
 					<font fontName="DejaVu Sans"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{tenVt}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="186" y="0" width="70" height="32" uuid="80e41f15-5580-4e16-bc32-da27b876096b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c06f2a8a-85e5-4c97-8993-d008fa83bb8e"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tenKH}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
