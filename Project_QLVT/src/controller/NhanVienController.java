@@ -576,13 +576,14 @@ public class NhanVienController {
 			int index = 0;
 			for (String key : Program.servers.keySet()) {
 				ChiNhanh.put(key, Program.macn.get(index++));
+				System.out.println(key + " : " + Program.macn.get(index - 1));
 			}
 			// Mã Nhân Viên Chi Nhánh Khác
 			int MaNVMoi = -1;
 			// Kiểm tra xem nhân viên đã tồn tại bên site bên kia chưa
 			boolean isDeleteNVNew = false;
-			String sql_CheckMaNV = "select isnull(MaNV,-1) from link1.QLVT_DATHANG.dbo.NhanVien where ? = SOCMND ";
-			Program.myReader = Program.ExecSqlDataReader(sql_CheckMaNV, NhanVienModel.getSoCMND());
+			String sql_CheckMaNV = "select isnull(MaNV,-1) from link0.QLVT_DATHANG.dbo.NhanVien where ? = SOCMND and ?  = MACN ";
+			Program.myReader = Program.ExecSqlDataReader(sql_CheckMaNV, NhanVienModel.getSoCMND(), ChiNhanh.get(CCNFrm.getCBBoxChuyenChiNhanh().getSelectedItem()));
 			try {
 				Program.myReader.next();
 				MaNVMoi = Program.myReader.getInt(1);

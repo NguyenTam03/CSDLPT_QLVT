@@ -7,7 +7,6 @@ import java.awt.event.MouseEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 
-import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -27,6 +26,7 @@ import views.PhieuXuatForm;
 import views.TongHopNhapXuat;
 import views.ReportDanhSachNhanVien;
 import views.ReportDanhSachVatTu;
+import views.ReportHoatDongNhanVien;
 import views.PhieuLapForm;
 import views.VatTuForm;
 
@@ -89,31 +89,46 @@ public class NavController {
 
 		frmMain.getMnNhanVienList().addMouseListener(new MouseAdapter() {
 			@Override
+			public void mouseClicked(MouseEvent e) {	
+				if (!ReportDanhSachNhanVien.isVisible) {
+					ReportDanhSachNhanVien.isVisible = true;
+					ReportDanhSachNhanVien reportNhanVien = new ReportDanhSachNhanVien();
+					reportNhanVien.setVisible(true);
+				}
+				
+			}
+		});
+		
+		frmMain.getMnHdNV().addMouseListener(new MouseAdapter() {
+			@Override
 			public void mouseClicked(MouseEvent e) {
-				System.out.println("click");
-				ReportDanhSachNhanVien reportNhanVien = new ReportDanhSachNhanVien();
-				reportNhanVien.setVisible(true);
-				reportNhanVien.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				if (!ReportHoatDongNhanVien.isVisible) {
+					ReportHoatDongNhanVien reportHoatDongNhanVien = new ReportHoatDongNhanVien();
+					reportHoatDongNhanVien.setVisible(true);
+				}
 			}
 		});
 
 		frmMain.getMnVatTuList().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				ReportDanhSachVatTu form = new ReportDanhSachVatTu();
-				form.setVisible(true);
-				form.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				if (!ReportDanhSachVatTu.isVisible) {
+					ReportDanhSachVatTu form = new ReportDanhSachVatTu();
+					form.setVisible(true);
+				}	
 			}
 		});
 		
 		frmMain.getMnCTNX().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				ChiTietNhapXuat form = new ChiTietNhapXuat();
-				form.setVisible(true);
-				form.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				if (!ChiTietNhapXuat.isVisible) {
+					ChiTietNhapXuat form = new ChiTietNhapXuat();
+					form.setVisible(true);
+				}
 			}
 		});
+		
 
 		if (!Program.mGroup.equals("USER")) {
 			frmMain.getMnCreateTK().addMouseListener(new MouseAdapter() {

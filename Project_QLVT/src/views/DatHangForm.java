@@ -37,7 +37,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.swing.SwingConstants;
@@ -66,7 +65,7 @@ public class DatHangForm extends CommonView<DatHangModel, DatHangDao> {
 	private ListSelectionListener selectionCTDHListener;
 	private VatTuOptionForm vtOptionForm;
 	private KhoOptionForm khoOptionForm;
-	private Map<String, List<Object>> maNhanVienKho;
+	private Map<String, Map<String, Object>> maNhanVienKho;
 	private Map<Integer, String> maVT;
 	private JTextField textFieldTenNV;
 	private DatHangController ac;
@@ -350,10 +349,10 @@ public class DatHangForm extends CommonView<DatHangModel, DatHangDao> {
 			}
 			textFieldNCC.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
 
-			textFieldMaNV.setText(maNhanVienKho.get(table.getValueAt(table.getSelectedRow(), 0)).get(0).toString());
+			textFieldMaNV.setText(maNhanVienKho.get(table.getValueAt(table.getSelectedRow(), 0)).get("maNhanVien").toString());
 			textFieldTenNV.setText(table.getValueAt(table.getSelectedRow(), 3).toString());
 
-			textFieldMaKho.setText(maNhanVienKho.get(table.getValueAt(table.getSelectedRow(), 0)).get(1).toString());
+			textFieldMaKho.setText(maNhanVienKho.get(table.getValueAt(table.getSelectedRow(), 0)).get("maKho").toString());
 			textFieldTenKho.setText(table.getValueAt(table.getSelectedRow(), 4).toString());
 
 			if (isSelectedDH && Authorization.valueOf(Program.mGroup) != Authorization.CONGTY) {
@@ -469,7 +468,7 @@ public class DatHangForm extends CommonView<DatHangModel, DatHangDao> {
 		return ctdhList;
 	}
 
-	public Map<String, List<Object>> getMaNhanVienKho() {
+	public Map<String, Map<String, Object>> getMaNhanVienKho() {
 		return maNhanVienKho;
 	}
 
@@ -543,7 +542,7 @@ public class DatHangForm extends CommonView<DatHangModel, DatHangDao> {
 
 	public void loadDataIntoTable() {
 		loadData();
-		maNhanVienKho = new HashMap<String, List<Object>>();
+		maNhanVienKho = new HashMap<String, Map<String, Object>>();
 		String sql = "";
 		String hoTenNV = "";
 		String tenKho = "";
@@ -565,9 +564,11 @@ public class DatHangForm extends CommonView<DatHangModel, DatHangDao> {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			List<Object> values = new ArrayList<Object>();
-			values.add(dh.getManv());
-			values.add(dh.getMakho());
+			Map<String, Object> values = new HashMap<String, Object>();
+			values.put("maNhanVien", dh.getManv());
+			values.put("maKho", dh.getMakho());
+			values.put("tenNhanVien", hoTenNV);
+			values.put("tenKho", tenKho);
 			maNhanVienKho.put(dh.getMaSoDDH(), values);
 			Object[] rowData = { dh.getMaSoDDH(), Formatter.formatterDate(dh.getNgay()), dh.getNhaCC(), hoTenNV,
 					tenKho };

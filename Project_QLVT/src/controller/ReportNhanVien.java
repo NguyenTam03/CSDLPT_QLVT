@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 import main.Program;
 import net.sf.jasperreports.engine.JRException;
@@ -27,9 +28,6 @@ public class ReportNhanVien {
 	public void initController() {
 		reportDanhSachNhanVien.getBtnXemTruoc().addActionListener(e -> xemTruocNhanVien() );
 		reportDanhSachNhanVien.getBtnXuatBan().addActionListener(e -> xuatBanNhanVien());
-		System.out.println(Program.mChinhanh);
-		System.out.println(Program.mGroup);
-		System.out.println(Program.servername);
 	}
 	
 	public JasperPrint DanhSachNhanVien() {
@@ -72,8 +70,11 @@ public class ReportNhanVien {
 		     // Xuất báo cáo ra file PDF
 		        JasperExportManager.exportReportToPdfFile(jasperPrint, filePath);
 		    }
+		    JOptionPane.showConfirmDialog(null, "Lưu Thành Công", "Thông Báo", JOptionPane.CLOSED_OPTION);
+		    reportDanhSachNhanVien.dispose();
 		} catch (Exception e) {
-		    e.printStackTrace();
+			JOptionPane.showConfirmDialog(null, "Lưu Thất Bại", "Thông Báo", JOptionPane.CLOSED_OPTION);
+			e.printStackTrace();
 		}
 
 	}
