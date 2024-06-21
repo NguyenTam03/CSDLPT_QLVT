@@ -169,7 +169,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="DejaVu Sans" size="12"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{donGia}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0").format($F{donGia}) + " đ"]]></textFieldExpression>
 				</textField>
 			</frame>
 		</band>

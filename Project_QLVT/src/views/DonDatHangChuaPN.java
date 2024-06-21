@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import common.method.Formatter;
 import controller.DonDHChuaPNController;
 import main.Program;
 import model.DonDatHangChuaPNModel;
@@ -220,7 +221,7 @@ public class DonDatHangChuaPN extends JFrame {
 		model.setColumnIdentifiers(colName.toArray());
 		for (DonDatHangChuaPNModel obj : list) {
 			Object[] row = { obj.getMaDDH(), obj.getNgayLap(), obj.getNhaCC(), obj.getHoTen(), obj.getTenVT(),
-					obj.getSoLuong(), obj.getDonGia() };
+					obj.getSoLuong(), Formatter.formatObjecttoMoney(obj.getDonGia()) };
 			model.addRow(row);
 		}
 	}

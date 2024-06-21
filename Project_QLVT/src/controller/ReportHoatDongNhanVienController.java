@@ -59,6 +59,9 @@ public class ReportHoatDongNhanVienController implements IJasperReportController
 		});
 	}
 	private void getData() {
+		if (!reportModel.getList().isEmpty()) {
+			reportModel.getList().clear();
+		}
 		maNV = ReportHoatDongNhanVien.getLb_MaNV().getText();
 		hoTen = ReportHoatDongNhanVien.getLb_NhanVien().getText();
 		ngayHienTai = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
@@ -70,11 +73,11 @@ public class ReportHoatDongNhanVienController implements IJasperReportController
 				model.setNgay(Program.myReader.getString(1));
 				model.setMaPhieu(Program.myReader.getString(2));
 				model.setLoaiPhieu(Program.myReader.getString(3));
-				model.setTenVt(Program.myReader.getString(4));
-				model.setSoLuong(Program.myReader.getInt(5));
-				model.setDonGia(Program.myReader.getInt(6));
-				model.setTriGia(Program.myReader.getInt(7));
-				System.out.println(model.getNgay() + model.getMaPhieu() + model.getLoaiPhieu() + model.getTenVt() + model.getSoLuong() + model.getDonGia() + model.getTriGia());
+				model.setTenKH(Program.myReader.getString(4));
+				model.setTenVt(Program.myReader.getString(5));				
+				model.setSoLuong(Program.myReader.getInt(6));
+				model.setDonGia(Program.myReader.getInt(7));
+				model.setTriGia(Program.myReader.getInt(8));
 				reportModel.getList().add(model);
 			}
 			reportModel.getParameters().put("MaNV", maNV);

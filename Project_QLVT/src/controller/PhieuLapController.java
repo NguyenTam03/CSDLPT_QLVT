@@ -6,7 +6,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
+import java.util.Calendar;
 import java.util.Stack;
 
 import javax.swing.JFrame;
@@ -104,6 +104,18 @@ public class PhieuLapController {
 		isPhieuNhap = true;
 		selectionListener = e -> {
 			if (PLForm.getTable().getSelectedRow() != -1) {
+				if(Program.username.equals(PhieuLapForm.maPN_NV.get(PLForm.getTable().getValueAt(PLForm.getTable().getSelectedRow(), 0)).toString() )) {
+					PLForm.getBtnXoa().setEnabled(true);
+					PLForm.getBtnGhi().setEnabled(true);
+					PLForm.getBtnDHOption().setEnabled(true);
+					PLForm.getBtnKho().setEnabled(true);
+				} else {
+					PLForm.getBtnXoa().setEnabled(false);
+					PLForm.getBtnGhi().setEnabled(false);
+					PLForm.getBtnDHOption().setEnabled(false);
+					PLForm.getBtnKho().setEnabled(false);
+				}
+				
 				PLForm.getTFMaPN()
 						.setText(PLForm.getTable().getValueAt(PLForm.getTable().getSelectedRow(), 0).toString());
 				try {
@@ -156,11 +168,11 @@ public class PhieuLapController {
 				PLForm.getBtnHoanTac().setEnabled(true);
 			}
 			PLForm.getBtnLamMoi().setEnabled(true);
-			PLForm.getBtnDHOption().setEnabled(false);
+			PLForm.getBtnDHOption().setEnabled(true);
 			PLForm.getBtnCTDHOption().setEnabled(false);
 
-			PLForm.getNgay().setEnabled(true);
-			PLForm.getBtnKho().setEnabled(false);
+			PLForm.getNgay().setEnabled(false);
+			PLForm.getBtnKho().setEnabled(true);
 
 			PLForm.getTFMaVT().setText("");
 			PLForm.getLbTenVatTu().setText("");
@@ -533,8 +545,10 @@ public class PhieuLapController {
 		PLForm.getSoLuong().setValue(0);
 		PLForm.getDonGia().setValue(0);
 		if (isPhieuNhap) {
-			PLForm.getTFMaPN().setText("");
-			PLForm.getNgay().setDate(null);
+			PLForm.getTFMaPN().setText("");			
+			java.util.Date currentDate = Calendar.getInstance().getTime();
+			PLForm.getNgay().setDate(currentDate);
+			PLForm.getNgay().setEnabled(false);
 			PLForm.getTFMaDDH().setText("");
 			PLForm.getTFMaNV().setText(Program.username);
 			PLForm.getLbHoTenNV().setText(Program.mHoten);
@@ -550,7 +564,7 @@ public class PhieuLapController {
 
 			PLForm.getBtnDHOption().setEnabled(true);
 			PLForm.getTFMaPN().setEditable(true);
-			PLForm.getNgay().setEnabled(true);
+//			PLForm.getNgay().setEnabled(true);
 			PLForm.getBtnKho().setEnabled(true);
 
 			PLForm.getTable().getSelectionModel().removeListSelectionListener(selectionListener);
@@ -595,6 +609,10 @@ public class PhieuLapController {
 				int reply = JOptionPane.showConfirmDialog(null, "Bạn có muốn ghi dữ liệu vào bảng không?", "Confirm",
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (reply == JOptionPane.YES_NO_OPTION) {
+					PhieuLapForm.maPN_NV.put(MaPN, Integer.parseInt(MaNV));
+					PhieuLapForm.maNV_TenNV.put(Integer.parseInt(MaNV), PLForm.getLbHoTenNV().getText());
+					PhieuLapForm.maPN_Kho.put(MaPN, PLForm.getLbTenKho().getText());
+					PhieuLapForm.maKho_TenKho.put(MaKho, PLForm.getLbTenKho().getText());
 					plModel.setMapn(MaPN);
 					plModel.setNgay(new Date(((java.util.Date) Ngay).getTime()));
 					plModel.setMaSoDDH(MaDDH);
@@ -621,10 +639,10 @@ public class PhieuLapController {
 						PLForm.getBtnLamMoi().setEnabled(true);
 						PLForm.getMnOption().setEnabled(true);
 
-						PLForm.getBtnDHOption().setEnabled(false);
+//						PLForm.getBtnDHOption().setEnabled(false);
 						PLForm.getTFMaPN().setEditable(false);
 						PLForm.getNgay().setEnabled(false);
-						PLForm.getBtnKho().setEnabled(false);
+//						PLForm.getBtnKho().setEnabled(false);
 						
 						PLForm.getTable().getSelectionModel().addListSelectionListener(selectionListener);
 						// .getSelectionModel().setSelectionInterval() : chọn dòng cuối cùng trong table
@@ -961,10 +979,10 @@ public class PhieuLapController {
 			PLForm.getBtnLamMoi().setEnabled(true);
 			PLForm.getMnOption().setEnabled(true);
 
-			PLForm.getBtnDHOption().setEnabled(false);
+//			PLForm.getBtnDHOption().setEnabled(false);
 			PLForm.getTFMaPN().setEditable(false);
 			PLForm.getNgay().setEnabled(false);
-			PLForm.getBtnKho().setEnabled(false);
+//			PLForm.getBtnKho().setEnabled(false);
 			isThem = false;
 			if (undoList.isEmpty()) {
 				PLForm.getBtnHoanTac().setEnabled(false);

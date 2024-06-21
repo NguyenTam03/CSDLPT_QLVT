@@ -489,7 +489,6 @@ public class PhieuXuatController implements ISearcher {
 					values.add(phieuXuatModel.getManv());
 					values.add(phieuXuatModel.getMaKho());
 					px.getMaNhanVienKho().put(phieuXuatModel.getMapx(), values);
-
 					px.getModel().addRow(newRow);
 					px.getDao().insert(phieuXuatModel);
 				} catch (SQLException e) {

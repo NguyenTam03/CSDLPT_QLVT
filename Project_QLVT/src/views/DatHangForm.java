@@ -550,8 +550,9 @@ public class DatHangForm extends CommonView<DatHangModel, DatHangDao> {
 			sql = "SELECT HO + ' ' + TEN FROM NhanVien WHERE MANV = ?";
 			Program.myReader = Program.ExecSqlDataReader(sql, dh.getManv());
 			try {
-				Program.myReader.next();
-				hoTenNV = Program.myReader.getString(1);
+				if (Program.myReader.next()) {
+					hoTenNV = Program.myReader.getString(1);
+				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
