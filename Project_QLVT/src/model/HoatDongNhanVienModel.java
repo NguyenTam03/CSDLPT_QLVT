@@ -1,14 +1,14 @@
 package model;
 
 public class HoatDongNhanVienModel {
-	private String ngay, maPhieu, loaiPhieu, tenVt;
+	private String ngay, maPhieu, loaiPhieu, tenVt, tenKH;
 	private int soLuong, donGia, triGia;
 
 	public HoatDongNhanVienModel() {
 	}
 
 	public HoatDongNhanVienModel(String ngay, String maPhieu, String loaiPhieu, String tenVt, int soLuong,
-			int donGia, int triGia) {
+			int donGia, int triGia, String tenKH) {
 		this.ngay = ngay;
 		this.maPhieu = maPhieu;
 		this.loaiPhieu = loaiPhieu;
@@ -16,6 +16,7 @@ public class HoatDongNhanVienModel {
 		this.soLuong = soLuong;
 		this.donGia = donGia;
 		this.triGia = triGia;
+		this.tenKH = tenKH;
 	}
 
 	public String getNgay() {
@@ -72,6 +73,14 @@ public class HoatDongNhanVienModel {
 
 	public void setTriGia(int triGia) {
 		this.triGia = triGia;
+	}
+
+	public String getTenKH() {
+		return tenKH;
+	}
+
+	public void setTenKH(String tenKH) {
+		this.tenKH = tenKH;
 	}
 	
 }

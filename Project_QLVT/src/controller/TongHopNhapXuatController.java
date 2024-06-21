@@ -45,6 +45,9 @@ public class TongHopNhapXuatController implements IJasperReportController {
 	}
 
 	private void getData() {
+		if (!reportModel.getList().isEmpty()) {
+			reportModel.getList().clear();
+		}
 		String sql = "EXEC DBO.SP_TONG_HOP_NHAP_XUAT ?, ?";
 		Program.myReader = Program.ExecSqlDataReader(sql, tuNgay, denNgay);
 
