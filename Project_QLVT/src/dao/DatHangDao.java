@@ -31,8 +31,8 @@ public class DatHangDao extends IAbstractDao<DatHangModel> {
 		getColName().set(4, "TENKHO");
 		try {
 			while (Program.myReader.next()) {
-				DatHangModel datHang = new DatHangModel(Program.myReader.getString(1), Program.myReader.getDate(2),
-						Program.myReader.getString(3), Program.myReader.getInt(4), Program.myReader.getString(5));
+				DatHangModel datHang = new DatHangModel(Program.myReader.getString(1).trim(), Program.myReader.getDate(2),
+						Program.myReader.getString(3).trim(), Program.myReader.getInt(4), Program.myReader.getString(5).trim());
 
 				datHangList.add(datHang);
 			}

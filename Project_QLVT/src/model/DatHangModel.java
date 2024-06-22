@@ -1,7 +1,6 @@
 package model;
 
 import java.sql.Date;
-import java.time.LocalDate;
 import javax.swing.JOptionPane;
 import common.method.IValidation;
 
@@ -88,8 +87,8 @@ public class DatHangModel implements IValidation {
 			return false;
 		}
 
-		if (ngay.toLocalDate().isBefore(LocalDate.now())) {
-			JOptionPane.showMessageDialog(null, "Ngày lập đơn không được trước ngày hiện tại.", "Thông báo",
+		if (ngay.toString() == null) {
+			JOptionPane.showMessageDialog(null, "Ngày lập đơn không được bỏ trống.", "Thông báo",
 					JOptionPane.WARNING_MESSAGE);
 			validateError = ValidateError.ERROR_NGAY;
 			return false;

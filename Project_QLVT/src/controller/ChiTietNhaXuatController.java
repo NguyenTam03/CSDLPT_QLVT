@@ -50,7 +50,7 @@ public class ChiTietNhaXuatController implements IJasperReportController {
 	public ChiTietNhaXuatController(ChiTietNhapXuat form) {
 		this.form = form;
 		reportModel = new JasperReportModel<ChiTietNXModel>();
-		reportModel.setFilePath("reports/ChiTietNhapXuat.jrxml");
+		reportModel.setFilePath("static/reports/ChiTietNhapXuat.jrxml");
 	}
 
 	public void initController() {

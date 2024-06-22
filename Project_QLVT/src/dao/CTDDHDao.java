@@ -31,7 +31,7 @@ public class CTDDHDao extends IAbstractDao<CTDDHModel> {
 
 		try {
 			while (Program.myReader.next()) {
-				CTDDHModel datHang = new CTDDHModel(Program.myReader.getString(1), Program.myReader.getString(2),
+				CTDDHModel datHang = new CTDDHModel(Program.myReader.getString(1).trim(), Program.myReader.getString(2).trim(),
 						Program.myReader.getInt(3), Program.myReader.getFloat(4));
 
 				ctdhList.add(datHang);

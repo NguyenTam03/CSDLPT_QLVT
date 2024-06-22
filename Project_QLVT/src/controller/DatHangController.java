@@ -97,6 +97,9 @@ public class DatHangController implements ISearcher {
 				dh.getBtnKhoOption().setEnabled(true);
 				dh.getTextFieldNCC().setEditable(true);
 				dh.getBtnGhi().setEnabled(true);
+			}else {
+				dh.getBtnXoa().setEnabled(false);
+				dh.getBtnGhi().setEnabled(false);
 			}
 		} else {
 			dh.getComboBox().setEnabled(true);
@@ -125,6 +128,9 @@ public class DatHangController implements ISearcher {
 				dh.getSpinnerSoLuong().setEnabled(true);
 				dh.getSpinnerDonGia().setEnabled(true);
 				dh.getBtnGhi().setEnabled(true);
+			}else {
+				dh.getBtnXoa().setEnabled(false);
+				dh.getBtnGhi().setEnabled(false);
 			}
 
 		} else {
@@ -143,10 +149,9 @@ public class DatHangController implements ISearcher {
 		dh.getMnOption().setEnabled(false);
 		if (mode == Mode.DON_DAT_HANG) {
 			row = dh.getTable().getSelectedRow();
-
 			dh.getTextFieldMaDH().setText("");
 			dh.getTextFieldMaDH().setEditable(true);
-			dh.getNgayDat().setEnabled(true);
+			dh.getNgayDat().setEnabled(false);
 			dh.getNgayDat().setDate(new Date());
 			dh.getTextFieldNCC().setEditable(true);
 			dh.getTextFieldNCC().setText("");
@@ -310,7 +315,6 @@ public class DatHangController implements ISearcher {
 						upDateDataToDB();
 					}
 					dh.getTextFieldMaDH().setEditable(false);
-					dh.getNgayDat().setEnabled(false);
 				}
 			}
 			if (mode == Mode.CTDDH) {
@@ -366,6 +370,8 @@ public class DatHangController implements ISearcher {
 					values.put("tenNhanVien", dh.getTextFieldTenNV().getText());
 					values.put("tenKho", DatHangForm.getTextFieldTenKho().getText());
 					dh.getMaNhanVienKho().put(dhModel.getMaSoDDH(), values);
+					// insert 1 item into list
+					dh.getList().add(dhModel);
 					dh.getDao().insert(dhModel);
 				} catch (SQLException e) {
 					JOptionPane.showMessageDialog(null, "Lỗi thêm kho!\n" + e.getMessage(), "Error",
@@ -381,8 +387,7 @@ public class DatHangController implements ISearcher {
 			dh.getTable().getSelectionModel().addListSelectionListener(dh.getSelectionListener());
 			dh.getTable().getSelectionModel().setSelectionInterval(dh.getTable().getRowCount() - 1,
 					dh.getTable().getRowCount() - 1);
-			// insert 1 item into list
-			dh.getList().add(dhModel);
+			
 
 			// Luu truy van de hoan tac yeu cau them
 			String sqlUndo;
@@ -449,7 +454,10 @@ public class DatHangController implements ISearcher {
 
 			try {
 				dh.getTable().setValueAt(dhModel.getNhaCC(), dh.getTable().getSelectedRow(), 2);
-				dh.getTable().setValueAt(DatHangForm.getTextFieldTenKho().getText(), dh.getTable().getSelectedRow(), 3);
+				dh.getTable().setValueAt(DatHangForm.getTextFieldTenKho().getText(), dh.getTable().getSelectedRow(), 4);
+				// log info update
+				System.out.println("update: " + dhModel.getMaSoDDH() + " " + dhModel.getNhaCC() + " " + dhModel.getMakho());
+				// --------
 				dh.getMaNhanVienKho().get(dhModel.getMaSoDDH()).put("maKho", dhModel.getMakho());
 				dh.getMaNhanVienKho().get(dhModel.getMaSoDDH()).put("tenKho",
 						DatHangForm.getTextFieldTenKho().getText());
@@ -467,6 +475,7 @@ public class DatHangController implements ISearcher {
 			dh.getTable().getSelectionModel().setSelectionInterval(row, row);
 			// update item for list
 			dh.getList().set(row, dhModel);
+			System.out.println(dh.getList().get(row).getNhaCC());
 			// Luu truy van de hoan tac yeu cau update
 			String sqlUndo;
 			sqlUndo = "UPDATE DatHang SET NhaCC = '" + nhacc + "', " + "MAKHO = '" + makho + "' " + "WHERE MasoDDH = '"
