@@ -1,30 +1,15 @@
 package controller;
 
 
-import java.io.File;
-import java.io.InputStream;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-
-import common.method.Formatter;
 import main.Program;
 import model.HoatDongNhanVienModel;
 import model.JasperReportModel;
-import model.TongHopNXModel;
 import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.view.JasperViewer;
 import views.ReportHoatDongNhanVien;
 
 public class ReportHoatDongNhanVienController implements IJasperReportController {
@@ -36,7 +21,7 @@ public class ReportHoatDongNhanVienController implements IJasperReportController
 	public ReportHoatDongNhanVienController(ReportHoatDongNhanVien form) {
 		this.form = form;
 		reportModel = new JasperReportModel<>();
-		reportModel.setFilePath("reports/HDNhanVien.jrxml");
+		reportModel.setFilePath("static/reports/HDNhanVien.jrxml");
 	}
 
 	public void initController() {

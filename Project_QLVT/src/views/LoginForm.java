@@ -103,7 +103,7 @@ public class LoginForm extends JFrame {
 		tfUsername.setBounds(93, 40, 166, 20);
 		panel.add(tfUsername);
 		tfUsername.setColumns(10);
-		tfUsername.requestFocus();
+		tfUsername.requestFocusInWindow();
 		
 		JLabel lblMatKhau = new JLabel("Mật khẩu:");
 		lblMatKhau.setFont(new Font("Tahoma", Font.PLAIN, 12));

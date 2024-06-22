@@ -39,7 +39,7 @@ public class DonDHChuaPNController implements IJasperReportController {
 	public DonDHChuaPNController(DonDatHangChuaPN form) {
 		this.reportModel = new JasperReportModel<DonDatHangChuaPNModel>();
 		this.form = form;
-		reportModel.setFilePath("reports/DS_DDH_CHUA_PN.jrxml");
+		reportModel.setFilePath("static/reports/DS_DDH_CHUA_PN.jrxml");
 		reportModel.setList(form.getList());
 	}
 

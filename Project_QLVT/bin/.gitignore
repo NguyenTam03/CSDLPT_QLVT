@@ -1,6 +1,9 @@
+/common/
 /controller/
 /dao/
+/imgs/
 /main/
 /model/
-/views/
 /reports/
+/views/
+/static/

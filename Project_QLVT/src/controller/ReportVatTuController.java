@@ -15,7 +15,7 @@ public class ReportVatTuController implements IJasperReportController {
 	public ReportVatTuController(ReportDanhSachVatTu danhSachVatTu) {
 		this.danhSachVatTu = danhSachVatTu;
 		reportModel = new JasperReportModel<>();
-		reportModel.setFilePath("reports/ReportDSVT.jrxml");
+		reportModel.setFilePath("static/reports/ReportDSVT.jrxml");
 	}
 
 	public void initController() {

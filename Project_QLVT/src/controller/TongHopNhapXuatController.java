@@ -21,7 +21,7 @@ public class TongHopNhapXuatController implements IJasperReportController {
 		this.tongXuat = 0;
 		this.form = form;
 		reportModel = new JasperReportModel<>();
-		reportModel.setFilePath("reports/tong_hop_nhap_xuat.jrxml");
+		reportModel.setFilePath("static/reports/tong_hop_nhap_xuat.jrxml");
 	}
 
 	public void initController() {
