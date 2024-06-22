@@ -75,6 +75,8 @@ public class ChiTietNhaXuatController implements IJasperReportController {
 	}
 
 	private void getData() {
+		if (Program.mGroup.equals("CONGTY"))
+				Program.Connect();
 		if (!reportModel.getList().isEmpty())
 			reportModel.getList().clear();
 		String sql = "";

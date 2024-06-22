@@ -25,7 +25,6 @@ public class PhieuXuatController implements ISearcher {
 	private CTPXModel ctpxModel;
 	private Stack<Object[]> undoList;
 	private int row;
-	
 
 	private enum Mode {
 		PHIEUXUAT, CTPX;
@@ -483,13 +482,13 @@ public class PhieuXuatController implements ISearcher {
 			} else {
 				try {
 					Object[] newRow = { phieuXuatModel.getMapx(), Formatter.formatterDate(phieuXuatModel.getNgay()),
-							phieuXuatModel.getHoTenKH().trim(), phieuXuatModel.getManv(), phieuXuatModel.getMaKho() };
+							phieuXuatModel.getHoTenKH().trim(), px.getNhanVienInfo().get(phieuXuatModel.getManv()),
+							phieuXuatModel.getMaKho() };
 
 					List<Object> values = new ArrayList<Object>();
 					values.add(phieuXuatModel.getManv());
 					values.add(phieuXuatModel.getMaKho());
 					px.getMaNhanVienKho().put(phieuXuatModel.getMapx(), values);
-
 					px.getModel().addRow(newRow);
 					px.getDao().insert(phieuXuatModel);
 				} catch (SQLException e) {
@@ -823,7 +822,7 @@ public class PhieuXuatController implements ISearcher {
 			for (PhieuXuatModel model : px.getList()) {
 				if (model.getMapx().toLowerCase().contains(input) || model.getHoTenKH().toLowerCase().contains(input)
 						|| px.getKhoInfo().get(model.getMaKho()).toLowerCase().contains(input)
-						|| px.getNhanVienInfo().get(model.getManv()).toString().contains(input)) {
+						|| px.getNhanVienInfo().get(model.getManv()).toString().toLowerCase().contains(input)) {
 					Object[] rowData = { model.getMapx(), Formatter.formatterDate(model.getNgay()), model.getHoTenKH(),
 							px.getNhanVienInfo().get(model.getManv()), px.getKhoInfo().get(model.getMaKho()) };
 					px.getModel().addRow(rowData);

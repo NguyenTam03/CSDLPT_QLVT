@@ -186,7 +186,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nhap}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.##%">
+			<textField >
 				<reportElement x="228" y="0" width="104" height="20" uuid="69d6962d-1a17-4f8c-84eb-61488e887139">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4a41eb6f-0236-462e-bc0e-92cc5bde8e66"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -194,7 +194,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="DejaVu Sans" size="13"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{tyLeNhap}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{tyLeNhap}+"%"]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00#;#,##0.00#-">
 				<reportElement x="333" y="0" width="137" height="20" uuid="e31b738b-5ba8-4e52-be73-59e1c199630c">
@@ -205,14 +205,14 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{xuat}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.##%">
+			<textField>
 				<reportElement x="471" y="0" width="104" height="20" uuid="fb64d054-b2e7-4675-a6a3-b3bb17596cf0">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="54c3e3ce-3360-4384-bc2c-620e75aa0575"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="DejaVu Sans" size="13"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{tyLeXuat}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{tyLeXuat} + "%"]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
