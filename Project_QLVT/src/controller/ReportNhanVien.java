@@ -33,7 +33,7 @@ public class ReportNhanVien {
 	public JasperPrint DanhSachNhanVien() {
 	    JasperPrint jasperPrint = null;
 	    try {
-	        InputStream inputStream = ReportNhanVien.class.getResourceAsStream("/reports/ReportDSNV.jrxml");
+	        InputStream inputStream = ReportNhanVien.class.getResourceAsStream("static/reports/ReportDSNV.jrxml");
 	        JasperReport jasperReport = JasperCompileManager.compileReport(inputStream);
 	        Map<String, Object> parameters = new HashMap<>();
 	        parameters.put("nameBranch", reportDanhSachNhanVien.getCBChiNhanh().getSelectedItem());

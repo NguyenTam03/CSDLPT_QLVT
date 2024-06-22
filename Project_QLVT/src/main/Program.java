@@ -1,8 +1,10 @@
 package main;
 
 import java.awt.EventQueue;
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,10 +13,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Scanner;
+import java.util.Map;
 
 import javax.swing.JOptionPane;
 
@@ -44,7 +45,7 @@ public class Program {
 
 	public static int mChinhanh = 0;
 	public static List<String> macn;
-	public static HashMap<String, String> servers;
+	public static Map<String, String> servers;
 	public static LoginForm login;
 
 	public static FrameMain frmMain;
@@ -79,21 +80,25 @@ public class Program {
 		}
 	}
 
-	@SuppressWarnings("resource")
 	public static void readInfoDBFile() {
-		String file = "D:\\infoDB.txt";
-		try {
-			File myFile = new File(file);
-			Scanner reader = new Scanner(myFile);
-			Program.servername = reader.nextLine();
-			Program.remotelogin = reader.nextLine();
-			Program.remotepassword = reader.nextLine();
-			Program.database = reader.nextLine();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+        String filePath = "static/infoDB.txt"; 
+        try {
+            InputStream inputStream = Program.class.getClassLoader().getResourceAsStream(filePath);
+            if (inputStream == null) {
+                throw new IllegalArgumentException("file not found! " + filePath);
+            }
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+            Program.servername = reader.readLine();
+            Program.remotelogin = reader.readLine();
+            Program.remotepassword = reader.readLine();
+            Program.database = reader.readLine();
+            
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 	public static ResultSet ExecSqlDataReader(String strLenh, Object... objects) {
 		ResultSet myReader = null;
@@ -166,12 +171,12 @@ public class Program {
 		return null;
 	}
 
-	public static HashMap<String, String> getServer() {
+	public static Map<String, String> getServer() {
 		Program.mlogin = Program.remotelogin;
 		Program.password = Program.remotepassword;
 
 		Program.Connect();
-		HashMap<String, String> server = new LinkedHashMap<String, String>();
+		Map<String, String> server = new LinkedHashMap<String, String>();
 		try {
 			String sql = "SELECT * FROM [dbo].[V_DS_PHANMANH] ";
 			PreparedStatement statement = Program.conn.prepareStatement(sql);

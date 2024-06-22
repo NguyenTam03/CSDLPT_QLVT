@@ -67,6 +67,7 @@ public class DatHangForm extends CommonView<DatHangModel, DatHangDao> {
 	private KhoOptionForm khoOptionForm;
 	private Map<String, Map<String, Object>> maNhanVienKho;
 	private Map<Integer, String> maVT;
+	private Map<String, Object> values;
 	private JTextField textFieldTenNV;
 	private DatHangController ac;
 	private boolean isSelectedDH = false;
@@ -551,7 +552,7 @@ public class DatHangForm extends CommonView<DatHangModel, DatHangDao> {
 			Program.myReader = Program.ExecSqlDataReader(sql, dh.getManv());
 			try {
 				if (Program.myReader.next()) {
-					hoTenNV = Program.myReader.getString(1);
+					hoTenNV = Program.myReader.getString(1).trim();
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -561,11 +562,11 @@ public class DatHangForm extends CommonView<DatHangModel, DatHangDao> {
 			Program.myReader = Program.ExecSqlDataReader(sql, dh.getMakho());
 			try {
 				Program.myReader.next();
-				tenKho = Program.myReader.getString(1);
+				tenKho = Program.myReader.getString(1).trim();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			Map<String, Object> values = new HashMap<String, Object>();
+			values = new HashMap<String, Object>();
 			values.put("maNhanVien", dh.getManv());
 			values.put("maKho", dh.getMakho());
 			values.put("tenNhanVien", hoTenNV);
