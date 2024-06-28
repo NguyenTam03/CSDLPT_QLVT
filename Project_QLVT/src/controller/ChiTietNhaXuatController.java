@@ -3,6 +3,8 @@ package controller;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 
+import javax.swing.JOptionPane;
+
 import main.Program;
 import model.ChiTietNXModel;
 import model.JasperReportModel;
@@ -69,6 +71,7 @@ public class ChiTietNhaXuatController implements IJasperReportController {
 				SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 				tuNgay = format.format(form.getTuNgay().getDate());
 				denNgay = format.format(form.getDenNgay().getDate());
+				
 				print();
 			}
 		});
@@ -112,6 +115,11 @@ public class ChiTietNhaXuatController implements IJasperReportController {
 
 	@Override
 	public void preview() {
+		if (form.getDenNgay().getDate().before(form.getTuNgay().getDate())) {
+			JOptionPane.showMessageDialog(null, "\"Đến Ngày\" phải lớn hơn \"Từ Ngày\"!", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 		getData();
 		try {
 			reportModel.preViewReport();
@@ -124,6 +132,11 @@ public class ChiTietNhaXuatController implements IJasperReportController {
 
 	@Override
 	public void print() {
+		if (form.getDenNgay().getDate().before(form.getTuNgay().getDate())) {
+			JOptionPane.showMessageDialog(null, "\"Đến Ngày\" phải lớn hơn \"Từ Ngày\"!", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 		getData();
 		try {
 			reportModel.saveReport();
