@@ -136,8 +136,8 @@ public class PhieuXuatController implements ISearcher {
 		px.getBtnVatTuOption().setEnabled(false);
 		if (!Program.mGroup.equals("CONGTY")) {
 			px.getBtnThem().setEnabled(true);
-			if (px.getTable().getRowCount() > 0 && Program.username.equals(px.getTextFieldMaNV().getText())) {
-				px.getBtnVatTuOption().setEnabled(true);
+			if (px.getTableCTPX().getRowCount() > 0 && Program.username.equals(px.getTextFieldMaNV().getText())) {
+//				px.getBtnVatTuOption().setEnabled(true);
 				px.getBtnXoa().setEnabled(true);
 				px.getSpinnerSoLuong().setEnabled(true);
 				px.getSpinnerDonGia().setEnabled(true);
@@ -490,9 +490,10 @@ public class PhieuXuatController implements ISearcher {
 					values.add(phieuXuatModel.getMaKho());
 					px.getMaNhanVienKho().put(phieuXuatModel.getMapx(), values);
 					px.getModel().addRow(newRow);
+					px.getList().add(phieuXuatModel);
 					px.getDao().insert(phieuXuatModel);
 				} catch (SQLException e) {
-					JOptionPane.showMessageDialog(null, "Lỗi thêm kho!\n" + e.getMessage(), "Error",
+					JOptionPane.showMessageDialog(null, "Lỗi thêm phiếu xuất!\n" + e.getMessage(), "Error",
 							JOptionPane.ERROR_MESSAGE);
 					reFreshData();
 					px.getTable().getSelectionModel().setSelectionInterval(row, row);
@@ -504,7 +505,7 @@ public class PhieuXuatController implements ISearcher {
 			px.getTable().getSelectionModel().addListSelectionListener(px.getSelectionListener());
 			px.getTable().getSelectionModel().setSelectionInterval(px.getTable().getRowCount() - 1,
 					px.getTable().getRowCount() - 1);
-			px.getList().add(phieuXuatModel);
+
 //			row = px.getTable().getRowCount() - 1;
 			// Luu truy van de hoan tac yeu cau them
 			String sqlUndo;
@@ -515,8 +516,8 @@ public class PhieuXuatController implements ISearcher {
 
 		if (mode == Mode.CTPX) {
 			try {
-				Object[] newRow = { ctpxModel.getMapx(), PhieuXuatForm.getTextFieldTenVT(), ctpxModel.getSoLuong(),
-						Formatter.formatObjecttoMoney(ctpxModel.getDonGia()),
+				Object[] newRow = { ctpxModel.getMapx(), PhieuXuatForm.getTextFieldTenVT().getText(),
+						ctpxModel.getSoLuong(), Formatter.formatObjecttoMoney(ctpxModel.getDonGia()),
 						Formatter.formatObjecttoMoney(ctpxModel.getDonGia() * ctpxModel.getSoLuong()) };
 				px.getCtpxModel().addRow(newRow);
 				px.getMaVT().put(px.getTableCTPX().getRowCount() - 1, ctpxModel.getMavt());
@@ -763,7 +764,7 @@ public class PhieuXuatController implements ISearcher {
 			JOptionPane.showMessageDialog(null, "Xóa thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 			// listener selection row
 			px.getTableCTPX().getSelectionModel().addListSelectionListener(px.getSelectionListenerCTPX());
-			if (px.getTable().getRowCount() > 0) {
+			if (px.getTableCTPX().getRowCount() > 0) {
 				if (row == 0) {
 					px.getTableCTPX().getSelectionModel().setSelectionInterval(row + 1, row + 1);
 				} else {
@@ -771,13 +772,14 @@ public class PhieuXuatController implements ISearcher {
 				}
 			}
 			px.getBtnHoanTac().setEnabled(true);
-			px.getList().remove(row);
+			px.getCtpxList().remove(row);
 
-			String sqlUndo = "INSERT INTO CTPX (MAPX, MAVT, SOLUONG, DONGIA) VALUES ('" + ctpxModel.getMapx() + "', '"
-					+ ctpxModel.getMavt() + "', '" + ctpxModel.getSoLuong() + "', '" + ctpxModel.getDonGia() + "')";
+			String sqlUndo = "INSERT INTO CTPX (MAPX, MAVT, SOLUONG, DONGIA) VALUES ('" + ctpxModel.getMapx().trim()
+					+ "', '" + ctpxModel.getMavt().trim() + "', '" + ctpxModel.getSoLuong() + "', '"
+					+ ctpxModel.getDonGia() + "')";
 			undoList.push(new Object[] { sqlUndo, row });
 
-			if (px.getTable().getRowCount() == 0) {
+			if (px.getTableCTPX().getRowCount() == 0) {
 				px.getBtnXoa().setEnabled(false);
 			}
 		}
@@ -820,7 +822,9 @@ public class PhieuXuatController implements ISearcher {
 			px.getModel().setRowCount(0);
 
 			for (PhieuXuatModel model : px.getList()) {
-				if (model.getMapx().toLowerCase().contains(input) || model.getHoTenKH().toLowerCase().contains(input)
+				if (model.getMapx().toLowerCase().contains(input)
+						|| Formatter.formatterDate(model.getNgay()).toString().contains(input)
+						|| model.getHoTenKH().toLowerCase().contains(input)
 						|| px.getKhoInfo().get(model.getMaKho()).toLowerCase().contains(input)
 						|| px.getNhanVienInfo().get(model.getManv()).toString().toLowerCase().contains(input)) {
 					Object[] rowData = { model.getMapx(), Formatter.formatterDate(model.getNgay()), model.getHoTenKH(),
@@ -839,7 +843,9 @@ public class PhieuXuatController implements ISearcher {
 
 			for (CTPXModel model : px.getCtpxList()) {
 				if (model.getMapx().toLowerCase().contains(input)
-						|| px.getVatTuInfo().get(model.getMavt()).toLowerCase().contains(input)) {
+						|| px.getVatTuInfo().get(model.getMavt()).toLowerCase().contains(input)
+						|| model.getSoLuong().toString().contains(input) || model.getDonGia().toString().contains(input)
+						|| String.valueOf(model.getDonGia() * model.getSoLuong()).contains(input)) {
 					Object[] rowData = { model.getMapx(), px.getVatTuInfo().get(model.getMavt()), model.getSoLuong(),
 							Formatter.formatObjecttoMoney(model.getDonGia()),
 							Formatter.formatObjecttoMoney(model.getSoLuong() * model.getDonGia()) };

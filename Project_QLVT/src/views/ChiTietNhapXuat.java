@@ -127,6 +127,8 @@ public class ChiTietNhapXuat extends JFrame {
 			@Override
 			public void windowClosed(WindowEvent e) {
 				isVisible = false;
+				if (Program.mGroup.equals("CONGTY"))
+					Program.Connect();
 			}
 		});
 		ChiTietNhaXuatController ac = null;
