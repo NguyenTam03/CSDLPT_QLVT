@@ -361,18 +361,6 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 //		lắng nghe sự kiện chọn row đồng thời in dữ liệu ra textfield cho bảng phiếu xuất
 
 		selectionListener = e -> {
-			if (!Program.mHoten.equals(table.getValueAt(table.getSelectedRow(), 3))) {
-				getBtnXoa().setEnabled(false);
-				getBtnGhi().setEnabled(false);
-				getBtnKhoOption().setEnabled(false);
-				getTextFieldTenKH().setEditable(false);
-			} else if (!Program.mGroup.equals("CONGTY")){
-				getBtnXoa().setEnabled(true);
-				getBtnGhi().setEnabled(true);
-				getBtnKhoOption().setEnabled(true);
-				getTextFieldTenKH().setEditable(true);
-			}
-
 			textFieldMaPX.setText(table.getValueAt(table.getSelectedRow(), 0).toString());
 			try {
 				ngay.setDate(new SimpleDateFormat("dd-MM-yyyy")
