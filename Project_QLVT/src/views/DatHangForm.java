@@ -298,7 +298,7 @@ public class DatHangForm extends CommonView<DatHangModel, DatHangDao> {
 
 //		Đơn đặt hàng table
 		dao = DatHangDao.getInstance();
-		ctdhDao = CTDDHDao.getInstance();
+		ctdhDao = CTDDHDao.getInstance(this);
 		loadDataIntoTable();
 
 		// không cho phép chỉnh sửa nội dung trực tiếp trên row
@@ -521,7 +521,7 @@ public class DatHangForm extends CommonView<DatHangModel, DatHangDao> {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			maVT.put(key, dh.getMavt());
+			maVT.put(key, dh.getMavt().trim());
 			key += 1;
 			Object[] rowData = { dh.getMaSoDDH(), tenVT, dh.getSoLuong(), Formatter.formatObjecttoMoney(dh.getDonGia()),
 					Formatter.formatObjecttoMoney(dh.getSoLuong() * dh.getDonGia()) };
