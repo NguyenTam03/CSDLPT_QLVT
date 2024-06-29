@@ -4,8 +4,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import main.Program;
 import model.CTDDHModel;
+import views.DatHangForm;
 
 public class CTDDHDao extends IAbstractDao<CTDDHModel> {
+	private DatHangForm dhForm;
+	
+	public CTDDHDao(DatHangForm dhForm) {
+		init();
+		this.dhForm = dhForm;
+	}
+	
 	public CTDDHDao() {
 		init();
 	}
@@ -19,6 +27,10 @@ public class CTDDHDao extends IAbstractDao<CTDDHModel> {
 		getColName().add("THANHTIEN");
 	}
 
+	public static CTDDHDao getInstance(DatHangForm form) {
+		return new CTDDHDao(form);
+	}
+	
 	public static CTDDHDao getInstance() {
 		return new CTDDHDao();
 	}
@@ -54,8 +66,9 @@ public class CTDDHDao extends IAbstractDao<CTDDHModel> {
 	@Override
 	public void update(CTDDHModel t) throws SQLException {
 		// TODO Auto-generated method stub
-		String sql = "UPDATE CTDDH SET MAVT = ?, SOlUONG = ?, DONGIA = ?";
-		Program.ExecSqlDML(sql, t.getMavt(), t.getSoLuong(), t.getDonGia());
+		String sql = "UPDATE CTDDH SET MAVT = ?, SOlUONG = ?, DONGIA = ? WHERE MASODDH = ? AND MAVT = ?";
+		System.out.println("UPDATE CTDDH SET MAVT = " + t.getMavt() + ", SOlUONG = " + t.getSoLuong() + ", DONGIA = " + t.getDonGia() + " WHERE MASODDH = " + t.getMaSoDDH() + " AND MAVT = " + dhForm.getMaVT().get(dhForm.getTableCTDH().getSelectedRow()));
+		Program.ExecSqlDML(sql, t.getMavt(), t.getSoLuong(), t.getDonGia(), t.getMaSoDDH(), dhForm.getMaVT().get(dhForm.getTableCTDH().getSelectedRow()));
 	}
 
 	@Override
