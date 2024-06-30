@@ -30,6 +30,9 @@ public class ChiTietNhapXuat extends JFrame {
 	private JDateChooser tuNgay, denNgay;
 	private JButton btnXemTruoc, btnXuat;
 	public static boolean isVisible = false;
+	
+	private String originLogin = Program.mlogin;
+	private String originPass = Program.password;
 
 	/**
 	 * Create the frame.
@@ -127,8 +130,11 @@ public class ChiTietNhapXuat extends JFrame {
 			@Override
 			public void windowClosed(WindowEvent e) {
 				isVisible = false;
-				if (Program.mGroup.equals("CONGTY"))
+				if (Program.mGroup.equals("CONGTY")) {
+					Program.mlogin = originLogin;
+					Program.password = originPass;
 					Program.Connect();
+				}
 			}
 		});
 		ChiTietNhaXuatController ac = null;

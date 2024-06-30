@@ -345,13 +345,13 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 				if (!Program.username.equals(getTextFieldMaNV().getText())) {
 					getBtnXoa().setEnabled(false);
 					getBtnGhi().setEnabled(false);
-					getBtnVatTuOption().setEnabled(false);
+//					getBtnVatTuOption().setEnabled(false);
 					spinnerSoLuong.setEnabled(false);
 					spinnerDonGia.setEnabled(false);
 				} else {
 					getBtnXoa().setEnabled(true);
 					getBtnGhi().setEnabled(true);
-					getBtnVatTuOption().setEnabled(true);
+//					getBtnVatTuOption().setEnabled(true);
 					spinnerSoLuong.setEnabled(false);
 					spinnerDonGia.setEnabled(false);
 				}				
