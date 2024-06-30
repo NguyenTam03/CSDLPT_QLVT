@@ -591,8 +591,8 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 			sql = "SELECT TENVT FROM Vattu WHERE MAVT = ?";
 			Program.myReader = Program.ExecSqlDataReader(sql, px.getMavt());
 			try {
-				Program.myReader.next();
-				tenVT = Program.myReader.getString(1);
+				if (Program.myReader.next())
+					tenVT = Program.myReader.getString(1);
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
@@ -631,11 +631,17 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 				}
 			}
 			Program.servername = Program.servers.get(comboBox.getSelectedItem());
-			Program.mlogin = Program.remotelogin;
-			Program.password = Program.remotepassword;
-			Program.mChinhanh = comboBox.getSelectedIndex();
+			if (!Program.mlogin.equals(Program.mloginDN)) {
+				Program.mlogin = Program.mloginDN;
+				Program.password = Program.passwordDN;
+			} else {
+				Program.mlogin = Program.remotelogin;
+				Program.password = Program.remotepassword;
+			}
+			
 			if (Program.Connect() == 0)
 				return;
+			Program.mChinhanh = comboBox.getSelectedIndex();
 			table.getSelectionModel().removeListSelectionListener(selectionListener);
 			model.setRowCount(0);
 			loadDataIntoTable();

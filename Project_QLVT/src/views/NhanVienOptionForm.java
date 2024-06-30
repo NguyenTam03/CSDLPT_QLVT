@@ -226,13 +226,18 @@ public class NhanVienOptionForm extends JFrame implements ISearcher {
 					e1.printStackTrace();
 				}
 			}
+			if (!Program.mlogin.equals(Program.mloginDN)) {
+				Program.mlogin = Program.mloginDN;
+				Program.password = Program.passwordDN;
+			} else {
+				Program.mlogin = Program.remotelogin;
+				Program.password = Program.remotepassword;
+			}
 			Program.servername = Program.servers.get(comboBox.getSelectedItem());
-			Program.mlogin = Program.remotelogin;
-			Program.password = Program.remotepassword;
-			Program.mChinhanh = comboBox.getSelectedIndex();
+			
 			if (Program.Connect() == 0)
 				return;
-
+			Program.mChinhanh = comboBox.getSelectedIndex();
 			model.setRowCount(0);
 			loadNhanVien();
 
@@ -252,7 +257,7 @@ public class NhanVienOptionForm extends JFrame implements ISearcher {
 			try {
 				res = Program.ExecSqlNoQuery(sql, manv);
 			}catch(SQLException e) {
-				JOptionPane.showMessageDialog(null, e.getMessage(), "Thông báo", JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Đã xảy ra lỗi khi xóa tài khoản\nError Details:" + e.getMessage(), "Thông báo", JOptionPane.WARNING_MESSAGE);
 				System.out.println(res);
 				return;
 			}
