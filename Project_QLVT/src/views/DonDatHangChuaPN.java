@@ -236,11 +236,17 @@ public class DonDatHangChuaPN extends JFrame {
 				}
 			}
 			Program.servername = Program.servers.get(comboBox.getSelectedItem());
-			Program.mlogin = Program.remotelogin;
-			Program.password = Program.remotepassword;
-			Program.mChinhanh = comboBox.getSelectedIndex();
+			if (!Program.mlogin.equals(Program.mloginDN)) {
+				Program.mlogin = Program.mloginDN;
+				Program.password = Program.passwordDN;
+			} else {
+				Program.mlogin = Program.remotelogin;
+				Program.password = Program.remotepassword;
+			}
+			
 			if (Program.Connect() == 0)
 				return;
+			Program.mChinhanh = comboBox.getSelectedIndex();
 			model.setRowCount(0);
 			loadDataIntoTable();
 		}

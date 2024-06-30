@@ -163,7 +163,7 @@ public class ChangePasswordForm extends JFrame {
 			try {
 				Program.ExecSqlDML(sql, loginName, newPassword, oldPassword);
 			} catch (SQLException e) {
-				JOptionPane.showMessageDialog(null, "Đổi mật khẩu không thành công\n" + e.getMessage(), "Cảnh báo",
+				JOptionPane.showMessageDialog(null, "Đổi mật khẩu không thành công\nError Details: " + e.getMessage(), "Cảnh báo",
 						JOptionPane.WARNING_MESSAGE);
 				return;
 			}

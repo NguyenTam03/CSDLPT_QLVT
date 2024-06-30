@@ -63,7 +63,7 @@ public class CreateLoginController {
 			try {
 				res = Program.ExecSqlNoQuery(sql, loginName, password, username, group);
 			}catch(SQLException e) {
-				JOptionPane.showMessageDialog(null, e.getMessage(), "Thông báo", JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Đã xảy ra lỗi khi tạo tài khoản\nError Details: " + e.getMessage(), "Thông báo", JOptionPane.WARNING_MESSAGE);
 				System.out.println(res);
 				return;
 			}
@@ -77,7 +77,10 @@ public class CreateLoginController {
 	}
 	
 	private void chooseNhanVien() {
-		NhanVienOptionForm form = new NhanVienOptionForm(false);
-		form.setVisible(true);
+		if (!NhanVienOptionForm.isVisible) {
+			NhanVienOptionForm.isVisible = true;
+			NhanVienOptionForm form = new NhanVienOptionForm(false);
+			form.setVisible(true);
+		}
 	}
 }

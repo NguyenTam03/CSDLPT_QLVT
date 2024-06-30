@@ -388,11 +388,17 @@ public class NhanVienForm extends CommonView<NhanVienModel, NhanVienDao> {
 				}
 			}
 			Program.servername = Program.servers.get(comboBox.getSelectedItem());
-			Program.mlogin = Program.remotelogin;
-			Program.password = Program.remotepassword;
-			Program.mChinhanh = comboBox.getSelectedIndex();
+			if (!Program.mlogin.equals(Program.mloginDN)) {
+				Program.mlogin = Program.mloginDN;
+				Program.password = Program.passwordDN;
+			} else {
+				Program.mlogin = Program.remotelogin;
+				Program.password = Program.remotepassword;
+			}
+			
 			if (Program.Connect() == 0)
 				return;
+			Program.mChinhanh = comboBox.getSelectedIndex();
 			TFMaCN.setText(Program.macn.get(Program.mChinhanh));
 			table.getSelectionModel().removeListSelectionListener(selectionListener);
 			model.setRowCount(0);
