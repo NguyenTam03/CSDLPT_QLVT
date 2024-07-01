@@ -67,14 +67,12 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 	private VatTuOptionFormForPX vatTuOptionFormPx;
 	private Map<String, List<Object>> maNhanVienKho;
 	private Map<Integer, String> maVT;
-	
 
 	private JTextField textFieldTenNV;
 	private PhieuXuatController ac;
 
 	private boolean isSelectedCTPX = false;
 	private boolean isSelectedPX = false;
-
 
 	/*
 	 * Những map này phục vụ cho chức năng search key là khóa, value là tên
@@ -345,16 +343,16 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 				if (!Program.username.equals(getTextFieldMaNV().getText())) {
 					getBtnXoa().setEnabled(false);
 					getBtnGhi().setEnabled(false);
-					getBtnVatTuOption().setEnabled(false);
+//					getBtnVatTuOption().setEnabled(false);
 					spinnerSoLuong.setEnabled(false);
 					spinnerDonGia.setEnabled(false);
 				} else {
 					getBtnXoa().setEnabled(true);
 					getBtnGhi().setEnabled(true);
-					getBtnVatTuOption().setEnabled(true);
+//					getBtnVatTuOption().setEnabled(true);
 					spinnerSoLuong.setEnabled(false);
 					spinnerDonGia.setEnabled(false);
-				}				
+				}
 			}
 
 		};
@@ -387,7 +385,7 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 					getBtnGhi().setEnabled(true);
 					getBtnKhoOption().setEnabled(true);
 					getTextFieldTenKH().setEditable(true);
-				}				
+				}
 			}
 
 			tableCTPX.getSelectionModel().removeListSelectionListener(selectionListenerCTPX);
@@ -516,7 +514,6 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 	public Map<String, String> getVatTuInfo() {
 		return vatTuInfo;
 	}
-	
 
 	public void setSelectedCTPX(boolean isSelectedCTPX) {
 		this.isSelectedCTPX = isSelectedCTPX;
@@ -525,7 +522,7 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 	public void setSelectedPX(boolean isSelectedPX) {
 		this.isSelectedPX = isSelectedPX;
 	}
-	
+
 	public boolean isSelectedCTPX() {
 		return isSelectedCTPX;
 	}
@@ -547,8 +544,8 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 			sql = "SELECT Ho + ' ' + Ten FROM NhanVien WHERE MANV = ?";
 			Program.myReader = Program.ExecSqlDataReader(sql, px.getManv());
 			try {
-				Program.myReader.next();
-				hoTenNV = Program.myReader.getString(1);
+				if (Program.myReader.next())
+					hoTenNV = Program.myReader.getString(1);
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
@@ -662,11 +659,10 @@ public class PhieuXuatForm extends CommonView<PhieuXuatModel, PhieuXuatDao> {
 				getSpinnerSoLuong().setValue(0);
 				getSpinnerDonGia().setValue(0);
 				tableCTPX.getSelectionModel().removeListSelectionListener(selectionListenerCTPX);
-				ctpxModel.setRowCount(0);				
+				ctpxModel.setRowCount(0);
 			}
 		}
 	}
-
 
 	private void exitPhieuXuat() {
 		Program.frmMain.getTabbedPane_Main().removeTabAt(Program.frmMain.getTabbedPane_Main().getSelectedIndex());
