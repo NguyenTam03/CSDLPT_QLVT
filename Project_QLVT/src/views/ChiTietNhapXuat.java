@@ -30,7 +30,6 @@ public class ChiTietNhapXuat extends JFrame {
 	private JDateChooser tuNgay, denNgay;
 	private JButton btnXemTruoc, btnXuat;
 	public static boolean isVisible = false;
-	
 	private String originLogin = Program.mlogin;
 	private String originPass = Program.password;
 

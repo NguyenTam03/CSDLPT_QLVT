@@ -48,7 +48,6 @@ public class ChiTietNhaXuatController implements IJasperReportController {
 		this.denNgay = denNgay;
 	}
 
-
 	public ChiTietNhaXuatController(ChiTietNhapXuat form) {
 		this.form = form;
 		reportModel = new JasperReportModel<ChiTietNXModel>();
@@ -71,7 +70,7 @@ public class ChiTietNhaXuatController implements IJasperReportController {
 				SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 				tuNgay = format.format(form.getTuNgay().getDate());
 				denNgay = format.format(form.getDenNgay().getDate());
-				
+
 				print();
 			}
 		});
@@ -88,14 +87,14 @@ public class ChiTietNhaXuatController implements IJasperReportController {
 		String sql = "";
 		String chiNhanh = "";
 		String loaiPhieu = (form.getComboBox().getSelectedItem().toString() == "NHẬP") ? "NHAP" : "XUAT";
-		
+
 		if (Program.mGroup.equals("CONGTY")) {
 			sql = "EXEC sp_ChiTietSoLuongTriGiaHangNhapXuat_SongSong ?, ?, ?";
 			Program.myReader = Program.ExecSqlDataReader(sql, loaiPhieu, tuNgay, denNgay);
 		} else {
 			sql = "EXEC sp_ChiTietSoLuongTriGiaHangNhapXuat ?, ?, ?";
 			Program.myReader = Program.ExecSqlDataReader(sql, loaiPhieu, tuNgay, denNgay);
-			chiNhanh = Program.servername = form.getComboBoxChiNhanh().getItemAt(Program.mChinhanh);
+			chiNhanh = form.getComboBoxChiNhanh().getItemAt(Program.mChinhanh);
 		}
 
 		try {
@@ -104,12 +103,12 @@ public class ChiTietNhaXuatController implements IJasperReportController {
 						Program.myReader.getInt(3), Program.myReader.getInt(4));
 				reportModel.getList().add(model);
 			}
-			
+
 			reportModel.getParameters().put("tenChiNhanh", chiNhanh);
 			reportModel.getParameters().put("loaiPhieu", form.getComboBox().getSelectedItem().toString());
 			reportModel.getParameters().put("tuNgay", tuNgay);
 			reportModel.getParameters().put("denNgay", denNgay);
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
