@@ -436,11 +436,17 @@ public class PhieuLapForm extends CommonView<PhieuLapModel, PhieuLapDao> {
 				}
 			}
 			Program.servername = Program.servers.get(comboBox.getSelectedItem());
-			Program.mlogin = Program.remotelogin;
-			Program.password = Program.remotepassword;
-			Program.mChinhanh = comboBox.getSelectedIndex();
+			if (!Program.mlogin.equals(Program.mloginDN)) {
+				Program.mlogin = Program.mloginDN;
+				Program.password = Program.passwordDN;
+			} else {
+				Program.mlogin = Program.remotelogin;
+				Program.password = Program.remotepassword;
+			}
+			
 			if (Program.Connect() == 0)
 				return;
+			Program.mChinhanh = comboBox.getSelectedIndex();
 			table.getSelectionModel().removeListSelectionListener(selectionListener);
 			model.setRowCount(0);
 			loadDataIntoTable();
