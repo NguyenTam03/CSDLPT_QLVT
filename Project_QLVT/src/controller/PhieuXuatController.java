@@ -585,7 +585,7 @@ public class PhieuXuatController implements ISearcher {
 				return;
 			}
 
-			JOptionPane.showMessageDialog(null, "Ghi thành công!", "Thông báo", JOptionPane.OK_OPTION);
+			JOptionPane.showMessageDialog(null, "Ghi thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 			px.getBtnHoanTac().setEnabled(true);
 			px.getTable().getSelectionModel().setSelectionInterval(row, row);
 			px.getList().set(row, phieuXuatModel);
@@ -623,7 +623,7 @@ public class PhieuXuatController implements ISearcher {
 				return;
 			}
 
-			JOptionPane.showMessageDialog(null, "Ghi thành công!", "Thông báo", JOptionPane.OK_OPTION);
+			JOptionPane.showMessageDialog(null, "Ghi thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 			px.getBtnHoanTac().setEnabled(true);
 			px.getTableCTPX().getSelectionModel().setSelectionInterval(row, row);
 			System.out.println("số phần tử trong ctpxlist: " + px.getCtpxList().size());
