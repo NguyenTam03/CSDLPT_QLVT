@@ -170,8 +170,7 @@ public class DonDatHangChuaPN extends JFrame {
 			}
 		};
 		table.setModel(model);
-		model = (DefaultTableModel) table.getModel();
-		list = getDataFromDB();
+		model = (DefaultTableModel) table.getModel();	
 		loadDataIntoTable();
 		DonDHChuaPNController ac = new DonDHChuaPNController(this);
 		ac.initController();
@@ -180,6 +179,8 @@ public class DonDatHangChuaPN extends JFrame {
 	public List<DonDatHangChuaPNModel> getDataFromDB() {
 		String sql = "EXEC DBO.SP_DS_DDH_CHUACO_PN";
 		Program.myReader = Program.ExecSqlDataReader(sql);
+		setColCountAndColName();
+		model.setColumnIdentifiers(colName.toArray());
 		List<DonDatHangChuaPNModel> temp = new ArrayList<DonDatHangChuaPNModel>();
 		try {
 			while (Program.myReader.next()) {
@@ -217,8 +218,8 @@ public class DonDatHangChuaPN extends JFrame {
 	}
 
 	public void loadDataIntoTable() {
-		setColCountAndColName();
-		model.setColumnIdentifiers(colName.toArray());
+		list = getDataFromDB();
+		
 		for (DonDatHangChuaPNModel obj : list) {
 			Object[] row = { obj.getMaDDH(), obj.getNgayLap(), obj.getNhaCC(), obj.getHoTen(), obj.getTenVT(),
 					obj.getSoLuong(), Formatter.formatObjecttoMoney(obj.getDonGia()) };
