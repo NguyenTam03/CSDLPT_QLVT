@@ -114,11 +114,11 @@ public class KhoOptionFormForPX extends JFrame implements ISearcher {
 			tableKho.getSelectionModel().setSelectionInterval(0, 0);
 		}
 	}
-	
+
 	private void loadData() {
 		khoList = khoDao.selectAll();
 		model.setColumnIdentifiers(khoDao.getColName().toArray());
-		
+
 		for (KhoModel kho : khoList) {
 			Object[] rowData = { kho.getMaKho(), kho.getTenKho(), kho.getDiaChi() };
 			model.addRow(rowData);
@@ -147,7 +147,8 @@ public class KhoOptionFormForPX extends JFrame implements ISearcher {
 		model.setRowCount(0);
 
 		for (KhoModel kho : khoList) {
-			if (kho.getTenKho().toLowerCase().contains(input)) {
+			if (kho.getMaKho().toLowerCase().contains(input) || kho.getTenKho().toLowerCase().contains(input)
+					|| kho.getDiaChi().toLowerCase().contains(input)) {
 				Object[] rowData = { kho.getMaKho(), kho.getTenKho(), kho.getDiaChi() };
 				model.addRow(rowData);
 			}
