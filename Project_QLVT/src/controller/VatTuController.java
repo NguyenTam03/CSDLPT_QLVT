@@ -433,7 +433,6 @@ public class VatTuController {
 		try {
 			vatTuForm.getTable().getSelectionModel().removeListSelectionListener(vatTuForm.getSelectionListener());
 			vatTuForm.getModel().removeRow(vatTuForm.getTable().getSelectedRow());
-			vatTuForm.getTable().getSelectionModel().addListSelectionListener(vatTuForm.getSelectionListener());
 			vatTuForm.getTextFieldMaVT().setText("");
 			vatTuForm.getTextFieldTenVT().setText("");
 			vatTuForm.getTextFieldDonVi().setText("");
