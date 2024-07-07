@@ -131,6 +131,11 @@ public class VatTuController {
 			vatTuForm.getTable().getSelectionModel().setSelectionInterval(row, row);
 		}
 
+		if (undoList.empty()) {
+			vatTuForm.getBtnHoanTac().setEnabled(false);
+			return;
+		}
+
 	}
 
 	private void pushDataToDB() {
@@ -445,8 +450,16 @@ public class VatTuController {
 		vatTuForm.getBtnHoanTac().setEnabled(true);
 //			xóa ở danh sánh
 		vatTuForm.getList().remove(row);
-		String sqlUndo = "INSERT INTO Vattu(MAVT,TENVT,DVT,SOLUONGTON) " + " VALUES( '" + vattuModel.getMavt() + "',N'"
-				+ vattuModel.getTenVT() + "',N'" + vattuModel.getDvt() + "', " + vattuModel.getSoLuongTon() + " ) ";
+		if (vatTuForm.getTable().getRowCount() > 0) {
+			if (row == 0) {
+				vatTuForm.getTable().getSelectionModel().setSelectionInterval(row + 1, row + 1);
+			} else {
+				vatTuForm.getTable().getSelectionModel().setSelectionInterval(row - 1, row - 1);
+			}
+		}
+		String sqlUndo = "INSERT INTO Vattu(MAVT, TENVT, DVT, SOLUONGTON) " + " VALUES( '" + vattuModel.getMavt()
+				+ "',N'" + vattuModel.getTenVT() + "',N'" + vattuModel.getDvt() + "', " + vattuModel.getSoLuongTon()
+				+ " ) ";
 
 		undoList.push(sqlUndo);
 		if (vatTuForm.getTable().getRowCount() == 0) {
