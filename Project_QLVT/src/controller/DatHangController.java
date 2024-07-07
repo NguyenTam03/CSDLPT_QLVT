@@ -249,9 +249,18 @@ public class DatHangController implements ISearcher {
 		}
 
 		reFreshData();
-		if (preRow1 <= dh.getTable().getRowCount() - 1) {
-			dh.getTable().getSelectionModel().setSelectionInterval(preRow1, preRow1);
+		ìf (mode == Mode.DON_DAT_HANG) {
+			if (preRow1 <= dh.getTable().getRowCount() - 1) {
+				dh.getTable().getSelectionModel().setSelectionInterval(preRow1, preRow1);
+			}
+		}else {
+			if (preRow1 <= dh.getTableCTDH().getRowCount() - 1) {
+				Integer preRow2 = Integer.valueOf(st[2].toString());
+				dh.getTableCTDH().getSelectionModel().setSelectionInterval(preRow1, preRow1);
+				dh.getTable().getSelectionModel().setSelectionInterval(preRow2, preRow2);
+			}
 		}
+		
 
 		if (undoList.empty()) {
 			dh.getBtnHoanTac().setEnabled(false);
@@ -414,7 +423,7 @@ public class DatHangController implements ISearcher {
 				JOptionPane.showMessageDialog(null, "Lỗi thêm chi tiết đơn đặt hàng!\n" + e.getMessage(), "Error",
 						JOptionPane.ERROR_MESSAGE);
 				reFreshData();
-				dh.getTable().getSelectionModel().setSelectionInterval(row, row);
+				dh.getTableCTDH().getSelectionModel().setSelectionInterval(row, row);
 				return;
 			}
 			JOptionPane.showMessageDialog(null, "Ghi thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
@@ -428,7 +437,7 @@ public class DatHangController implements ISearcher {
 			String sqlUndo;
 			sqlUndo = "DELETE FROM CTDDH WHERE MasoDDH = '" + ctdhModel.getMaSoDDH() + "'AND MAVT = '"
 					+ ctdhModel.getMavt() + "'";
-			undoList.push(new Object[] { sqlUndo, row });
+			undoList.push(new Object[] { sqlUndo, row, dh.getTable().getSelectedRow() });
 			row = dh.getTableCTDH().getRowCount() - 1;
 		}
 		dh.getTable().setEnabled(true);
@@ -518,7 +527,7 @@ public class DatHangController implements ISearcher {
 			sqlUndo = "UPDATE CTDDH SET MAVT = '" + mavt + "', " + "SOLUONG = '" + soLuong + "', " + "DONGIA = '"
 					+ donGia + "' " + "WHERE MasoDDH = '" + ctdhModel.getMaSoDDH() + "' AND MAVT = '"
 					+ ctdhModel.getMavt() + "'";
-			undoList.push(new Object[] { sqlUndo, row });
+			undoList.push(new Object[] { sqlUndo, row, dh.getTable().getSelectedRow() });
 		}
 
 	}
@@ -652,7 +661,7 @@ public class DatHangController implements ISearcher {
 				JOptionPane.showMessageDialog(null, "Lỗi xóa chi tiết đơn đặt hàng!\n" + e.getMessage(), "Error",
 						JOptionPane.ERROR_MESSAGE);
 				reFreshData();
-				dh.getTable().getSelectionModel().setSelectionInterval(row, row);
+				dh.getTableCTDH().getSelectionModel().setSelectionInterval(row, row);
 				return;
 			}
 
@@ -672,7 +681,7 @@ public class DatHangController implements ISearcher {
 			String sqlUndo = "INSERT INTO CTDDH (MasoDDH, MAVT, SOLUONG, DONGIA) VALUES ('" + ctdhModel.getMaSoDDH()
 					+ "', '" + ctdhModel.getMavt() + "', '" + ctdhModel.getSoLuong() + "', '" + ctdhModel.getDonGia()
 					+ "')";
-			undoList.push(new Object[] { sqlUndo, row });
+			undoList.push(new Object[] { sqlUndo, row, dh.getTable().getSelectedRow() });
 
 			if (dh.getTableCTDH().getRowCount() == 0) {
 				dh.getBtnXoa().setEnabled(false);
