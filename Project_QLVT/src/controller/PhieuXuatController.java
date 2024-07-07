@@ -526,7 +526,7 @@ public class PhieuXuatController implements ISearcher {
 				JOptionPane.showMessageDialog(null, "Lỗi thêm chi tiết phiếu xuất!\n" + e.getMessage(), "Error",
 						JOptionPane.ERROR_MESSAGE);
 				reFreshData();
-				px.getTable().getSelectionModel().setSelectionInterval(row, row);
+				px.getTableCTPX().getSelectionModel().setSelectionInterval(row, row);
 				return;
 			}
 			JOptionPane.showMessageDialog(null, "Ghi thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
