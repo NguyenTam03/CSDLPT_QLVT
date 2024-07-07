@@ -51,7 +51,9 @@ public class VatTuController {
 		vatTuForm.getModel().setRowCount(0);
 
 		for (VattuModel model : vatTuForm.getList()) {
-			if (model.getTenVT().toLowerCase().contains(input)) {
+			if (model.getMavt().toLowerCase().contains(input) || model.getTenVT().toLowerCase().contains(input)
+					|| model.getDvt().toLowerCase().contains(input)
+					|| model.getSoLuongTon().toString().contains(input)) {
 				Object[] dataRow = { model.getMavt(), model.getTenVT(), model.getDvt(), model.getSoLuongTon() };
 				vatTuForm.getModel().addRow(dataRow);
 			}
@@ -216,7 +218,7 @@ public class VatTuController {
 			vatTuForm.getTextFieldDonVi().setFocusable(true);
 			return false;
 		}
-		if (!regexMatch("^[\\p{L}0-9]*$", vattuModel.getDvt())) {
+		if (!regexMatch("^[\\p{L}]*$", vattuModel.getDvt())) {
 			JOptionPane.showMessageDialog(null, "Đơn vị tính chỉ gồm chữ cái", "Thông báo",
 					JOptionPane.WARNING_MESSAGE);
 			vatTuForm.getTextFieldDonVi().setFocusable(true);
@@ -268,7 +270,7 @@ public class VatTuController {
 				vatTuForm.getTable().getSelectionModel().setSelectionInterval(row, row);
 				return;
 			}
-			JOptionPane.showMessageDialog(null, "Ghi thành công!", "Thông báo", JOptionPane.OK_OPTION);
+			JOptionPane.showMessageDialog(null, "Ghi thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 
 			vatTuForm.getTable().setEnabled(true);
 			vatTuForm.getBtnThem().setEnabled(true);
@@ -307,7 +309,7 @@ public class VatTuController {
 		}
 
 		vatTuForm.getBtnHoanTac().setEnabled(true);
-		JOptionPane.showMessageDialog(null, "Ghi thành công!", "Thông báo", JOptionPane.OK_OPTION);
+		JOptionPane.showMessageDialog(null, "Ghi thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 		vatTuForm.getTable().getSelectionModel().setSelectionInterval(row, row);
 //		cập nhật vật tư có trong list
 		vatTuForm.getList().set(row, vattuModel);
@@ -405,7 +407,7 @@ public class VatTuController {
 		}
 
 		int res = 0;
-		String sql = "{? call dbo.sp_KiemTraMaVatTuDungOChiNhanhKhac(?)}";
+		String sql = "{? = call dbo.sp_KiemTraMaVatTuDungOChiNhanhKhac(?)}";
 
 		try {
 			res = Program.ExecSqlNoQuery(sql, vattuModel.getMavt());

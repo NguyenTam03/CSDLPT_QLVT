@@ -37,7 +37,7 @@ public class ChiTietNhapXuat extends JFrame {
 	 * Create the frame.
 	 */
 	public ChiTietNhapXuat() {
-		setTitle("Tổng Hợp Nhập Xuất");
+		setTitle("Chi Tiết Nhập Xuất");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 641, 327);
 		contentPane = new JPanel();
